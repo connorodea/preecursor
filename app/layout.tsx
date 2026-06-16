@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Newsreader, Archivo } from "next/font/google";
 import "./globals.css";
+import SiteChrome from "@/components/chrome/SiteChrome";
+import SiteFooter from "@/components/chrome/SiteFooter";
 
 // Display serif — headlines, big numbers (matches the handoff's Newsreader).
 const newsreader = Newsreader({
@@ -55,7 +57,10 @@ export default function RootLayout({
       className={`${newsreader.variable} ${archivo.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col overflow-x-hidden bg-paper text-ink font-sans">
-        {children}
+        <SiteChrome>
+          <main className="flex-1">{children}</main>
+        </SiteChrome>
+        <SiteFooter />
       </body>
     </html>
   );
