@@ -59,6 +59,29 @@ body {
   border-radius: 4px;
 }
 
+/* Skip-to-content link (WCAG 2.4.1). In the DOM + focusable for screen-reader
+   and keyboard users, parked off-screen until focused, then slides in as a
+   brand pill at the top-left. */
+.skip-link {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 200;
+  transform: translateY(-160%);
+  transition: transform 0.2s ease;
+  background: var(--color-brand);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 12px 32px rgba(17, 33, 56, 0.28);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 /* Horizontal scrollers (e.g. Selected Work) hide their scrollbar. */
 .no-scrollbar::-webkit-scrollbar {
   height: 0;
