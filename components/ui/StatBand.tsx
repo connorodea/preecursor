@@ -42,6 +42,9 @@ const LG_COLS: Record<number, string> = {
 };
 
 export default function StatBand({ eyebrow, stats }: Props) {
+  // No fabricated numbers, no band: render nothing rather than an empty frame.
+  if (stats.length === 0) return null;
+
   const lg = LG_COLS[Math.min(stats.length, 4)] ?? "lg:grid-cols-4";
 
   return (

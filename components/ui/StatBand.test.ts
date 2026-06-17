@@ -62,4 +62,10 @@ describe("StatBand", () => {
   it("single stat => lg-1", () => {
     expect(html({ stats: [{ value: 1, label: "one" }] })).toContain("lg:grid-cols-1");
   });
+
+  it("renders nothing when stats is empty (no fabricated/empty band)", () => {
+    // Emptied stat arrays must not produce a band at all.
+    expect(html({ stats: [] })).toBe("");
+    expect(html({ stats: [], eyebrow: "By the numbers" })).toBe("");
+  });
 });

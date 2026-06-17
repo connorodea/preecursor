@@ -10,25 +10,32 @@ describe("ImpactBand", () => {
     expect(() => html()).not.toThrow();
   });
 
-  it("contains the 'Client impact' eyebrow", () => {
-    expect(html()).toContain("Client impact");
+  it("contains the 'How we work' eyebrow (no 'Client impact' metric framing)", () => {
+    const out = html();
+    expect(out).toContain("How we work");
+    expect(out).not.toContain("Client impact");
   });
 
-  it("renders all four stat labels", () => {
+  it("renders four operating-principle headlines + their explanations", () => {
     const out = html();
-    expect(out).toContain("Enterprise value influenced across engagements");
-    expect(out).toContain("AI systems shipped into production");
-    expect(out).toContain("Median time to first live deployment");
-    expect(out).toContain("Engagements that expand within a year");
+    expect(out).toContain("Senior-only");
+    expect(out).toContain("The people in the pitch are the people who build");
+    expect(out).toContain("One team");
+    expect(out).toContain("Strategists and engineers");
+    expect(out).toContain("In production");
+    expect(out).toContain("running systems, not slideware");
+    expect(out).toContain("Embedded");
+    expect(out).toContain("your stack");
   });
 
-  it("renders CountUp markup with its prefix/suffix scaffolding", () => {
-    // Effects don't run under SSR, so CountUp shows its initial (0) value, but
-    // the static prefix/suffix decoration is still present.
+  it("renders no fabricated aggregate metrics", () => {
     const out = html();
-    expect(out).toContain("$0.0B"); // $ prefix + B suffix on the first stat
-    expect(out).toContain(" wks"); // suffix span on stat 3
-    expect(out).toContain("/10"); // suffix span on stat 4
+    // None of the invented figures may survive.
+    expect(out).not.toContain("$0.0B");
+    expect(out).not.toContain("$2.4B");
+    expect(out).not.toContain("/10");
+    expect(out).not.toContain(" wks");
+    expect(out).not.toContain("Enterprise value influenced");
   });
 
   it("renders the de-fogged EdgeFade — neighbour seam colours, blue waypoint, size 132", () => {

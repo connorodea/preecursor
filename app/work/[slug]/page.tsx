@@ -24,7 +24,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const c = getCase(slug);
-  if (!c) return { title: "Client impact" };
+  if (!c) return { title: "The work" };
   return { title: c.headline, description: c.summary };
 }
 
@@ -79,15 +79,43 @@ export default async function CasePage({
       />
 
       <Section tone="paper2">
-        <Eyebrow label="What we built" tone="brand" style={{ marginBottom: 48 }} />
+        <Eyebrow label="What we build" tone="brand" style={{ marginBottom: 48 }} />
         <FeatureRows rows={c.approach} />
       </Section>
 
-      <StatBand eyebrow="The outcome" stats={c.outcome} />
+      {/* Measured figures, when we have them; otherwise honest qualitative
+          outcomes. These illustrative engagements carry no invented numbers,
+          so the StatBand suppresses itself and the prose renders instead. */}
+      {c.outcome.length > 0 ? (
+        <StatBand eyebrow="The outcome" stats={c.outcome} />
+      ) : (
+        <Section tone="paper">
+          <Eyebrow
+            label="What it's designed to do"
+            tone="brand"
+            style={{ marginBottom: 32 }}
+          />
+          <div style={{ maxWidth: "64ch" }}>
+            {c.outcomes.map((o, i) => (
+              <p
+                key={i}
+                style={{
+                  marginTop: i === 0 ? 0 : 18,
+                  fontSize: 18,
+                  lineHeight: 1.62,
+                  color: "rgba(17,33,56,0.7)",
+                }}
+              >
+                {o}
+              </p>
+            ))}
+          </div>
+        </Section>
+      )}
 
       <CTASection
-        title="Could we move a number like this for you?"
-        body={`We brought ${c.client.replace(/^A /, "a ").replace(/^An /, "an ")} a measurable result. Tell us the metric you need to move and we will tell you what we would build first.`}
+        title="Could we build something like this for you?"
+        body="This is an illustrative example of the kind of system we build. Tell us the metric you need to move and we will tell you, candidly, what we would build first."
         primary={{ label: "Start a conversation", href: "/contact" }}
         secondary={{ label: "See more work", href: "/work" }}
         shader

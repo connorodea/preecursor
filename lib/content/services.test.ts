@@ -10,7 +10,10 @@ function expectWellFormed(c: ServiceContent, slug: string) {
   expect(c.lede.length, slug).toBeGreaterThan(0);
   expect(c.overview.length, slug).toBeGreaterThan(0);
   expect(c.approach.length, slug).toBeGreaterThan(0);
-  expect(c.stats.length, slug).toBeGreaterThan(0);
+  // stats are intentionally empty (no invented metrics); the field exists but
+  // carries no fabricated figures. StatBand suppresses itself on an empty array.
+  expect(Array.isArray(c.stats), slug).toBe(true);
+  expect(c.stats.length, slug).toBe(0);
   for (const r of c.related) {
     expect(r.href.startsWith("/"), `${slug} related ${r.href}`).toBe(true);
   }
@@ -36,7 +39,8 @@ describe("unknown slug fallback (build must never break)", () => {
     expect(c).toBeDefined();
     expect(c.title.length).toBeGreaterThan(0);
     expect(c.approach.length).toBeGreaterThan(0);
-    expect(c.stats.length).toBeGreaterThan(0);
+    // fallback also publishes no invented metrics
+    expect(c.stats.length).toBe(0);
   });
 
   it("getCapability returns a usable fallback for an unknown slug", () => {

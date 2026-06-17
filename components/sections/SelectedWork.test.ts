@@ -12,26 +12,33 @@ describe("SelectedWork", () => {
     expect(html()).toContain('id="work"');
   });
 
-  it("contains the eyebrow + section headline", () => {
+  it("contains the eyebrow + section headline + illustrative disclaimer", () => {
     const out = html();
-    expect(out).toContain("Selected work");
-    expect(out).toContain("Outcomes we can point to.");
+    expect(out).toContain("The kind of work we do");
+    expect(out).toContain("The systems we build.");
+    // Honest framing: these are examples, not delivered client results.
+    expect(out).toContain("Illustrative examples of the kind of work we do");
+    expect(out).toContain("not specific");
   });
 
-  it("renders all four case-study cards (titles + stats)", () => {
+  it("renders all four example cards with qualitative descriptors (no fake metrics)", () => {
     const out = html();
     expect(out).toContain("Underwriting copilot");
     expect(out).toContain("Predictive operations");
     expect(out).toContain("Clinical documentation");
     expect(out).toContain("Network ops copilot");
-    // stats from each card
-    expect(out).toContain("−63%");
-    expect(out).toContain("$180M");
-    expect(out).toContain("11 hrs");
-    expect(out).toContain("−41%");
+    // qualitative chips replace the fabricated stat numbers
+    expect(out).toContain("Underwriting");
+    expect(out).toContain("Predictive maintenance");
+    expect(out).toContain("Network operations");
+    // none of the invented outcome figures may survive
+    expect(out).not.toContain("−63%");
+    expect(out).not.toContain("$180M");
+    expect(out).not.toContain("11 hrs");
+    expect(out).not.toContain("−41%");
   });
 
-  it("renders the large card body + CTA linking to its case study", () => {
+  it("renders the large card body + CTA linking to its example", () => {
     const out = html();
     expect(out).toContain("an agent that drafts and checks credit memos");
     expect(out).toContain('href="/work/underwriting-copilot"');
@@ -46,9 +53,9 @@ describe("SelectedWork", () => {
     expect(out).toContain('aria-label="Show case study 4"');
   });
 
-  it("renders the 'All case studies' + 'See more stories' links to /work", () => {
+  it("renders the 'See how we work' + 'See more stories' links to /work", () => {
     const out = html();
-    expect(out).toContain("All case studies");
+    expect(out).toContain("See how we work");
     expect(out).toContain("See more stories →");
     expect(out).toContain('href="/work"');
   });

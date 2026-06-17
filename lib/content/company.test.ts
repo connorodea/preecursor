@@ -91,10 +91,13 @@ describe("LEADERSHIP content", () => {
     expect(new Set(seeds).size).toBe(seeds.length);
   });
 
-  it("has prior-affiliation logos, all non-empty", () => {
-    expect(LEADERSHIP.logos.length).toBeGreaterThan(0);
-    for (const logo of LEADERSHIP.logos) {
-      expect(logo.length).toBeGreaterThan(0);
+  it("carries no false company-affiliation logos", () => {
+    // The fabricated "prior-affiliation" logo row was removed: we don't imply
+    // the team came from companies we haven't verifiably worked at.
+    expect("logos" in LEADERSHIP).toBe(false);
+    const blob = JSON.stringify(LEADERSHIP);
+    for (const name of ["OpenAI", "DeepMind", "McKinsey", "Stripe", "Google", "Palantir"]) {
+      expect(blob, name).not.toContain(name);
     }
   });
 

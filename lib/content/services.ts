@@ -9,7 +9,9 @@
  * new menu leaf never breaks the static build.
  *
  * Tone: boutique applied-AI studio — a sharper, smaller BCG. Specific,
- * outcome-led, engineering-credible. Stats are illustrative first-draft figures.
+ * outcome-led, engineering-credible. We publish no invented metrics: every
+ * `stats` array is intentionally empty, and the StatBand that reads it
+ * suppresses itself rather than render fabricated figures.
  */
 
 import { INDUSTRY_LEAVES, CAPABILITY_LEAVES, type Leaf } from "@/lib/ia";
@@ -30,7 +32,11 @@ export type ServiceContent = {
   overview: string;
   /** 3–4 "what we do" rows. */
   approach: { title: string; desc: string }[];
-  /** Exactly 3 headline figures. */
+  /**
+   * Headline figures. Intentionally empty across all entries: as a new studio
+   * we publish no invented metrics. StatBand suppresses itself on an empty
+   * array, so leaving this `[]` is the honest, supported state.
+   */
   stats: Stat[];
   /** 2–3 cross-links to related pages. */
   related: { label: string; href: string }[];
@@ -73,11 +79,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Eval harnesses, documentation, and monitoring built to SR 11-7 expectations so models survive validation and stay in production.",
       },
     ],
-    stats: [
-      { value: 63, prefix: "−", suffix: "%", label: "Credit-memo cycle time" },
-      { value: 2.4, decimals: 1, prefix: "+", suffix: "×", label: "AML alert precision" },
-      { value: 11, prefix: "$", suffix: "M", label: "Annual ops cost removed" },
-    ],
+    stats: [],
     related: [
       cap("Applied Builds"),
       cap("Responsible AI"),
@@ -105,11 +107,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Pattern detection across claims history and provider networks to flag leakage before payment, not in a year-end audit.",
       },
     ],
-    stats: [
-      { value: 41, prefix: "−", suffix: "%", label: "Claims handling time" },
-      { value: 3.1, decimals: 1, prefix: "+", suffix: "pts", label: "Loss-ratio improvement" },
-      { value: 90, suffix: "%", label: "Submissions auto-triaged" },
-    ],
+    stats: [],
     related: [ind("Financial Institutions"), cap("Applied Builds"), cap("Responsible AI")],
   },
 
@@ -137,11 +135,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Eval harnesses and red-teaming tuned to clinical risk, so models are measured against the outcomes that actually matter.",
       },
     ],
-    stats: [
-      { value: 2, suffix: " hrs", label: "Clinician time returned per day" },
-      { value: 58, prefix: "−", suffix: "%", label: "Prior-auth turnaround" },
-      { value: 99.2, decimals: 1, suffix: "%", label: "Citation accuracy in eval" },
-    ],
+    stats: [],
     related: [cap("Evaluation & Safety"), cap("Responsible AI"), cap("Applied Builds")],
   },
 
@@ -165,11 +159,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Retrieval over manuals, schematics, and service history so field and plant teams get a cited answer instead of a phone tree.",
       },
     ],
-    stats: [
-      { value: 27, prefix: "−", suffix: "%", label: "Unplanned downtime" },
-      { value: 1.8, decimals: 1, prefix: "+", suffix: "pts", label: "First-pass yield" },
-      { value: 4, suffix: "×", label: "Faster fault diagnosis" },
-    ],
+    stats: [],
     related: [ind("Energy & Utilities"), cap("Data & Platform Engineering"), cap("Applied Builds")],
   },
 
@@ -193,11 +183,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Agents that triage events, draft restoration plans, and equip crews with the right cited procedure on site.",
       },
     ],
-    stats: [
-      { value: 18, prefix: "−", suffix: "%", label: "Forecast error (MAPE)" },
-      { value: 35, prefix: "−", suffix: "%", label: "Inspection cost per mile" },
-      { value: 22, prefix: "−", suffix: "min", label: "Mean time to restore" },
-    ],
+    stats: [],
     related: [ind("Industrial Goods"), cap("Data & Platform Engineering"), cap("MLOps & Scale")],
   },
 
@@ -221,11 +207,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Grounded support and shopping agents that resolve on first contact and hand off cleanly when they should.",
       },
     ],
-    stats: [
-      { value: 24, prefix: "−", suffix: "%", label: "Markdown rate" },
-      { value: 6, suffix: "×", label: "Faster catalog content" },
-      { value: 38, prefix: "+", suffix: "%", label: "Self-serve resolution" },
-    ],
+    stats: [],
     related: [ind("Technology & Software"), cap("Applied Builds"), cap("Agentic Systems")],
   },
 
@@ -249,11 +231,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Routing, caching, and model selection that hold latency and unit cost in line as usage grows.",
       },
     ],
-    stats: [
-      { value: 3, suffix: "×", label: "Faster feature-to-prod" },
-      { value: 52, prefix: "−", suffix: "%", label: "Inference cost per request" },
-      { value: 4.8, decimals: 1, suffix: "/5", label: "Feature satisfaction" },
-    ],
+    stats: [],
     related: [cap("Applied Builds"), cap("Agentic Systems"), cap("Evaluation & Safety")],
   },
 
@@ -277,11 +255,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Independent assessment of a target's data, models, and AI risk so what you buy is what you think you bought.",
       },
     ],
-    stats: [
-      { value: 70, prefix: "−", suffix: "%", label: "Diligence reading time" },
-      { value: 100, suffix: "-day", label: "Value-creation playbook" },
-      { value: 5, prefix: "+", suffix: " pts", label: "Margin lever identified" },
-    ],
+    stats: [],
     related: [ind("Financial Institutions"), cap("AI Strategy & Diagnostics"), cap("Applied Builds")],
   },
 
@@ -305,11 +279,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Provenance, logging, and bias review designed for FOIA, oversight, and public confidence from day one.",
       },
     ],
-    stats: [
-      { value: 47, prefix: "−", suffix: "%", label: "Case backlog" },
-      { value: 100, suffix: "%", label: "Answers traced to source" },
-      { value: 3.5, decimals: 1, suffix: "×", label: "Throughput per caseworker" },
-    ],
+    stats: [],
     related: [cap("Responsible AI"), cap("Evaluation & Safety"), cap("Applied Builds")],
   },
 
@@ -333,11 +303,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Models that find leakage and at-risk accounts in time to act, not in the post-mortem.",
       },
     ],
-    stats: [
-      { value: 31, prefix: "−", suffix: "%", label: "Truck rolls" },
-      { value: 26, prefix: "−", suffix: "%", label: "Average handle time" },
-      { value: 2.2, decimals: 1, prefix: "+", suffix: "pts", label: "Churn-save rate" },
-    ],
+    stats: [],
     related: [ind("Technology & Software"), cap("Agentic Systems"), cap("MLOps & Scale")],
   },
 
@@ -361,11 +327,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Agents that handle delays, claims, and customs paperwork end-to-end, escalating only the genuine edge cases.",
       },
     ],
-    stats: [
-      { value: 14, prefix: "−", suffix: "%", label: "Cost per shipment" },
-      { value: 19, prefix: "−", suffix: "%", label: "Empty miles" },
-      { value: 80, suffix: "%", label: "Exceptions auto-resolved" },
-    ],
+    stats: [],
     related: [ind("Industrial Goods"), cap("Data & Platform Engineering"), cap("Agentic Systems")],
   },
 
@@ -389,11 +351,7 @@ export const industryContent: Record<string, ServiceContent> = {
         desc: "Grounded concierge and support agents that resolve guest requests in seconds and hand off gracefully.",
       },
     ],
-    stats: [
-      { value: 9, prefix: "+", suffix: "%", label: "Revenue per guest" },
-      { value: 33, prefix: "+", suffix: "%", label: "Direct-booking conversion" },
-      { value: 60, suffix: "%", label: "Requests auto-resolved" },
-    ],
+    stats: [],
     related: [ind("Consumer & Retail"), cap("Applied Builds"), cap("Agentic Systems")],
   },
 };
@@ -425,11 +383,7 @@ export const capabilityContent: Record<string, ServiceContent> = {
         desc: "A delivery plan that lands an early win and builds the platform the later bets depend on.",
       },
     ],
-    stats: [
-      { value: 6, suffix: " wks", label: "From kickoff to roadmap" },
-      { value: 30, prefix: "+", label: "Use cases assessed" },
-      { value: 3, suffix: "×", label: "ROI on first build target" },
-    ],
+    stats: [],
     related: [cap("Applied Builds"), ind("Private Equity"), cap("Change & Enablement")],
   },
 
@@ -457,11 +411,7 @@ export const capabilityContent: Record<string, ServiceContent> = {
         desc: "Latency, cost, observability, and rollback built in from the start, so the prototype is already the foundation.",
       },
     ],
-    stats: [
-      { value: 8, suffix: " wks", label: "Prototype to production" },
-      { value: 95, suffix: "%", label: "Eval pass before launch" },
-      { value: 99.9, decimals: 1, suffix: "%", label: "Production uptime target" },
-    ],
+    stats: [],
     related: [cap("Agentic Systems"), cap("Evaluation & Safety"), cap("MLOps & Scale")],
   },
 
@@ -485,11 +435,7 @@ export const capabilityContent: Record<string, ServiceContent> = {
         desc: "Tracing, replay, and guardrails that turn opaque agent runs into systems you can debug and govern.",
       },
     ],
-    stats: [
-      { value: 85, suffix: "%", label: "Tasks completed end-to-end" },
-      { value: 5, suffix: "×", label: "Throughput per operator" },
-      { value: 100, suffix: "%", label: "Agent actions traced" },
-    ],
+    stats: [],
     related: [cap("Applied Builds"), cap("Evaluation & Safety"), cap("MLOps & Scale")],
   },
 
@@ -513,11 +459,7 @@ export const capabilityContent: Record<string, ServiceContent> = {
         desc: "Model serving, gateways, and APIs that slot AI into your existing systems without a rebuild.",
       },
     ],
-    stats: [
-      { value: 50, prefix: "−", suffix: "%", label: "Time-to-first-model" },
-      { value: 10, suffix: "×", label: "Retrieval scale headroom" },
-      { value: 40, prefix: "−", suffix: "%", label: "Data-prep effort per project" },
-    ],
+    stats: [],
     related: [cap("MLOps & Scale"), cap("Applied Builds"), ind("Technology & Software")],
   },
 
@@ -541,11 +483,7 @@ export const capabilityContent: Record<string, ServiceContent> = {
         desc: "Input/output guards and live monitoring that keep production behavior inside the lines you set.",
       },
     ],
-    stats: [
-      { value: 100, prefix: "+", label: "Eval cases per system" },
-      { value: 70, prefix: "−", suffix: "%", label: "Hallucination rate" },
-      { value: 24, suffix: "/7", label: "Behavioral monitoring" },
-    ],
+    stats: [],
     related: [cap("Responsible AI"), cap("Applied Builds"), cap("Agentic Systems")],
   },
 
@@ -569,11 +507,7 @@ export const capabilityContent: Record<string, ServiceContent> = {
         desc: "Routing, caching, and model selection that hold unit economics steady as volume climbs.",
       },
     ],
-    stats: [
-      { value: 55, prefix: "−", suffix: "%", label: "Inference cost at scale" },
-      { value: 99.9, decimals: 1, suffix: "%", label: "Uptime sustained" },
-      { value: 10, suffix: "×", label: "Volume headroom" },
-    ],
+    stats: [],
     related: [cap("Data & Platform Engineering"), cap("Applied Builds"), cap("Evaluation & Safety")],
   },
 
@@ -597,11 +531,7 @@ export const capabilityContent: Record<string, ServiceContent> = {
         desc: "Hands-on enablement so your people can run, extend, and trust the systems after we hand them over.",
       },
     ],
-    stats: [
-      { value: 85, suffix: "%", label: "Active adoption at 90 days" },
-      { value: 3, suffix: "×", label: "Realized vs. projected value" },
-      { value: 40, prefix: "+", label: "Practitioners enabled" },
-    ],
+    stats: [],
     related: [cap("AI Strategy & Diagnostics"), cap("Responsible AI"), cap("Applied Builds")],
   },
 
@@ -625,11 +555,7 @@ export const capabilityContent: Record<string, ServiceContent> = {
         desc: "Provenance, audit trails, and controls mapped to your regulatory obligations and the EU AI Act risk tiers.",
       },
     ],
-    stats: [
-      { value: 100, suffix: "%", label: "Decisions auditable" },
-      { value: 0, label: "Material findings target" },
-      { value: 4, prefix: "<", suffix: " wks", label: "To audit-ready" },
-    ],
+    stats: [],
     related: [cap("Evaluation & Safety"), ind("Financial Institutions"), ind("Public Sector")],
   },
 };
@@ -653,11 +579,7 @@ function fallback(slug: string, kind: "Industry" | "Capability"): ServiceContent
         { title: "Build the system", desc: "Production-grade retrieval, agents, and evals shipped in weeks, not quarters." },
         { title: "Prove and scale", desc: "Measured against the numbers you agreed to move, then hardened for everyday operations." },
       ],
-      stats: [
-        { value: 3, suffix: "×", label: "Faster from idea to production" },
-        { value: 40, prefix: "−", suffix: "%", label: "Manual effort removed" },
-        { value: 90, suffix: "%", label: "Decisions traced to source" },
-      ],
+      stats: [],
       related: [cap("AI Strategy & Diagnostics"), cap("Applied Builds"), cap("Responsible AI")],
     };
   }
@@ -672,11 +594,7 @@ function fallback(slug: string, kind: "Industry" | "Capability"): ServiceContent
       { title: "Build it to last", desc: "Production-grade from the first sprint, instrumented so you can see what it does and what it is worth." },
       { title: "Hand it over", desc: "Documented and enabled so your team can run and extend it without us." },
     ],
-    stats: [
-      { value: 8, suffix: " wks", label: "Typical time to production" },
-      { value: 95, suffix: "%", label: "Eval pass before launch" },
-      { value: 3, suffix: "×", label: "Realized value vs. baseline" },
-    ],
+    stats: [],
     related: [cap("Applied Builds"), cap("Evaluation & Safety"), cap("AI Strategy & Diagnostics")],
   };
 }

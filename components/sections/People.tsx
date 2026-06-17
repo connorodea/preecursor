@@ -4,8 +4,6 @@ import { Reveal } from "@/lib/motion";
 import { Eyebrow, EdgeFade } from "./_shared";
 import { gradient, color, mistA } from "@/lib/theme";
 
-const LOGOS = ["OpenAI", "DeepMind", "McKinsey", "Stripe", "Google", "Palantir"];
-
 export default function People() {
   return (
     <section
@@ -41,8 +39,8 @@ export default function People() {
                 color: color.mist,
               }}
             >
-              Engineers and operators from the rooms where the standard gets
-              set.
+              Senior engineers and operators who hold the work to a high
+              standard.
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
@@ -53,36 +51,13 @@ export default function People() {
                 color: mistA(0.7),
               }}
             >
-              Our partners have led research at frontier labs, scaled platforms
-              at the companies you use every day, and run the kind of P&amp;L our
-              clients answer to. We&rsquo;ve been on your side of the table.
+              Every engagement is led by a senior practitioner — someone who has
+              built and shipped real systems and carried the kind of P&amp;L our
+              clients answer to. You work directly with the people doing the
+              work, and we hold ourselves to the bar we&rsquo;d expect on the
+              other side of the table.
             </p>
           </Reveal>
-        </div>
-
-        {/* Logo row */}
-        <div
-          style={{
-            marginTop: 64,
-            borderTop: `1px solid ${mistA(0.2)}`,
-            paddingTop: 38,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "18px 56px",
-          }}
-        >
-          {LOGOS.map((logo) => (
-            <span
-              key={logo}
-              style={{
-                fontFamily: "var(--font-newsreader)",
-                fontSize: 26,
-                color: mistA(0.82),
-              }}
-            >
-              {logo}
-            </span>
-          ))}
         </div>
       </div>
     </section>
