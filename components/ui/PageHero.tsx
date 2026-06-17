@@ -12,6 +12,8 @@
  * `clamp(140px,16vh,180px)` to clear it.
  */
 
+import Link from "next/link";
+import { Fragment } from "react";
 import ShaderField from "@/components/ShaderField";
 import { HeroStagger, HeroItem } from "@/lib/motion";
 import { color, gradient, inkA } from "@/lib/theme";
@@ -26,12 +28,21 @@ type Cta = {
   variant?: "brand" | "azure" | "dark" | "outline" | "ghost";
 };
 
+/** One step in the breadcrumb trail. The last item is the current page. */
+type Crumb = { label: string; href: string };
+
 type Props = {
   eyebrow?: string;
   title: string;
   lede?: string;
   cta?: Cta;
   secondaryCta?: Cta;
+  /**
+   * Breadcrumb trail (root → … → current page), rendered as an accessible nav
+   * above the eyebrow. The final item is treated as the current page: plain
+   * text with `aria-current="page"`, not a link.
+   */
+  breadcrumbs?: Crumb[];
   /** Render the animated shader mesh + vignette behind the content. */
   shader?: boolean;
   align?: Align;
@@ -43,6 +54,7 @@ export default function PageHero({
   lede,
   cta,
   secondaryCta,
+  breadcrumbs,
   shader = false,
   align = "left",
 }: Props) {
@@ -96,6 +108,50 @@ export default function PageHero({
               : undefined
           }
         >
+          {breadcrumbs && breadcrumbs.length > 0 && (
+            <HeroItem style={{ marginBottom: 18 }}>
+              <nav
+                aria-label="Breadcrumb"
+                style={{
+                  fontSize: 13,
+                  letterSpacing: "0.01em",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 8,
+                  justifyContent: centered ? "center" : "flex-start",
+                }}
+              >
+                {breadcrumbs.map((crumb, i) => {
+                  const isLast = i === breadcrumbs.length - 1;
+                  return (
+                    <Fragment key={crumb.href}>
+                      {i > 0 && (
+                        <span aria-hidden="true" style={{ color: inkA(0.35) }}>
+                          ›
+                        </span>
+                      )}
+                      {isLast ? (
+                        <span
+                          aria-current="page"
+                          style={{ color: inkA(0.8), fontWeight: 600 }}
+                        >
+                          {crumb.label}
+                        </span>
+                      ) : (
+                        <Link
+                          href={crumb.href}
+                          style={{ color: inkA(0.55), textDecoration: "none" }}
+                        >
+                          {crumb.label}
+                        </Link>
+                      )}
+                    </Fragment>
+                  );
+                })}
+              </nav>
+            </HeroItem>
+          )}
+
           {eyebrow && (
             <HeroItem style={{ marginBottom: 26 }}>
               <Eyebrow label={eyebrow} tone="brand" />

@@ -13,7 +13,7 @@ import {
   Eyebrow,
 } from "@/components/ui";
 import { USE_CASES, getUseCase } from "@/lib/content/usecases";
-import { serviceSchema, absoluteUrl, socialMeta } from "@/lib/seo";
+import { serviceSchema, breadcrumbSchema, absoluteUrl, socialMeta } from "@/lib/seo";
 import { color } from "@/lib/theme";
 
 export function generateStaticParams() {
@@ -54,17 +54,35 @@ export default async function Page({
     url: absoluteUrl(`/ai-consulting/use-cases/${useCase}`),
   });
 
+  const trail = [
+    { label: "Home", href: "/" },
+    { label: "AI Consulting", href: "/ai-consulting" },
+    { label: "Use Cases", href: "/ai-consulting/use-cases" },
+    { label: uc.name, href: `/ai-consulting/use-cases/${useCase}` },
+  ];
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema(
+              trail.map((t) => ({ name: t.label, url: absoluteUrl(t.href) })),
+            ),
+          ),
+        }}
+      />
 
       <PageHero
         eyebrow="AI consulting use case"
         title={uc.h1}
         lede={uc.lede}
+        breadcrumbs={trail}
         cta={{ label: "Start a conversation", href: "/contact" }}
       />
 

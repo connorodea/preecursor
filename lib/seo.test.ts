@@ -4,6 +4,7 @@ import {
   organizationSchema,
   websiteSchema,
   serviceSchema,
+  breadcrumbSchema,
   socialMeta,
   BASE_URL,
 } from "./seo";
@@ -82,6 +83,30 @@ describe("JSON-LD schema", () => {
     expect(s.url).toBe(`${BASE_URL}/ai-consulting/`);
     expect(s.provider["@type"]).toBe("Organization");
     expect(s.provider.name).toBe("Preecursor");
+  });
+
+  it("breadcrumbSchema builds a BreadcrumbList with 1-indexed ListItems", () => {
+    const items = [
+      { name: "Home", url: `${BASE_URL}/` },
+      { name: "Glossary", url: `${BASE_URL}/glossary/` },
+      { name: "RAG", url: `${BASE_URL}/glossary/rag/` },
+    ];
+    const s = breadcrumbSchema(items);
+
+    expect(s["@context"]).toBe("https://schema.org");
+    expect(s["@type"]).toBe("BreadcrumbList");
+    expect(s.itemListElement).toHaveLength(3);
+
+    s.itemListElement.forEach((el, i) => {
+      expect(el["@type"]).toBe("ListItem");
+      expect(el.position).toBe(i + 1); // 1-indexed
+      expect(el.name).toBe(items[i].name);
+      expect(el.item).toBe(items[i].url);
+    });
+
+    // First item is position 1 (not 0), last carries the deepest URL.
+    expect(s.itemListElement[0].position).toBe(1);
+    expect(s.itemListElement[2].item).toBe(`${BASE_URL}/glossary/rag/`);
   });
 });
 

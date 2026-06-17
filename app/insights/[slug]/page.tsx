@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageHero, Section, CTASection } from "@/components/ui";
 import { INSIGHTS, getArticle } from "@/lib/content/insights";
+import { breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 export function generateStaticParams() {
   return INSIGHTS.map((a) => ({ slug: a.slug }));
@@ -27,12 +28,30 @@ export default async function ArticlePage({
   const a = getArticle(slug);
   if (!a) notFound();
 
+  const trail = [
+    { label: "Home", href: "/" },
+    { label: "Insights", href: "/insights" },
+    { label: a.title, href: `/insights/${slug}` },
+  ];
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema(
+              trail.map((t) => ({ name: t.label, url: absoluteUrl(t.href) })),
+            ),
+          ),
+        }}
+      />
+
       <PageHero
         eyebrow={`${a.category} · ${a.date}`}
         title={a.title}
         lede={a.dek}
+        breadcrumbs={trail}
         cta={{ label: "More insights", href: "/insights" }}
       />
 

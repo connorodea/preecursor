@@ -99,6 +99,52 @@ describe("PageHero — shader", () => {
   });
 });
 
+describe("PageHero — breadcrumbs", () => {
+  const trail = [
+    { label: "Home", href: "/" },
+    { label: "Glossary", href: "/glossary" },
+    { label: "RAG", href: "/glossary/rag" },
+  ];
+
+  it("omits the breadcrumb nav when no breadcrumbs are passed", () => {
+    const out = html({ title: "T" });
+    expect(out).not.toContain('aria-label="Breadcrumb"');
+  });
+
+  it("renders an accessible <nav> with the trail when breadcrumbs are passed", () => {
+    const out = html({ title: "T", breadcrumbs: trail });
+    expect(out).toContain("<nav");
+    expect(out).toContain('aria-label="Breadcrumb"');
+    expect(out).toContain("Home");
+    expect(out).toContain("Glossary");
+    expect(out).toContain("RAG");
+  });
+
+  it("links every item except the last (intermediate items are <a href>)", () => {
+    const out = html({ title: "T", breadcrumbs: trail });
+    // Non-final items render as links.
+    expect(out).toContain('href="/"');
+    expect(out).toContain('href="/glossary"');
+    // The final item is NOT a link.
+    expect(out).not.toContain('href="/glossary/rag"');
+  });
+
+  it("marks the last item as the current page (aria-current, not a link)", () => {
+    const out = html({ title: "T", breadcrumbs: trail });
+    expect(out).toContain('aria-current="page"');
+    // The current-page label lives in a span, not an anchor.
+    const lastIdx = out.lastIndexOf("RAG");
+    const anchorBeforeLast = out.lastIndexOf("<a ", lastIdx);
+    const spanBeforeLast = out.lastIndexOf("<span", lastIdx);
+    expect(spanBeforeLast).toBeGreaterThan(anchorBeforeLast);
+  });
+
+  it("renders a separator between items", () => {
+    const out = html({ title: "T", breadcrumbs: trail });
+    expect(out).toContain("›");
+  });
+});
+
 describe("PageHero — align", () => {
   it("left (default): no center text-align on the stagger container", () => {
     const out = html({ title: "T", lede: "x" });
