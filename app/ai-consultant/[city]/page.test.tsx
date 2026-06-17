@@ -10,7 +10,7 @@ describe("app/ai-consultant/[city]/page", () => {
   it("generateStaticParams returns one { city } entry per city", () => {
     expect(params).toEqual(CITIES.map((c) => ({ city: c.slug })));
     expect(params).toHaveLength(CITIES.length);
-    expect(params).toHaveLength(10);
+    expect(params).toHaveLength(12);
     for (const p of params) expect(typeof p.city).toBe("string");
   });
 
@@ -36,13 +36,13 @@ describe("app/ai-consultant/[city]/page", () => {
     }
   });
 
-  it("renders the office branch for a real office (New York)", async () => {
-    const html = renderToStaticMarkup(await Page({ params: Promise.resolve({ city: "new-york" }) }));
+  it("renders the office branch for a real office (Denver)", async () => {
+    const html = renderToStaticMarkup(await Page({ params: Promise.resolve({ city: "denver" }) }));
     expect(html).toContain("On the ground");
-    expect(html).toContain("on the ground in New York");
+    expect(html).toContain("on the ground in Denver");
     // office region eyebrow, not the remote one
     expect(html).toContain("Office ");
-    expect(html).not.toContain("We serve New York remote-first");
+    expect(html).not.toContain("We serve Denver remote-first");
   });
 
   it("renders the remote branch for a non-office city (San Francisco)", async () => {

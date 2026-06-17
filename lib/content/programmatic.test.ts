@@ -128,8 +128,8 @@ describe("INDUSTRY_SPOKE_ROUTES", () => {
 });
 
 describe("CITIES", () => {
-  it("has 10 entries", () => {
-    expect(CITIES).toHaveLength(10);
+  it("has 12 entries", () => {
+    expect(CITIES).toHaveLength(12);
   });
 
   it("has unique, non-empty, well-formed slugs", () => {
@@ -155,9 +155,9 @@ describe("CITIES", () => {
     }
   });
 
-  it("exactly the three real offices have office === true", () => {
+  it("exactly the two real offices have office === true", () => {
     const offices = CITIES.filter((c) => c.office).map((c) => c.city).sort();
-    expect(offices).toEqual(["London", "New York", "Singapore"]);
+    expect(offices).toEqual(["Denver", "Detroit"]);
     // Offices point their nearestOffice at themselves.
     for (const c of CITIES.filter((c) => c.office)) {
       expect(c.nearestOffice, c.city).toBe(c.city);
@@ -167,9 +167,9 @@ describe("CITIES", () => {
 
 describe("getCity", () => {
   it("returns the city for a known slug", () => {
-    const c = getCity("new-york");
+    const c = getCity("denver");
     expect(c).toBeDefined();
-    expect(c!.city).toBe("New York");
+    expect(c!.city).toBe("Denver");
     expect(c!.office).toBe(true);
   });
 

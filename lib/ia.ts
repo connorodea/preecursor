@@ -84,8 +84,8 @@ export const PANELS: Record<string, Panel> = {
     title: "Preecursor Worldwide",
     desc: "One firm, embedded close to where our clients build.",
     href: "/worldwide",
-    col1: ["New York", "London"].map(anchor("/worldwide")),
-    col2: ["Singapore", "Remote-first teams"].map(anchor("/worldwide")),
+    col1: ["Denver", "Detroit"].map(anchor("/worldwide")),
+    col2: ["Remote-first teams"].map(anchor("/worldwide")),
   },
   careers: {
     id: "careers",
@@ -152,7 +152,7 @@ export const FOOTER = {
   ],
   contact: [
     { label: "hello@preecursor.com", href: "mailto:hello@preecursor.com" },
-    { label: "New York · London · Singapore", href: "/worldwide" },
+    { label: "Denver · Detroit · Remote-first", href: "/worldwide" },
   ],
 } as const;
 
@@ -161,4 +161,4 @@ export const INDUSTRY_LEAVES: Leaf[] = [...PANELS.industries.col1, ...PANELS.ind
 export const CAPABILITY_LEAVES: Leaf[] = [...PANELS.capabilities.col1, ...PANELS.capabilities.col2];
 
 export const CONTACT_EMAIL = "hello@preecursor.com";
-export const LOCATIONS = ["New York", "London", "Singapore"] as const;
+export const LOCATIONS = ["Denver", "Detroit"] as const;

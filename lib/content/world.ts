@@ -24,40 +24,30 @@ export type Office = {
 
 export const OFFICES: Office[] = [
   {
-    city: "New York",
-    region: "Americas",
-    addressHint: "Flatiron District, Manhattan",
-    seed: "office-nyc",
+    city: "Denver",
+    region: "Mountain West & Pacific",
+    addressHint: "LoDo, Downtown Denver",
+    seed: "office-den",
     blurb: [
-      "Our New York studio is where most engagements with global banks, insurers, and private-equity firms begin. Partners here have sat on both sides of the model-risk table, so the work starts from how a number gets defended — not just how it gets moved.",
-      "Teams embed on-site in lower and midtown Manhattan, sit in the rooms where the standard gets set, and stay through to the production system. It is our largest office and the home of the firm's financial-institutions practice.",
+      "Denver is one of our two home offices and where much of the team is based. It is our centre of gravity for the Mountain West and the Pacific time zone — technology companies, energy and utilities, and industrial operators that want strategists and engineers in the same room.",
+      "Work starts here the way it ships: partners and engineers together, from a first diagnostic through to a running, measured system. No grand claims about the building — just the place a lot of the firm's people sit and the work gets built.",
     ],
   },
   {
-    city: "London",
-    region: "Europe, Middle East & Africa",
-    addressHint: "Clerkenwell, EC1",
-    seed: "office-ldn",
+    city: "Detroit",
+    region: "Midwest & East",
+    addressHint: "Downtown Detroit",
+    seed: "office-det",
     blurb: [
-      "London anchors our work across EMEA — regulated industries first: banking, insurance, energy, and the public sector. The team is fluent in the governance regimes our clients answer to, from the FCA to the EU AI Act, and builds for them from the first commit.",
-      "It is also the centre of gravity for Preecursor Labs in Europe, where our evaluation and responsible-AI methods get pressure-tested against real regulatory scrutiny before they reach a client.",
-    ],
-  },
-  {
-    city: "Singapore",
-    region: "Asia-Pacific",
-    addressHint: "Tanjong Pagar, CBD",
-    seed: "office-sgp",
-    blurb: [
-      "Singapore is our hub for Asia-Pacific — a single base close to clients across financial services, logistics, and industrials from Sydney to Tokyo to Mumbai. The team works across more than a dozen markets and as many regulatory regimes.",
-      "Proximity matters here more than anywhere: time zones, languages, and data-residency rules vary by the hour of flight, and we staff engagements so a senior practitioner is always within a working day of the client's floor.",
+      "Detroit is our second home office, anchoring engagements across the Midwest and the eastern half of the country. The team here works closely with industrial, logistics, and financial-services companies — sectors where AI has to move a regulated, defensible number, not a demo.",
+      "Like Denver, it is an office in the honest sense: a base where the team gathers and the work gets built end to end. We staff each engagement from the best-fit people regardless of city, then embed them with your team.",
     ],
   },
 ];
 
 export const REMOTE = {
   blurb: [
-    "Three offices, one firm. Beyond our studios in New York, London, and Singapore, we run remote-first — practitioners distributed across every major time zone so the right senior person is reachable during your working day, wherever your teams sit.",
+    "Two offices, one remote-first firm. Beyond our Denver and Detroit studios, we run remote-first — practitioners distributed across every major time zone so the right senior person is reachable during your working day, wherever your teams sit.",
     "Remote-first is a staffing model, not a fallback. We assemble each engagement from the best-fit people regardless of city, then embed them with your team — on-site when the work calls for it, in the same repository and standups when it doesn't.",
   ] as string[],
 };

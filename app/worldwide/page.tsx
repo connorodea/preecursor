@@ -23,7 +23,7 @@ export default function WorldwidePage() {
       <PageHero
         eyebrow="Our locations"
         title="Preecursor Worldwide"
-        lede="One firm, embedded close to where our clients build. Studios in New York, London, and Singapore, with remote-first practitioners across every major time zone."
+        lede="One remote-first firm, embedded close to where our clients build. Offices in Denver and Detroit, with remote-first practitioners across every major time zone."
         cta={{ label: "Start a conversation", href: "/contact" }}
         secondaryCta={{ label: "See our work", href: "/work" }}
       />
@@ -110,7 +110,7 @@ export default function WorldwidePage() {
         stats={[
           { value: 24, suffix: "/7", label: "Coverage across every major time zone" },
           { value: 14, suffix: "+", label: "Countries our practitioners work from" },
-          { value: 3, label: "Studios — New York, London, Singapore" },
+          { value: 2, label: "Offices — Denver & Detroit" },
           { value: 100, suffix: "%", label: "Engagements led by a senior practitioner" },
         ]}
       />

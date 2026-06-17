@@ -79,7 +79,7 @@ export const PILLARS: Record<string, Pillar> = {
     h1: "AI consultants who build the systems other firms only present",
     eyebrow: "AI consultant",
     metaDescription:
-      "Work with senior AI consultants who diagnose, build, and ship production AI — not slideware. Remote-first, embedded in your teams. New York · London · Singapore.",
+      "Work with senior AI consultants who diagnose, build, and ship production AI — not slideware. Remote-first, embedded in your teams, with offices in Denver and Detroit.",
     lede: "Senior, hands-on AI consultants who embed in your teams, build production systems, and transfer the capability — so the advantage compounds after we leave.",
     sections: SERVICE_SECTIONS("an AI consultant"),
     faqs: [
@@ -89,7 +89,7 @@ export const PILLARS: Record<string, Pillar> = {
       },
       {
         q: "Do you work remotely?",
-        a: "Yes — we're remote-first with practitioners across every major time zone, and offices in New York, London, and Singapore. See our city pages for local engagements.",
+        a: "Yes — we're a remote-first firm with practitioners across every major time zone, plus two home offices in Denver and Detroit. See our city pages for how we serve your market.",
       },
     ],
   },
@@ -153,7 +153,7 @@ export type CityPage = {
   slug: string;
   city: string;
   region: string;
-  /** True only for our three real offices. */
+  /** True only for our two real offices (Denver, Detroit). */
   office: boolean;
   /** City-specific positioning — honest about presence. */
   intro: string;
@@ -164,31 +164,49 @@ export type CityPage = {
 
 const CITY_DATA: Omit<CityPage, "slug">[] = [
   {
-    city: "New York",
+    city: "Denver",
     region: "United States",
     office: true,
     intro:
-      "Our New York team works on-site with financial institutions, insurers, and media companies — the sectors where AI moves regulated, high-stakes numbers fastest.",
+      "Denver is one of our two home offices, and where much of the team is based. From here we work with technology, energy, and industrial companies across the Mountain West and the Pacific time zone — strategists and engineers in the same room, shipping AI into production.",
+    sectors: ["Technology & Software", "Energy & Utilities", "Industrial Goods"],
+    nearestOffice: "Denver",
+  },
+  {
+    city: "Detroit",
+    region: "United States",
+    office: true,
+    intro:
+      "Detroit is one of our two home offices, anchoring our work across the Midwest and the eastern half of the country. The team here partners with industrial, logistics, and financial-services companies, building applied AI from a first diagnostic through to a running, measured system.",
+    sectors: ["Industrial Goods", "Transportation & Logistics", "Financial Institutions"],
+    nearestOffice: "Detroit",
+  },
+  {
+    city: "New York",
+    region: "United States",
+    office: false,
+    intro:
+      "We work remote-first with New York financial institutions, insurers, and media companies — the sectors where AI moves regulated, high-stakes numbers fastest — embedded in your tools and your time zone.",
     sectors: ["Financial Institutions", "Insurance", "Consumer & Retail"],
-    nearestOffice: "New York",
+    nearestOffice: "Detroit",
   },
   {
     city: "London",
     region: "United Kingdom",
-    office: true,
+    office: false,
     intro:
-      "From our London office we partner with UK and EU banks, insurers, and public-sector bodies, building AI to a security and compliance bar regulators sign off on.",
+      "We partner remote-first with UK and EU banks, insurers, and public-sector bodies, building AI to a security and compliance bar regulators sign off on — working in your hours and your governance context.",
     sectors: ["Financial Institutions", "Public Sector", "Insurance"],
-    nearestOffice: "London",
+    nearestOffice: "Detroit",
   },
   {
     city: "Singapore",
     region: "Singapore",
-    office: true,
+    office: false,
     intro:
-      "Our Singapore base serves financial services, logistics, and technology firms across APAC, embedding with teams in-region and in their time zone.",
+      "We serve financial services, logistics, and technology firms across APAC remote-first, embedding with teams in-region and in their time zone — without claiming an office we don't have on the ground.",
     sectors: ["Financial Institutions", "Transportation & Logistics", "Technology & Software"],
-    nearestOffice: "Singapore",
+    nearestOffice: "Detroit",
   },
   {
     city: "San Francisco",
@@ -197,7 +215,7 @@ const CITY_DATA: Omit<CityPage, "slug">[] = [
     intro:
       "We work remote-first with San Francisco and Bay Area technology companies — pairing frontier-lab experience with teams shipping AI products to real users.",
     sectors: ["Technology & Software", "Financial Institutions", "Consumer & Retail"],
-    nearestOffice: "New York",
+    nearestOffice: "Denver",
   },
   {
     city: "Boston",
@@ -206,7 +224,7 @@ const CITY_DATA: Omit<CityPage, "slug">[] = [
     intro:
       "For Boston-area healthcare, life-sciences, and enterprise teams, we build applied AI remote-first — clinical documentation, trial matching, and the evaluation rigor those domains demand.",
     sectors: ["Healthcare & Life Sciences", "Financial Institutions", "Technology & Software"],
-    nearestOffice: "New York",
+    nearestOffice: "Detroit",
   },
   {
     city: "Austin",
@@ -215,7 +233,7 @@ const CITY_DATA: Omit<CityPage, "slug">[] = [
     intro:
       "We serve Austin's technology, industrial, and enterprise companies remote-first, putting agents and retrieval systems into production in your time zone.",
     sectors: ["Technology & Software", "Industrial Goods", "Energy & Utilities"],
-    nearestOffice: "New York",
+    nearestOffice: "Denver",
   },
   {
     city: "Chicago",
@@ -224,7 +242,7 @@ const CITY_DATA: Omit<CityPage, "slug">[] = [
     intro:
       "For Chicago's industrials, logistics, and financial firms, we build predictive operations and document-automation AI remote-first, instrumented to prove ROI.",
     sectors: ["Industrial Goods", "Transportation & Logistics", "Financial Institutions"],
-    nearestOffice: "New York",
+    nearestOffice: "Detroit",
   },
   {
     city: "Seattle",
@@ -233,7 +251,7 @@ const CITY_DATA: Omit<CityPage, "slug">[] = [
     intro:
       "We partner remote-first with Seattle technology, cloud, and retail companies — building production AI on the platforms your engineers already run.",
     sectors: ["Technology & Software", "Consumer & Retail", "Transportation & Logistics"],
-    nearestOffice: "New York",
+    nearestOffice: "Denver",
   },
   {
     city: "Toronto",
@@ -242,7 +260,7 @@ const CITY_DATA: Omit<CityPage, "slug">[] = [
     intro:
       "For Toronto's financial-services and AI-research-rich market, we embed remote-first to take models from notebook to regulated production.",
     sectors: ["Financial Institutions", "Technology & Software", "Insurance"],
-    nearestOffice: "New York",
+    nearestOffice: "Detroit",
   },
   {
     city: "Los Angeles",
@@ -251,7 +269,7 @@ const CITY_DATA: Omit<CityPage, "slug">[] = [
     intro:
       "We work remote-first with Los Angeles media, entertainment, and consumer companies, building AI for content, personalization, and operations at scale.",
     sectors: ["Consumer & Retail", "Technology & Software", "Travel & Hospitality"],
-    nearestOffice: "New York",
+    nearestOffice: "Denver",
   },
 ];
 

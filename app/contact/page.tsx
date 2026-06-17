@@ -7,7 +7,7 @@ import { color, gradient, glass, inkA, shadow, container } from "@/lib/theme";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Tell us the outcome you're chasing. We'll tell you, honestly, whether AI is the way to get there — and how fast. hello@preecursor.com · New York · London · Singapore.",
+    "Tell us the outcome you're chasing. We'll tell you, honestly, whether AI is the way to get there — and how fast. hello@preecursor.com · Denver · Detroit · Remote-first.",
 };
 
 /** Shared field styling for the presentational contact form. */
@@ -240,7 +240,7 @@ export default function ContactPage() {
                 maxWidth: "16ch",
               }}
             >
-              One inbox, three time zones
+              One inbox, every time zone
             </h2>
 
             <div style={{ marginTop: 30 }}>

@@ -14,7 +14,7 @@ describe("app/contact/page", () => {
     const out = renderToStaticMarkup(createElement(ContactPage));
     // Hero headline contains curly apostrophes -> rendered as HTML entities.
     expect(out).toContain("build what");
-    expect(out).toContain("One inbox, three time zones");
+    expect(out).toContain("One inbox, every time zone");
     expect(out).toContain(`mailto:${CONTACT_EMAIL}`);
     expect(out).toContain(CONTACT_EMAIL);
     // Presentational form fields.

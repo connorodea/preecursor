@@ -59,9 +59,9 @@ export default function Locations() {
               maxWidth: "42ch",
             }}
           >
-            Teams embedded close to where our clients build — New York, London,
-            and Singapore, with remote-first practitioners across every major
-            time zone.
+            Teams embedded close to where our clients build — Denver and
+            Detroit, with remote-first practitioners across every major time
+            zone.
           </p>
           <div style={{ marginTop: 32 }}>
             <Magnetic>
