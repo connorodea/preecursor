@@ -3,9 +3,8 @@
  * for real photography (replaces the handoff's `image-slot` drop zones).
  *
  * Seeded by a string id so a given slot always renders the same composition.
- * Pure render (no client JS): a navy/paper field with brand-blue radial glows
- * and one of four faint geometric motifs. Most slots sit under a multiply
- * overlay, so these read as rich, intentional imagery rather than gradients.
+ * Pure render (no client JS): soft aurora-silk gradient blobs warped by SVG
+ * turbulence, in the brand blue palette — meshing with the animated hero field.
  *
  * Swappable later: drop a real <img>/next-image in the same slot.
  */
@@ -50,21 +49,35 @@ export default function PlaceholderImage({
 }: Props) {
   const rand = rng(hash(seed));
   const uid = `ph-${hash(seed).toString(36)}`;
-
   const dark = variant === "dark";
-  const base1 = dark ? "#0b1322" : "#e6eefb";
-  const base2 = dark ? "#16294a" : "#d2e4f5";
-  const glowA = dark ? "#5fc8e8" : "#7fa6f2"; // cyan / azure-light
-  const glowB = dark ? "#1b4fc7" : "#5fc8e8";
-  const line = dark ? "rgba(234,241,251,0.5)" : "rgba(17,33,56,0.4)";
 
-  // Seeded glow placements.
-  const gx1 = (18 + rand() * 64).toFixed(1);
-  const gy1 = (14 + rand() * 40).toFixed(1);
-  const gx2 = (40 + rand() * 55).toFixed(1);
-  const gy2 = (55 + rand() * 40).toFixed(1);
-  const angle = Math.floor(95 + rand() * 60);
-  const motif = Math.floor(rand() * 4);
+  const base1 = dark ? "#0a1424" : "#e9f0fb";
+  const base2 = dark ? "#173461" : "#cfe0f6";
+
+  // Aurora glow colours (blue family, no green) — pick 3 in a seeded order.
+  const palette = dark
+    ? ["#5fc8e8", "#4f8ef0", "#8f86ef", "#7fb0f5"]
+    : ["#7fa6f2", "#5fc8e8", "#8fb8f0", "#9aa8f2"];
+  const pick = () => palette[Math.floor(rand() * palette.length)];
+  const cA = pick();
+  const cB = pick();
+  const cC = pick();
+
+  // Seeded blob placements.
+  const blob = () => ({
+    cx: (12 + rand() * 76).toFixed(1),
+    cy: (10 + rand() * 80).toFixed(1),
+    r: (44 + rand() * 30).toFixed(1),
+  });
+  const b1 = blob();
+  const b2 = blob();
+  const b3 = blob();
+
+  const tseed = Math.floor(rand() * 100);
+  const bfx = (0.009 + rand() * 0.006).toFixed(4);
+  const bfy = (0.012 + rand() * 0.008).toFixed(4);
+  const angle = Math.floor(95 + rand() * 70);
+  const glowOpacity = dark ? 0.85 : 0.7;
 
   return (
     <svg
@@ -76,56 +89,76 @@ export default function PlaceholderImage({
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id={`${uid}-base`} x1="0" y1="0" x2="1" y2="1"
-          gradientTransform={`rotate(${angle - 125} 0.5 0.5)`}>
+        <linearGradient
+          id={`${uid}-base`}
+          x1="0"
+          y1="0"
+          x2="1"
+          y2="1"
+          gradientTransform={`rotate(${angle - 125} 0.5 0.5)`}
+        >
           <stop offset="0" stopColor={base1} />
           <stop offset="1" stopColor={base2} />
         </linearGradient>
-        <radialGradient id={`${uid}-a`} cx={`${gx1}%`} cy={`${gy1}%`} r="55%">
-          <stop offset="0" stopColor={glowA} stopOpacity={dark ? 0.5 : 0.45} />
-          <stop offset="0.6" stopColor={glowA} stopOpacity="0" />
-        </radialGradient>
-        <radialGradient id={`${uid}-b`} cx={`${gx2}%`} cy={`${gy2}%`} r="50%">
-          <stop offset="0" stopColor={glowB} stopOpacity={dark ? 0.45 : 0.35} />
-          <stop offset="0.62" stopColor={glowB} stopOpacity="0" />
-        </radialGradient>
+
+        {[
+          { id: "a", c: cA, ...b1 },
+          { id: "b", c: cB, ...b2 },
+          { id: "c", c: cC, ...b3 },
+        ].map((g) => (
+          <radialGradient
+            key={g.id}
+            id={`${uid}-${g.id}`}
+            cx={`${g.cx}%`}
+            cy={`${g.cy}%`}
+            r={`${g.r}%`}
+          >
+            <stop offset="0" stopColor={g.c} stopOpacity={glowOpacity} />
+            <stop offset="0.55" stopColor={g.c} stopOpacity={glowOpacity * 0.35} />
+            <stop offset="1" stopColor={g.c} stopOpacity="0" />
+          </radialGradient>
+        ))}
+
+        {/* Warp the soft blobs into flowing silk ribbons. */}
+        <filter
+          id={`${uid}-silk`}
+          x="-25%"
+          y="-25%"
+          width="150%"
+          height="150%"
+          colorInterpolationFilters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency={`${bfx} ${bfy}`}
+            numOctaves="3"
+            seed={tseed}
+            result="noise"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="125"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
       </defs>
 
       <rect width="800" height="600" fill={`url(#${uid}-base)`} />
-      <rect width="800" height="600" fill={`url(#${uid}-a)`} />
-      <rect width="800" height="600" fill={`url(#${uid}-b)`} />
-
-      <g stroke={line} fill="none" opacity={dark ? 0.18 : 0.22}>
-        {motif === 0 &&
-          // diagonal hatch
-          Array.from({ length: 26 }, (_, i) => (
-            <line key={i} x1={-200 + i * 50} y1="600" x2={200 + i * 50} y2="0" strokeWidth="1" />
-          ))}
-        {motif === 1 &&
-          // concentric rings
-          Array.from({ length: 9 }, (_, i) => (
-            <circle key={i} cx={Number(gx2) * 8} cy={Number(gy2) * 6} r={40 + i * 46} strokeWidth="1" />
-          ))}
-        {motif === 2 &&
-          // dot grid
-          Array.from({ length: 88 }, (_, i) => (
-            <circle
-              key={i}
-              cx={40 + (i % 11) * 72}
-              cy={40 + Math.floor(i / 11) * 72}
-              r="2.4"
-              fill={line}
-              stroke="none"
-            />
-          ))}
-        {motif === 3 &&
-          // rotated-square lattice
-          Array.from({ length: 18 }, (_, i) => {
-            const x = 80 + (i % 6) * 130;
-            const y = 90 + Math.floor(i / 6) * 150;
-            return <rect key={i} x={x} y={y} width="64" height="64" strokeWidth="1" transform={`rotate(45 ${x + 32} ${y + 32})`} />;
-          })}
+      <g filter={`url(#${uid}-silk)`}>
+        <rect x="-120" y="-120" width="1040" height="840" fill={`url(#${uid}-a)`} />
+        <rect x="-120" y="-120" width="1040" height="840" fill={`url(#${uid}-b)`} />
+        <rect x="-120" y="-120" width="1040" height="840" fill={`url(#${uid}-c)`} />
       </g>
+      {/* Soft vignette for depth. */}
+      <rect
+        width="800"
+        height="600"
+        fill={dark ? "#0a1424" : "#e9f0fb"}
+        opacity={dark ? 0.18 : 0.12}
+        style={{ mixBlendMode: "multiply" }}
+      />
     </svg>
   );
 }

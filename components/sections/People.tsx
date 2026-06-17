@@ -1,7 +1,7 @@
 "use client";
 
 import { Reveal } from "@/lib/motion";
-import { Eyebrow } from "./_shared";
+import { Eyebrow, EdgeFade } from "./_shared";
 import { gradient, color, mistA } from "@/lib/theme";
 
 const LOGOS = ["OpenAI", "DeepMind", "McKinsey", "Stripe", "Google", "Palantir"];
@@ -10,9 +10,15 @@ export default function People() {
   return (
     <section
       id="people"
-      style={{ background: gradient.inkBand("18% -10%"), color: color.mist }}
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        background: gradient.inkBand("18% -10%"),
+        color: color.mist,
+      }}
     >
-      <div className="mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[104px]">
+      <EdgeFade size={90} />
+      <div className="relative mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[104px]">
         <div
           className="grid grid-cols-1 items-end lg:grid-cols-2"
           style={{

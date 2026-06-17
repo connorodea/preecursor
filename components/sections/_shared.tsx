@@ -57,6 +57,61 @@ export function Eyebrow({
 }
 
 /* ----------------------------------------------------------------
+   EdgeFade — soft gradient fades at the top and/or bottom edge of a
+   (dark) section so it melts into its light neighbours instead of
+   hard-cutting. Render as the first child of a position:relative
+   section; keep the section's content in a position:relative wrapper
+   so it paints above these fades.
+   ---------------------------------------------------------------- */
+export function EdgeFade({
+  color = "#e6eefb",
+  top = true,
+  bottom = true,
+  size = 110,
+}: {
+  /** The neighbouring light colour to fade toward. */
+  color?: string;
+  top?: boolean;
+  bottom?: boolean;
+  size?: number;
+}) {
+  return (
+    <>
+      {top && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: size,
+            background: `linear-gradient(180deg, ${color}, transparent)`,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+      )}
+      {bottom && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: size,
+            background: `linear-gradient(0deg, ${color}, transparent)`,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+      )}
+    </>
+  );
+}
+
+/* ----------------------------------------------------------------
    PillLink — a rounded pill anchor with base + hover colours done
    via Tailwind arbitrary classes (inline style can't do :hover).
    ---------------------------------------------------------------- */

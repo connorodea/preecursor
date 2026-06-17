@@ -2,13 +2,23 @@
 
 import PlaceholderImage from "@/components/PlaceholderImage";
 import { Reveal } from "@/lib/motion";
+import { EdgeFade } from "./_shared";
 import { gradient, color, mistA } from "@/lib/theme";
 
 export default function FeaturedInsights() {
   return (
-    <section style={{ background: gradient.inkBand("15% -10%"), color: color.mist }}>
+    <section
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        background: gradient.inkBand("15% -10%"),
+        color: color.mist,
+      }}
+    >
+      <EdgeFade top bottom={false} size={88} />
+      <EdgeFade top={false} bottom size={120} />
       {/* Top split grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2">
+      <div className="relative z-[1] grid grid-cols-1 lg:grid-cols-2">
         <Reveal
           className="px-6 pt-20 md:px-10 lg:pt-[104px] lg:pr-14 lg:pb-0 lg:pl-[max(50px,calc((100vw-1340px)/2+50px))]"
         >
@@ -60,13 +70,12 @@ export default function FeaturedInsights() {
       </div>
 
       {/* Newsletter bar */}
-      <div className="relative mx-auto max-w-[1340px] px-6 md:px-10 lg:px-[50px]">
+      <div className="relative z-[1] mx-auto max-w-[1340px] px-6 md:px-10 lg:px-[50px]">
         <div
-          className="relative z-10 mt-[-64px] mb-[-52px] flex flex-col items-start gap-7 p-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-10 md:mt-[-84px] md:mb-[-68px] md:p-[46px_52px]"
+          className="relative z-10 mt-[-44px] mb-14 flex flex-col items-start gap-7 p-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-10 md:mt-[-56px] md:mb-20 md:p-[46px_52px]"
           style={{
-            // Semi-opaque frosted navy so the card reads as one cohesive piece
-            // whether it sits over the dark band above or the light section it
-            // now overlaps below.
+            // Semi-opaque frosted navy card that sits cleanly within the dark
+            // band; the section-to-section blend below handles the transition.
             background: "rgba(17,33,56,0.78)",
             backdropFilter: "blur(16px) saturate(1.2)",
             WebkitBackdropFilter: "blur(16px) saturate(1.2)",

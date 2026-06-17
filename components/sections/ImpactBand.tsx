@@ -1,6 +1,7 @@
 "use client";
 
 import { Reveal, CountUp } from "@/lib/motion";
+import { EdgeFade } from "./_shared";
 import { gradient, color, mistA } from "@/lib/theme";
 
 const NUM_STYLE: React.CSSProperties = {
@@ -54,11 +55,14 @@ export default function ImpactBand() {
   return (
     <section
       style={{
+        position: "relative",
+        overflow: "hidden",
         background: gradient.inkBand("82% -10%"),
         color: color.mist,
       }}
     >
-      <div className="mx-auto max-w-[1340px] px-6 py-16 md:px-10 lg:px-[50px] lg:py-[78px]">
+      <EdgeFade size={90} />
+      <div className="relative mx-auto max-w-[1340px] px-6 py-16 md:px-10 lg:px-[50px] lg:py-[78px]">
         {/* Eyebrow row */}
         <div
           style={{
