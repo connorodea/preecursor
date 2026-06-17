@@ -2,6 +2,7 @@
 
 import { Reveal } from "@/lib/motion";
 import { Eyebrow, EdgeFade } from "./_shared";
+import EducationMarks from "./EducationMarks";
 import { gradient, color, mistA } from "@/lib/theme";
 
 export default function People() {
@@ -59,6 +60,31 @@ export default function People() {
             </p>
           </Reveal>
         </div>
+
+        {/* Co-founder graduate credentials */}
+        <Reveal delay={0.18}>
+          <div
+            style={{
+              marginTop: 56,
+              paddingTop: 32,
+              borderTop: `1px solid ${mistA(0.18)}`,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 12.5,
+                fontWeight: 700,
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: mistA(0.5),
+                marginBottom: 24,
+              }}
+            >
+              Our co-founders earned their master&rsquo;s degrees at
+            </div>
+            <EducationMarks />
+          </div>
+        </Reveal>
       </div>
     </section>
   );
