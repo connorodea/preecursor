@@ -9,6 +9,8 @@ import {
   EmbedIcon,
   OutcomeIcon,
   HandoffIcon,
+  NetworkIcon,
+  LabsIcon,
 } from "./icons";
 
 const ICONS = {
@@ -19,6 +21,8 @@ const ICONS = {
   EmbedIcon,
   OutcomeIcon,
   HandoffIcon,
+  NetworkIcon,
+  LabsIcon,
 };
 
 describe("icons", () => {
