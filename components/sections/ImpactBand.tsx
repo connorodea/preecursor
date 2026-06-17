@@ -53,19 +53,22 @@ export default function ImpactBand() {
       }}
     >
       <div className="relative mx-auto max-w-[1340px] px-6 py-16 md:px-10 lg:px-[50px] lg:py-[78px]">
-        {/* Trust strip — co-founders' universities, the first thing the page
-            shows as it dissolves out of the hero into this dark band. */}
+        {/* Trust strip — co-founders' universities as their OWN contained
+            panel, visually distinct from the operating principles below. */}
         <Reveal>
           <div
             style={{
-              paddingBottom: 40,
-              marginBottom: 50,
-              borderBottom: `1px solid ${mistA(0.16)}`,
+              marginBottom: 74,
+              padding: "28px 34px",
+              borderRadius: 20,
+              background: "rgba(255,255,255,0.045)",
+              border: `1px solid ${mistA(0.18)}`,
+              boxShadow: "0 26px 60px -34px rgba(0,0,0,0.55)",
             }}
           >
             <div
               style={{
-                fontSize: 12.5,
+                fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",

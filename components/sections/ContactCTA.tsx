@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import ShaderField from "@/components/ShaderField";
-import SectionSeam from "./SectionSeam";
 import { Reveal, Magnetic } from "@/lib/motion";
-import { color, inkA, WASH_EDGE } from "@/lib/theme";
+import { color, inkA } from "@/lib/theme";
 
 export default function ContactCTA() {
   return (
@@ -13,26 +12,22 @@ export default function ContactCTA() {
       style={{
         position: "relative",
         overflow: "hidden",
-        // Diagonal wash flattened at BOTH edges to the uniform WASH_EDGE so the
-        // top + bottom seams ramp cleanly from a single colour into the navy
-        // pools above (FeaturedInsights) and below (the footer).
-        background:
-          "linear-gradient(180deg, #dce8f7 0%, transparent 22%, transparent 78%, #dce8f7 100%), linear-gradient(125deg,#d8e6f7 0%,#e6eefb 45%,#d2e4f5 100%)",
+        // Solid navy finale: the aurora glows in the centre and dissolves to
+        // navy at both edges (via the mask below), so the section flows
+        // continuously out of the FeaturedInsights navy pool above and into the
+        // navy footer below — blue → navy, never a grey band.
+        background: color.ink,
       }}
     >
-      {/* Masked aurora — fades in at the top, out at the bottom. */}
+      {/* Masked aurora — fades up out of the navy at the top and back into it
+          at the bottom, leaving a wide luminous blue field behind the content. */}
       <ShaderField
         style={{ zIndex: 0 }}
-        maskImage="linear-gradient(180deg, transparent 0%, #000 26%, #000 74%, transparent 100%)"
+        maskImage="linear-gradient(180deg, transparent 0%, #000 16%, #000 84%, transparent 100%)"
       />
 
-      {/* Symmetric seams — rises out of the FeaturedInsights navy pool at the
-          top and sinks into the solid-navy footer below at the bottom. */}
-      <SectionSeam edge="top" from={color.ink} to={WASH_EDGE} />
-      <SectionSeam edge="bottom" from={WASH_EDGE} to={color.ink} />
-
       <div
-        className="mx-auto max-w-[1340px] px-6 pt-[200px] pb-[200px] md:px-10 lg:px-[50px] lg:pt-[240px] lg:pb-[240px]"
+        className="mx-auto max-w-[1340px] px-6 pt-[150px] pb-[150px] md:px-10 lg:px-[50px] lg:pt-[180px] lg:pb-[180px]"
         style={{
           position: "relative",
           zIndex: 5,
