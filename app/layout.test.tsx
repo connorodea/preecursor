@@ -27,4 +27,15 @@ describe("app/layout (RootLayout)", () => {
     expect(out).toContain('"@type":"WebSite"');
     expect(out).toContain("--font-newsreader");
   });
+
+  it("provides a skip-to-content link targeting the main landmark (WCAG 2.4.1)", () => {
+    const out = renderToStaticMarkup(
+      createElement(RootLayout, { children: createElement("div") }),
+    );
+    expect(out).toContain('href="#main-content"');
+    expect(out).toContain("Skip to main content");
+    // the target landmark exists and is focusable
+    expect(out).toContain('id="main-content"');
+    expect(out).toMatch(/<main[^>]*id="main-content"[^>]*tabindex="-1"/);
+  });
 });
