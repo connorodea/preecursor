@@ -1,0 +1,117 @@
+name: CI / Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Prevent concurrent deploys; never cancel an in-progress run so we don't
+# leave the server in a half-synced state.
+concurrency:
+  group: deploy-preecursor
+  cancel-in-progress: false
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────────────
+  # Job 1 — Build the static export on the GitHub runner.
+  # Nothing is built on the production server.
+  # ──────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static export
+        run: npm run build
+        # next.config.ts sets output:'export' → artifacts land in out/
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: preecursor-out
+          path: out/
+          # Keep the artifact long enough for emergency re-deploys without
+          # re-running the full build job.
+          retention-days: 7
+          if-no-files-found: error
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Job 2 — Ship the artifact to the connorodea Hetzner VPS.
+  # Only runs on pushes to main (not on PRs or other branches).
+  # Uses HETZNER_CO_* secrets — never HETZNER_QL_* (litigation hold).
+  # ──────────────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    env:
+      APP_DIR: ${{ vars.APP_DIR || '/var/www/preecursor' }}
+
+    steps:
+      # ── Guard: fail loudly if required secrets are absent ─────────────────
+      - name: Validate required secrets
+        run: |
+          missing=""
+          [ -z "${{ secrets.HETZNER_CO_HOST }}"    ] && missing="$missing HETZNER_CO_HOST"
+          [ -z "${{ secrets.HETZNER_CO_USER }}"    ] && missing="$missing HETZNER_CO_USER"
+          [ -z "${{ secrets.HETZNER_CO_SSH_KEY }}" ] && missing="$missing HETZNER_CO_SSH_KEY"
+          if [ -n "$missing" ]; then
+            echo "ERROR: The following required GitHub secrets are not set:$missing"
+            echo "Go to: Settings > Secrets and variables > Actions > New repository secret"
+            exit 1
+          fi
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: preecursor-out
+          path: out/
+
+      # ── Write SSH key to a temp file with strict permissions ──────────────
+      - name: Configure SSH
+        run: |
+          install -m 700 -d ~/.ssh
+          # Write the private key — never echo it
+          printf '%s\n' "${{ secrets.HETZNER_CO_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      # ── Sync static files to VPS ──────────────────────────────────────────
+      # rsync --delete removes stale files from previous deploys.
+      # A trailing slash on out/ means rsync copies the *contents*, not the dir.
+      - name: rsync out/ to VPS
+        run: |
+          SSH_PORT="${{ secrets.HETZNER_CO_PORT || '22' }}"
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p ${SSH_PORT} -o StrictHostKeyChecking=accept-new" \
+            out/ \
+            "${{ secrets.HETZNER_CO_USER }}@${{ secrets.HETZNER_CO_HOST }}:${APP_DIR}/"
+
+      # ── Reload nginx (test first so a bad config can't bring nginx down) ──
+      - name: Reload nginx
+        run: |
+          SSH_PORT="${{ secrets.HETZNER_CO_PORT || '22' }}"
+          ssh \
+            -i ~/.ssh/deploy_key \
+            -p "${SSH_PORT}" \
+            -o StrictHostKeyChecking=accept-new \
+            "${{ secrets.HETZNER_CO_USER }}@${{ secrets.HETZNER_CO_HOST }}" \
+            'sudo nginx -t && sudo systemctl reload nginx'
+
+      # ── Scrub key from runner filesystem ─────────────────────────────────
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
