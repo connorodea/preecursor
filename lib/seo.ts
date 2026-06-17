@@ -66,6 +66,38 @@ export function websiteSchema() {
   };
 }
 
+/**
+ * Per-page metadata block (canonical + OpenGraph + Twitter), spread into a
+ * page's `metadata` / `generateMetadata` so every page shares consistent,
+ * unique social cards.
+ */
+export function socialMeta({
+  title,
+  description,
+  path,
+}: {
+  title: string;
+  description: string;
+  path: string;
+}) {
+  const url = absoluteUrl(path);
+  return {
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website" as const,
+      siteName: "Preecursor",
+      title,
+      description,
+      url,
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title,
+      description,
+    },
+  };
+}
+
 /** ProfessionalService node for a programmatic service/landing page. */
 export function serviceSchema({
   name,

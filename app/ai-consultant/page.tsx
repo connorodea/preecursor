@@ -10,7 +10,7 @@ import {
   Eyebrow,
 } from "@/components/ui";
 import { getPillar, CITIES } from "@/lib/content/programmatic";
-import { serviceSchema, absoluteUrl } from "@/lib/seo";
+import { serviceSchema, absoluteUrl, socialMeta } from "@/lib/seo";
 import { color, inkA, container } from "@/lib/theme";
 
 const SLUG = "ai-consultant";
@@ -19,7 +19,11 @@ const pillar = getPillar(SLUG)!;
 export const metadata: Metadata = {
   title: pillar.title,
   description: pillar.metaDescription,
-  alternates: { canonical: absoluteUrl(`/${SLUG}`) },
+  ...socialMeta({
+    title: pillar.title,
+    description: pillar.metaDescription,
+    path: `/${SLUG}`,
+  }),
 };
 
 const serviceLd = serviceSchema({

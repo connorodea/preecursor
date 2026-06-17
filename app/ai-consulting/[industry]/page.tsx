@@ -14,7 +14,7 @@ import {
 } from "@/components/ui";
 import { INDUSTRY_LEAVES } from "@/lib/ia";
 import { industrySpoke } from "@/lib/content/programmatic";
-import { serviceSchema, absoluteUrl } from "@/lib/seo";
+import { serviceSchema, absoluteUrl, socialMeta } from "@/lib/seo";
 import { color } from "@/lib/theme";
 
 export function generateStaticParams() {
@@ -31,7 +31,11 @@ export async function generateMetadata({
   return {
     title: spoke.title,
     description: spoke.metaDescription,
-    alternates: { canonical: absoluteUrl(`/ai-consulting/${industry}`) },
+    ...socialMeta({
+      title: spoke.title,
+      description: spoke.metaDescription,
+      path: `/ai-consulting/${industry}`,
+    }),
   };
 }
 
