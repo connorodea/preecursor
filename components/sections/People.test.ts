@@ -15,14 +15,14 @@ describe("People", () => {
     const out = html();
     expect(out).toContain("Our people");
     expect(out).toContain(
-      "Engineers and operators from the rooms where the standard gets",
+      "Senior engineers and operators who hold the work to a high",
     );
   });
 
-  it("renders all six affiliation names", () => {
+  it("renders no false company-affiliation logos", () => {
     const out = html();
     for (const name of ["OpenAI", "DeepMind", "McKinsey", "Stripe", "Google", "Palantir"]) {
-      expect(out).toContain(name);
+      expect(out, name).not.toContain(name);
     }
   });
 

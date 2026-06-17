@@ -11,8 +11,8 @@ const PAD_LEFT = 2; // matches scroller padding-left
 type Card = {
   seed: string;
   width: number;
-  stat: string;
-  statLabel: string;
+  /** Short qualitative descriptor shown in the corner chip (no metrics). */
+  chip: string;
   eyebrow: string;
   title: string;
   /** larger card carries a full body + CTA */
@@ -22,42 +22,43 @@ type Card = {
   large?: boolean;
 };
 
+/**
+ * Illustrative example engagements — the *kind* of work we do, not a record of
+ * specific delivered client results. As a new studio we don't publish invented
+ * outcomes or client identities; the disclaimer below makes that explicit.
+ */
 const CARDS: Card[] = [
   {
     seed: "work-1",
     width: 700,
-    stat: "−63%",
-    statLabel: "Cycle time",
-    eyebrow: "Client impact",
+    chip: "Underwriting",
+    eyebrow: "Example engagement",
     title: "Underwriting copilot",
-    body: "For a global bank: an agent that drafts and checks credit memos against policy in real time — in production in eight weeks.",
+    body: "The kind of system we build: an agent that drafts and checks credit memos against policy in real time, with every figure cited back to its source.",
     href: "/work/underwriting-copilot",
     large: true,
   },
   {
     seed: "work-2",
     width: 440,
-    stat: "$180M",
-    statLabel: "Annual savings",
-    eyebrow: "Client impact",
+    chip: "Predictive maintenance",
+    eyebrow: "Example engagement",
     title: "Predictive operations",
-    subtitle: "Industrial manufacturer",
+    subtitle: "Industrial manufacturing",
   },
   {
     seed: "work-3",
     width: 440,
-    stat: "11 hrs",
-    statLabel: "Per clinician / week",
-    eyebrow: "Client impact",
+    chip: "Clinical documentation",
+    eyebrow: "Example engagement",
     title: "Clinical documentation",
-    subtitle: "Healthcare network",
+    subtitle: "Healthcare",
   },
   {
     seed: "work-4",
     width: 440,
-    stat: "−41%",
-    statLabel: "Mean time to repair",
-    eyebrow: "Client impact",
+    chip: "Network operations",
+    eyebrow: "Example engagement",
     title: "Network ops copilot",
     subtitle: "Telecommunications",
   },
@@ -145,7 +146,7 @@ export default function SelectedWork() {
         >
           <div>
             <Eyebrow
-              label="Selected work"
+              label="The kind of work we do"
               barColor={color.brand}
               textColor={color.brand}
               style={{ marginBottom: 22 }}
@@ -160,15 +161,27 @@ export default function SelectedWork() {
                 maxWidth: "18ch",
               }}
             >
-              Outcomes we can point to.
+              The systems we build.
             </h2>
+            <p
+              style={{
+                marginTop: 16,
+                fontSize: 14.5,
+                lineHeight: 1.5,
+                color: inkA(0.55),
+                maxWidth: "52ch",
+              }}
+            >
+              Illustrative examples of the kind of work we do — not specific
+              client results.
+            </p>
           </div>
           <Link
             href="/work"
             className="group inline-flex items-center transition-[gap] duration-300 [gap:8px] hover:[gap:14px]"
             style={{ color: color.ink, textDecoration: "none", fontWeight: 600 }}
           >
-            All case studies <span style={{ color: color.brand }}>&rarr;</span>
+            See how we work <span style={{ color: color.brand }}>&rarr;</span>
           </Link>
         </div>
 
@@ -223,7 +236,7 @@ export default function SelectedWork() {
                 }}
               />
 
-              {/* top-left glass stat card */}
+              {/* top-left glass descriptor chip — qualitative, no metrics */}
               <div
                 style={{
                   position: "absolute",
@@ -232,31 +245,20 @@ export default function SelectedWork() {
                   background: "rgba(255,255,255,0.9)",
                   backdropFilter: "blur(8px)",
                   WebkitBackdropFilter: "blur(8px)",
-                  borderRadius: 16,
-                  padding: "16px 22px",
+                  borderRadius: 999,
+                  padding: "9px 18px",
                 }}
               >
                 <div
                   style={{
-                    fontFamily: "var(--font-newsreader)",
-                    fontSize: 34,
-                    lineHeight: 1,
-                    color: color.ink,
-                  }}
-                >
-                  {card.stat}
-                </div>
-                <div
-                  style={{
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: 700,
-                    letterSpacing: "0.16em",
+                    letterSpacing: "0.14em",
                     textTransform: "uppercase",
-                    color: inkA(0.6),
-                    marginTop: 6,
+                    color: color.brand,
                   }}
                 >
-                  {card.statLabel}
+                  {card.chip}
                 </div>
               </div>
 

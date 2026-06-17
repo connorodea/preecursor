@@ -123,9 +123,9 @@ export default function LeadershipPage() {
         );
       })}
 
-      {/* Prior-affiliation logos — serif row on the dark band, like landing People. */}
+      {/* How we staff — honest, no false company-affiliation logos. */}
       <Section tone="ink">
-        <Eyebrow label="Where our people come from" tone="azure" style={{ marginBottom: 28 }} />
+        <Eyebrow label="How we staff an engagement" tone="azure" style={{ marginBottom: 28 }} />
         <h2
           style={{
             fontFamily: "var(--font-newsreader)",
@@ -137,31 +137,23 @@ export default function LeadershipPage() {
             maxWidth: "22ch",
           }}
         >
-          From frontier labs, top firms, and the platforms you use every day
+          Senior practitioners, on the work from day one
         </h2>
-        <div
+        <p
           style={{
-            marginTop: 56,
-            borderTop: `1px solid ${mistA(0.2)}`,
-            paddingTop: 38,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "18px 56px",
+            marginTop: 28,
+            maxWidth: "62ch",
+            fontSize: 18,
+            lineHeight: 1.62,
+            color: mistA(0.7),
           }}
         >
-          {LEADERSHIP.logos.map((logo) => (
-            <span
-              key={logo}
-              style={{
-                fontFamily: "var(--font-newsreader)",
-                fontSize: 26,
-                color: mistA(0.82),
-              }}
-            >
-              {logo}
-            </span>
-          ))}
-        </div>
+          Every engagement is led by a senior practitioner who has built and
+          shipped real systems — no junior bench, no hand-off to a team you
+          never met. You work directly with the people doing the work, and we
+          hold ourselves to the bar we&rsquo;d expect on the other side of the
+          table.
+        </p>
       </Section>
 
       <CTASection

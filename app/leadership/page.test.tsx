@@ -13,9 +13,11 @@ describe("app/leadership/page", () => {
   it("renders without throwing and includes signature copy + people", () => {
     const out = renderToStaticMarkup(createElement(LeadershipPage));
     expect(out).toContain(LEADERSHIP.hero.title);
-    expect(out).toContain(
-      "From frontier labs, top firms, and the platforms you use every day",
-    );
+    // Honest staffing framing replaces the fabricated affiliation-logo row.
+    expect(out).toContain("Senior practitioners, on the work from day one");
+    for (const name of ["OpenAI", "DeepMind", "McKinsey", "Palantir"]) {
+      expect(out, name).not.toContain(name);
+    }
     // PersonCard tiles render for every populated group.
     for (const g of LEADERSHIP.groups) {
       for (const p of peopleByGroup(g.group)) {

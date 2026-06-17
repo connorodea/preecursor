@@ -105,11 +105,11 @@ export const PANELS: Record<string, Panel> = {
   },
   impact: {
     id: "impact",
-    title: "Client Impact",
-    desc: "The outcomes we can point to — measured against numbers our clients agreed to move.",
+    title: "The Work",
+    desc: "Illustrative examples of the systems we build and the outcomes they're designed to produce.",
     href: "/work",
     col1: ["Case Studies", "Outcomes", "Methodology"].map(anchor("/work", { "Case Studies": "/work" })),
-    col2: ["Testimonials", "Sectors Served", "By the Numbers"].map(anchor("/work")),
+    col2: ["What to Expect", "Sectors Served"].map(anchor("/work")),
   },
   leadership: {
     id: "leadership",

@@ -99,7 +99,7 @@ describe("SelectedWork", () => {
     });
 
     // Section + heading present.
-    expect(screen.getByText("Outcomes we can point to.")).toBeTruthy();
+    expect(screen.getByText("The systems we build.")).toBeTruthy();
     // Four case-study cards → four dots.
     expect(getDots()).toHaveLength(4);
     // Mount effect runs onScrollWork; with all offsets 0 the nearest is index 0.

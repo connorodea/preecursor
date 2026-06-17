@@ -4,16 +4,15 @@ import {
   Section,
   CardGrid,
   Card,
-  StatBand,
   FeatureRows,
   CTASection,
   Eyebrow,
 } from "@/components/ui";
 import { PANELS } from "@/lib/ia";
-import { WORK_CASES, FIRM_STATS, formatStat } from "@/lib/content/work";
+import { WORK_CASES } from "@/lib/content/work";
 
 export const metadata: Metadata = {
-  title: "Client impact",
+  title: "The work",
   description: PANELS.impact.desc,
 };
 
@@ -36,21 +35,23 @@ const METHODOLOGY = [
   },
 ];
 
-const TESTIMONIALS = [
+/**
+ * What clients can expect — our standards, stated plainly. As a new studio we
+ * do not publish invented client quotes or attributions; these are the
+ * commitments we hold ourselves to, not testimonials we've fabricated.
+ */
+const PRINCIPLES = [
   {
-    quote:
-      "They shipped something our last two vendors only slide-decked. Eight weeks in, it was in production and clearing model risk review.",
-    attribution: "Chief Risk Officer, global bank",
+    title: "We ship, not slide-deck",
+    body: "The deliverable is a running system in production, not a strategy document and a separate vendor to build it. We own the outcome end to end.",
   },
   {
-    quote:
-      "Preecursor is the rare partner that treats the number as the deliverable. They told us what they would build, what it was worth, and then they were right.",
-    attribution: "VP of Operations, industrial manufacturer",
+    title: "The metric is the deliverable",
+    body: "Every engagement opens with a single agreed metric and a candid view of what moving it is worth — so the work is judged on the number, not the polish of the readout.",
   },
   {
-    quote:
-      "The eval discipline alone changed how our team works. We can swap models now without holding our breath.",
-    attribution: "Head of AI, healthcare network",
+    title: "Eval discipline, built in",
+    body: "We ship the eval harnesses and monitoring that let you change models and prompts without holding your breath — quality is measured, not asserted.",
   },
 ];
 
@@ -69,16 +70,28 @@ export default function WorkPage() {
   return (
     <>
       <PageHero
-        eyebrow="Client impact"
-        title="Outcomes we can point to"
-        lede="We are measured against numbers our clients agreed to move — cycle time, cost, time-to-repair, hours returned. Here is what that looks like in production."
+        eyebrow="The work"
+        title="The kind of work we do"
+        lede="Illustrative examples of the systems we build and the outcomes they're designed to produce — the cycle time, cost, time-to-repair, and hours-returned levers AI can actually move. Examples, not specific client results."
         cta={{ label: "Start a conversation", href: "/contact" }}
         secondaryCta={{ label: "See our capabilities", href: "/capabilities" }}
       />
 
-      {/* Case studies — the "Case Studies" leaf points here (/work top). */}
+      {/* Example engagements — the "Case Studies" leaf points here (/work top). */}
       <Section id="case-studies" className="scroll-mt-[110px]" tone="paper2">
-        <Eyebrow label="Selected work" tone="brand" style={{ marginBottom: 40 }} />
+        <Eyebrow label="Example engagements" tone="brand" style={{ marginBottom: 16 }} />
+        <p
+          style={{
+            fontSize: 14.5,
+            lineHeight: 1.5,
+            color: "rgba(17,33,56,0.55)",
+            maxWidth: "60ch",
+            marginBottom: 40,
+          }}
+        >
+          The scenarios below are illustrative examples of the kind of work we
+          do — not specific delivered client results.
+        </p>
         <CardGrid columns={2}>
           {WORK_CASES.map((c) => (
             <Card
@@ -86,7 +99,6 @@ export default function WorkPage() {
               href={`/work/${c.slug}`}
               kicker={c.sector}
               title={c.headline}
-              stat={formatStat(c.stat)}
               desc={c.summary}
             />
           ))}
@@ -118,18 +130,13 @@ export default function WorkPage() {
             maxWidth: "62ch",
           }}
         >
-          Every engagement opens with a single agreed metric and the dollar value
-          of moving it. That number governs scope, sequencing, and what we count
-          as done — so the work pays for itself in a line of the P&L you already
-          watch, not in a slide we made up. The case studies below are the proof,
-          and the band further down is the book of business behind them.
+          Every engagement opens with a single agreed metric and a candid view of
+          what moving it is worth. That number governs scope, sequencing, and
+          what we count as done — so the work pays for itself in a line of the
+          P&L you already watch, not in a slide we made up. The examples above
+          show the kind of system that follows.
         </p>
       </Section>
-
-      {/* By the numbers — the "By the Numbers" leaf points here. */}
-      <div id="by-the-numbers" className="scroll-mt-[110px]">
-        <StatBand eyebrow="By the numbers" stats={FIRM_STATS} />
-      </div>
 
       {/* Methodology — Diagnose / Build / Scale / Enable. */}
       <Section id="methodology" className="scroll-mt-[110px]" tone="paper2">
@@ -151,11 +158,11 @@ export default function WorkPage() {
         <FeatureRows rows={METHODOLOGY} />
       </Section>
 
-      {/* Testimonials. */}
-      <Section id="testimonials" className="scroll-mt-[110px]" tone="paper">
-        <Eyebrow label="Testimonials" tone="brand" style={{ marginBottom: 40 }} />
+      {/* What to expect — our standards, not fabricated testimonials. */}
+      <Section id="what-to-expect" className="scroll-mt-[110px]" tone="paper">
+        <Eyebrow label="What to expect" tone="brand" style={{ marginBottom: 40 }} />
         <CardGrid columns={3}>
-          {TESTIMONIALS.map((t, i) => (
+          {PRINCIPLES.map((p, i) => (
             <figure
               key={i}
               style={{
@@ -179,7 +186,7 @@ export default function WorkPage() {
                   margin: 0,
                 }}
               >
-                “{t.quote}”
+                {p.body}
               </blockquote>
               <figcaption
                 style={{
@@ -192,7 +199,7 @@ export default function WorkPage() {
                   color: "#1b4fc7",
                 }}
               >
-                {t.attribution}
+                {p.title}
               </figcaption>
             </figure>
           ))}

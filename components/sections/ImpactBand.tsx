@@ -1,13 +1,13 @@
 "use client";
 
-import { Reveal, CountUp } from "@/lib/motion";
+import { Reveal } from "@/lib/motion";
 import { EdgeFade } from "./_shared";
 import { gradient, color, mistA } from "@/lib/theme";
 
 const NUM_STYLE: React.CSSProperties = {
   fontFamily: "var(--font-newsreader)",
-  fontSize: "clamp(46px,4.6vw,70px)",
-  lineHeight: 0.9,
+  fontSize: "clamp(34px,3.1vw,50px)",
+  lineHeight: 1.02,
   letterSpacing: "-0.02em",
 };
 
@@ -18,36 +18,27 @@ const LABEL_STYLE: React.CSSProperties = {
   color: mistA(0.62),
 };
 
-const SMALL_SUFFIX: React.CSSProperties = { fontSize: "0.46em" };
-
-const STATS = [
+/**
+ * Operating principles — how we work, stated plainly. No metrics: we're a new
+ * studio and we don't invent aggregate numbers. These are commitments we hold
+ * ourselves to on every engagement.
+ */
+const PRINCIPLES = [
   {
-    num: (
-      <CountUp value={2.4} decimals={1} prefix="$" suffix="B" />
-    ),
-    label: "Enterprise value influenced across engagements",
+    headline: "Senior-only",
+    label: "The people in the pitch are the people who build. No junior bench, no hand-off to a team you never met.",
   },
   {
-    num: <CountUp value={40} suffix="+" />,
-    label: "AI systems shipped into production",
+    headline: "One team",
+    label: "Strategists and engineers work in the same room — the thinking and the shipping are never separate contracts.",
   },
   {
-    num: (
-      <>
-        <CountUp value={6} />
-        <span style={SMALL_SUFFIX}> wks</span>
-      </>
-    ),
-    label: "Median time to first live deployment",
+    headline: "In production",
+    label: "We deliver running systems, not slideware. The deliverable is software that works, instrumented so you can see what it does.",
   },
   {
-    num: (
-      <>
-        <CountUp value={9} />
-        <span style={SMALL_SUFFIX}>/10</span>
-      </>
-    ),
-    label: "Engagements that expand within a year",
+    headline: "Embedded",
+    label: "We work inside your stack, your tools, and your time zone — close to where the decisions and the code actually live.",
   },
 ];
 
@@ -85,13 +76,13 @@ export default function ImpactBand() {
               textTransform: "uppercase",
             }}
           >
-            Client impact
+            How we work
           </span>
         </div>
 
-        {/* Stat grid */}
+        {/* Operating principles */}
         <div className="grid grid-cols-2 gap-10 lg:grid-cols-4">
-          {STATS.map((s, i) => (
+          {PRINCIPLES.map((p, i) => (
             <Reveal
               key={i}
               delay={i * 0.08}
@@ -100,8 +91,8 @@ export default function ImpactBand() {
                 paddingTop: 26,
               }}
             >
-              <div style={NUM_STYLE}>{s.num}</div>
-              <div style={LABEL_STYLE}>{s.label}</div>
+              <div style={NUM_STYLE}>{p.headline}</div>
+              <div style={LABEL_STYLE}>{p.label}</div>
             </Reveal>
           ))}
         </div>

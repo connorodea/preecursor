@@ -100,7 +100,8 @@ describe("industrySpoke", () => {
       expect(spoke.content.title.length, leaf.slug).toBeGreaterThan(0);
       expect(spoke.content.overview.length, leaf.slug).toBeGreaterThan(0);
       expect(spoke.content.approach.length, leaf.slug).toBeGreaterThan(0);
-      expect(spoke.content.stats.length, leaf.slug).toBeGreaterThan(0);
+      // stats are intentionally empty across all content (no invented metrics)
+      expect(Array.isArray(spoke.content.stats), leaf.slug).toBe(true);
     }
   });
 

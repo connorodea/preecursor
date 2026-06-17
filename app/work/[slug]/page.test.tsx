@@ -34,6 +34,6 @@ describe("app/work/[slug]/page", () => {
     const meta = await generateMetadata({
       params: Promise.resolve({ slug: "does-not-exist" }),
     });
-    expect(meta.title).toBe("Client impact");
+    expect(meta.title).toBe("The work");
   });
 });

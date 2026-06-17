@@ -7,7 +7,6 @@ import {
   ContentSplit,
   CardGrid,
   Card,
-  StatBand,
   FeatureRows,
   CTASection,
   Eyebrow,
@@ -122,7 +121,8 @@ export default async function Page({
         <FeatureRows rows={content.approach} />
       </Section>
 
-      <StatBand eyebrow="By the numbers" stats={content.stats} />
+      {/* A metrics band would go here, but we publish no invented figures,
+          so it is intentionally omitted. */}
 
       <Section tone="paper">
         <Eyebrow label="Related" tone="brand" style={{ marginBottom: 48 }} />

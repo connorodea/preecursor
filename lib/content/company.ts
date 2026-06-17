@@ -180,9 +180,6 @@ export const LEADERSHIP = {
       seed: "person-arjun-nair",
     },
   ] as Person[],
-
-  /** Prior-affiliation logos — the serif row on the dark band. */
-  logos: ["OpenAI", "DeepMind", "McKinsey", "Stripe", "Google", "Palantir"],
 } as const;
 
 /** People filtered to a group, in declared order. */

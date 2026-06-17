@@ -32,8 +32,11 @@ describe("WORK_CASES data", () => {
       expect(c.summary.length, c.slug).toBeGreaterThan(0);
       expect(c.challenge.length, c.slug).toBeGreaterThan(0);
 
-      // headline stat
-      expectWellFormedStat(c.stat, `${c.slug} headline stat`);
+      // optional headline stat: when present it must still be well-formed,
+      // but these illustrative engagements carry no invented figures.
+      if (c.stat != null) {
+        expectWellFormedStat(c.stat, `${c.slug} headline stat`);
+      }
 
       // approach rows
       expect(c.approach.length, c.slug).toBeGreaterThan(0);
@@ -42,33 +45,34 @@ describe("WORK_CASES data", () => {
         expect(a.desc.length, `${c.slug} approach`).toBeGreaterThan(0);
       }
 
-      // outcome stats
-      expect(c.outcome.length, c.slug).toBeGreaterThan(0);
+      // qualitative outcomes carry the story instead of fabricated metrics
+      expect(c.outcomes.length, c.slug).toBeGreaterThan(0);
+      for (const o of c.outcomes) {
+        expect(o.length, `${c.slug} outcomes prose`).toBeGreaterThan(0);
+      }
+
+      // any numeric outcome stat (currently none) must be well-formed
       for (const o of c.outcome) {
         expectWellFormedStat(o, `${c.slug} outcome`);
       }
     }
   });
 
-  it("includes the headline stat among (or matching) the outcome stats", () => {
-    // The card stat should be one the case can actually point to.
+  it("publishes no fabricated outcome metrics or client identities", () => {
     for (const c of WORK_CASES) {
-      const labels = c.outcome.map((o) => o.label.toLowerCase());
-      const headlineWords = c.stat.label.toLowerCase();
-      // Either the exact label appears, or a close match (outcome labels
-      // sometimes add "Returned"/"Per" framing). Assert the value lines up.
-      const matchByValue = c.outcome.some((o) => o.value === c.stat.value);
-      expect(matchByValue || labels.includes(headlineWords), c.slug).toBe(true);
+      // No invented numeric outcomes on these illustrative engagements.
+      expect(c.outcome.length, c.slug).toBe(0);
+      // Clients are clearly-illustrative archetypes, not named identities.
+      expect(c.client.toLowerCase(), c.slug).toContain("illustrative");
+      // No invented headline figure.
+      expect(c.stat, c.slug).toBeUndefined();
     }
   });
 });
 
 describe("FIRM_STATS", () => {
-  it("has firm-wide stats, all well-formed", () => {
-    expect(FIRM_STATS.length).toBeGreaterThan(0);
-    for (const s of FIRM_STATS) {
-      expectWellFormedStat(s, `firm stat ${s.label}`);
-    }
+  it("publishes no invented firm-wide aggregate metrics", () => {
+    expect(FIRM_STATS).toEqual([]);
   });
 });
 
@@ -122,9 +126,13 @@ describe("formatStat", () => {
     ).toBe("$2.4B");
   });
 
-  it("formats every real Stat in the dataset to a non-empty string", () => {
+  it("formats any Stat present in the dataset to a non-empty string", () => {
+    // The illustrative engagements carry no numeric stats today, but the
+    // formatter must still handle any that appear (headline or outcome).
     for (const c of WORK_CASES) {
-      expect(formatStat(c.stat).length, c.slug).toBeGreaterThan(0);
+      if (c.stat != null) {
+        expect(formatStat(c.stat).length, c.slug).toBeGreaterThan(0);
+      }
       for (const o of c.outcome) {
         expect(formatStat(o).length, c.slug).toBeGreaterThan(0);
       }

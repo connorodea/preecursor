@@ -106,12 +106,13 @@ export default function WorldwidePage() {
       </Section>
 
       <StatBand
-        eyebrow="By the numbers"
         stats={[
-          { value: 24, suffix: "/7", label: "Coverage across every major time zone" },
-          { value: 14, suffix: "+", label: "Countries our practitioners work from" },
-          { value: 2, label: "Offices — Denver & Detroit" },
-          { value: 100, suffix: "%", label: "Engagements led by a senior practitioner" },
+          { value: 2, label: "Home offices — Denver & Detroit" },
+          {
+            value: 100,
+            suffix: "%",
+            label: "Our commitment: every engagement led by a senior practitioner",
+          },
         ]}
       />
 
