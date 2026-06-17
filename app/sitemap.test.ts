@@ -33,4 +33,17 @@ describe("app/sitemap", () => {
     expect(detail.priority).toBe(0.6);
     expect(detail.changeFrequency).toBe("monthly");
   });
+
+  it("sets lastModified on every entry, preferring an insight's published date", () => {
+    for (const e of entries) {
+      expect(e.lastModified).toBeInstanceOf(Date);
+    }
+    // An insights article carries its own parsed published date ("May 2026").
+    const ev = entries.find(
+      (e) => e.url === absoluteUrl("/insights/evals-are-the-product"),
+    )!;
+    expect((ev.lastModified as Date).toISOString().slice(0, 10)).toBe(
+      "2026-05-01",
+    );
+  });
 });
