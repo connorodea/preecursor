@@ -11,14 +11,8 @@ describe("People", () => {
     expect(html()).toContain('id="people"');
   });
 
-  it("shows the co-founders' university credentials", () => {
-    const out = html();
-    expect(out).toContain("Our co-founders studied at");
-    expect(out).toContain("University of Michigan");
-    expect(out).toContain("Columbia University");
-    expect(out).toContain("Harvard University");
-    expect(out).toContain("Johns Hopkins University");
-    expect(out).toContain("UC Berkeley");
+  it("no longer carries the university credential strip (moved to the trust band)", () => {
+    expect(html()).not.toContain("Our co-founders studied at");
   });
 
   it("contains the eyebrow + headline", () => {
@@ -46,8 +40,5 @@ describe("People", () => {
     expect(out).toContain("background:#112138");
     expect(out).not.toContain("linear-gradient"); // no EdgeFade band inside
     expect(out).not.toContain("rgba(60,98,164,0.42)"); // old EdgeFade waypoint gone
-    // Credentials still present (regression guard for the seam rework).
-    expect(out).toContain("University of Michigan");
-    expect(out).toContain("Columbia University");
   });
 });
