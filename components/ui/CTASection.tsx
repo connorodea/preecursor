@@ -42,7 +42,7 @@ export default function CTASection({
       {shader && <ShaderField style={{ zIndex: 0 }} />}
 
       <div
-        className={`${container} px-6 py-24 md:px-10 lg:px-[50px] lg:py-[120px]`}
+        className={`${container} px-6 py-32 md:px-10 lg:px-[50px] lg:py-[190px]`}
         style={{
           position: "relative",
           zIndex: 5,
