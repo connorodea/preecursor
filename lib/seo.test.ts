@@ -11,6 +11,9 @@ import { INDUSTRY_LEAVES, CAPABILITY_LEAVES } from "./ia";
 import { WORK_CASES } from "./content/work";
 import { INSIGHTS } from "./content/insights";
 import { PROGRAMMATIC_ROUTES } from "./content/programmatic";
+import { USE_CASE_ROUTES } from "./content/usecases";
+import { GLOSSARY_ROUTES } from "./content/glossary";
+import { COMPARISON_ROUTES } from "./content/comparisons";
 
 describe("siteRoutes", () => {
   it("includes the home page and every hub", () => {
@@ -102,6 +105,13 @@ describe("programmatic SEO routes", () => {
   it("siteRoutes includes every pillar + industry/city spoke", () => {
     const r = siteRoutes();
     for (const p of PROGRAMMATIC_ROUTES) expect(r, p).toContain(p);
+  });
+
+  it("siteRoutes includes the use-case, glossary, and comparison clusters", () => {
+    const r = siteRoutes();
+    for (const p of [...USE_CASE_ROUTES, ...GLOSSARY_ROUTES, ...COMPARISON_ROUTES]) {
+      expect(r, p).toContain(p);
+    }
   });
 
   it("the programmatic routes are not duplicated in siteRoutes", () => {

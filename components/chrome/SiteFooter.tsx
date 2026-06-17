@@ -12,10 +12,12 @@ import { color, mistA, container } from "@/lib/theme";
 import BrandMark from "@/components/BrandMark";
 import { PILLARS } from "@/lib/content/programmatic";
 
-const SERVICE_LINKS = Object.values(PILLARS).map((p) => ({
-  label: p.eyebrow,
-  href: `/${p.slug}`,
-}));
+const SERVICE_LINKS = [
+  ...Object.values(PILLARS).map((p) => ({ label: p.eyebrow, href: `/${p.slug}` })),
+  { label: "Use cases", href: "/ai-consulting/use-cases" },
+  { label: "Glossary", href: "/glossary" },
+  { label: "Compare", href: "/compare" },
+];
 
 const COLUMN_LABEL: React.CSSProperties = {
   fontSize: 12,
