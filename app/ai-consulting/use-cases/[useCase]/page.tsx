@@ -12,7 +12,8 @@ import {
   CTASection,
   Eyebrow,
 } from "@/components/ui";
-import { USE_CASES, getUseCase } from "@/lib/content/usecases";
+import { USE_CASES, getUseCase, USE_CASE_CONCEPTS } from "@/lib/content/usecases";
+import { getTerm } from "@/lib/content/glossary";
 import { serviceSchema, breadcrumbSchema, absoluteUrl, socialMeta } from "@/lib/seo";
 import { color } from "@/lib/theme";
 
@@ -52,6 +53,11 @@ export default async function Page({
   // to a different trio — interlinking the cluster instead of dead-ending.
   const idx = USE_CASES.findIndex((u) => u.slug === useCase);
   const siblings = [1, 2, 3].map((n) => USE_CASES[(idx + n) % USE_CASES.length]);
+
+  // Curated glossary concepts this use case depends on (cross-cluster links).
+  const concepts = (USE_CASE_CONCEPTS[useCase] ?? [])
+    .map((s) => getTerm(s))
+    .filter((t): t is NonNullable<typeof t> => Boolean(t));
 
   const schema = serviceSchema({
     name: `AI consulting for ${uc.name}`,
@@ -169,6 +175,29 @@ export default async function Page({
             desc="Strategy and production engineering in one continuous engagement."
           />
         </CardGrid>
+
+        {/* Key concepts — cross-link into the glossary for the ideas this use
+            case relies on. */}
+        {concepts.length > 0 && (
+          <>
+            <Eyebrow
+              label="Key concepts"
+              tone="brand"
+              style={{ marginTop: 64, marginBottom: 32 }}
+            />
+            <CardGrid columns={3}>
+              {concepts.map((t) => (
+                <Card
+                  key={t.slug}
+                  href={`/glossary/${t.slug}`}
+                  kicker="Glossary"
+                  title={t.term}
+                  desc={t.short}
+                />
+              ))}
+            </CardGrid>
+          </>
+        )}
 
         {/* Sibling use cases — interlink the cluster. */}
         <Eyebrow

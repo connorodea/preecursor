@@ -412,6 +412,44 @@ export function getUseCase(slug: string): UseCase | undefined {
   return USE_CASES.find((u) => u.slug === slug);
 }
 
+/**
+ * The glossary concepts most relevant to each use case — a curated cross-cluster
+ * map (use-case slug → glossary term slugs) so each use-case page links into the
+ * glossary for the ideas it depends on. Values must be valid glossary slugs.
+ */
+export const USE_CASE_CONCEPTS: Record<string, string[]> = {
+  "fraud-and-aml-detection": ["evals", "guardrails", "ai-governance"],
+  "document-and-data-extraction": [
+    "retrieval-augmented-generation-rag",
+    "embeddings",
+    "multimodal-ai",
+  ],
+  "customer-support-copilots": [
+    "ai-agents",
+    "retrieval-augmented-generation-rag",
+    "guardrails",
+  ],
+  "demand-forecasting": ["mlops", "inference", "evals"],
+  "underwriting-and-credit": ["ai-governance", "evals", "hallucination"],
+  "clinical-documentation": ["multimodal-ai", "guardrails", "hallucination"],
+  "predictive-maintenance": ["mlops", "inference", "evals"],
+  "knowledge-retrieval-rag": [
+    "retrieval-augmented-generation-rag",
+    "embeddings",
+    "vector-database",
+  ],
+  "content-generation": [
+    "large-language-model",
+    "prompt-engineering",
+    "guardrails",
+  ],
+  "contract-and-policy-review": [
+    "retrieval-augmented-generation-rag",
+    "ai-governance",
+    "hallucination",
+  ],
+};
+
 /** Every use-case route (hub + detail pages), for sitemap inclusion. */
 export const USE_CASE_ROUTES = [
   "/ai-consulting/use-cases",
