@@ -7,14 +7,12 @@ export default defineConfig({
     setupFiles: ["./test/setup.ts"],
     coverage: {
       provider: "v8",
-      include: ["lib/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
-      exclude: [
-        "**/*.test.{ts,tsx}",
-        // WebGL field: all logic lives inside a useEffect that needs a real
-        // GL context + RAF loop — not meaningfully unit-testable in jsdom.
-        // Excluded with rationale rather than padded with fake assertions.
-        "components/ShaderField.tsx",
+      include: [
+        "lib/**/*.{ts,tsx}",
+        "components/**/*.{ts,tsx}",
+        "app/**/*.{ts,tsx}",
       ],
+      exclude: ["**/*.test.{ts,tsx}"],
       reporter: ["text-summary", "text"],
     },
   },
