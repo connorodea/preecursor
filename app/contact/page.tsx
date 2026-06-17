@@ -181,13 +181,31 @@ export default function ContactPage() {
               />
             </div>
 
-            <PillLink
-              href={`mailto:${CONTACT_EMAIL}`}
-              variant="brand"
-              external
+            {/* Real submit so the typed fields are carried into the draft
+                (action=mailto + enctype=text/plain). The direct-email line
+                below is the reliable fallback for webmail users. */}
+            <button
+              type="submit"
+              className="bg-[#1b4fc7] transition-colors hover:bg-[#112138]"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                border: "none",
+                cursor: "pointer",
+                borderRadius: 999,
+                padding: "15px 28px",
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: color.mist,
+                boxShadow: shadow.ctaBrand,
+                fontFamily: "var(--font-archivo)",
+              }}
             >
-              Send it over
-            </PillLink>
+              Send it over <span aria-hidden="true">→</span>
+            </button>
 
             <p
               style={{

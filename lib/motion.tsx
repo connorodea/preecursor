@@ -170,13 +170,12 @@ export function CountUp({
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-15% 0px" });
   const reduce = useReducedMotion();
-  const [display, setDisplay] = useState(reduce ? value : 0);
+  const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    if (!inView || reduce) {
-      setDisplay(value);
-      return;
-    }
+    // Reduced-motion / not-yet-in-view: don't animate (and don't setState in
+    // the effect body — the final value is derived at render time below).
+    if (!inView || reduce) return;
     const controls = animate(0, value, {
       duration: durationMs / 1000,
       ease: EASE,
@@ -185,10 +184,11 @@ export function CountUp({
     return () => controls.stop();
   }, [inView, reduce, value, durationMs]);
 
+  const shown = reduce ? value : display;
   return (
     <span ref={ref}>
       {prefix}
-      {display.toLocaleString("en-US", {
+      {shown.toLocaleString("en-US", {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
       })}

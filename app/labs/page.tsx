@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import {
   PageHero,
   Section,
-  CardGrid,
   Card,
   CTASection,
   Eyebrow,

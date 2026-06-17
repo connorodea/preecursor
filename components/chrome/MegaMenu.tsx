@@ -41,14 +41,35 @@ function MenuOverlay({ onClose }: { onClose: () => void }) {
   const reduce = useReducedMotion();
   const [active, setActive] = useState<string>(DEFAULT_PANEL);
   const searchRef = useRef<HTMLInputElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
-  // Esc closes; lock body scroll while mounted; focus search on open.
+  // Esc closes; lock body scroll; focus the search on open; trap Tab focus
+  // inside the dialog; restore focus to the trigger on close.
   useEffect(() => {
+    const prevFocused = document.activeElement as HTMLElement | null;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key === "Tab" && overlayRef.current) {
+        const focusable = overlayRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     document.addEventListener("keydown", onKey);
 
@@ -58,6 +79,8 @@ function MenuOverlay({ onClose }: { onClose: () => void }) {
       document.body.style.overflow = prevOverflow;
       document.removeEventListener("keydown", onKey);
       cancelAnimationFrame(raf);
+      // Return focus to whatever opened the menu (the hamburger button).
+      prevFocused?.focus?.();
     };
   }, [onClose]);
 
@@ -65,6 +88,7 @@ function MenuOverlay({ onClose }: { onClose: () => void }) {
 
   return (
     <motion.div
+          ref={overlayRef}
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
@@ -426,7 +450,6 @@ const SearchBox = ({
         aria-label="Search"
         style={{
           border: "none",
-          outline: "none",
           background: "transparent",
           fontSize: 16,
           width: "100%",

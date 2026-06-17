@@ -101,7 +101,6 @@ export default function FeaturedInsights() {
               style={{
                 flex: 1,
                 border: "none",
-                outline: "none",
                 background: "transparent",
                 fontSize: 15,
                 color: color.ink,

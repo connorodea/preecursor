@@ -50,6 +50,15 @@ body {
   color: var(--color-mist);
 }
 
+/* Visible keyboard focus (most controls are inline-styled and can't express
+   :focus, so this global rule gives keyboard users a consistent brand ring).
+   Mouse users don't see it thanks to :focus-visible. */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* Horizontal scrollers (e.g. Selected Work) hide their scrollbar. */
 .no-scrollbar::-webkit-scrollbar {
   height: 0;
