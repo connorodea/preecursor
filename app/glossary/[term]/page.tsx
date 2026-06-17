@@ -10,7 +10,7 @@ import {
   Eyebrow,
 } from "@/components/ui";
 import { GLOSSARY, getTerm } from "@/lib/content/glossary";
-import { absoluteUrl, socialMeta } from "@/lib/seo";
+import { breadcrumbSchema, absoluteUrl, socialMeta } from "@/lib/seo";
 import { color, inkA } from "@/lib/theme";
 
 export function generateStaticParams() {
@@ -59,17 +59,34 @@ export default async function GlossaryTermPage({
     },
   };
 
+  const trail = [
+    { label: "Home", href: "/" },
+    { label: "Glossary", href: "/glossary" },
+    { label: entry.term, href: `/glossary/${entry.slug}` },
+  ];
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema(
+              trail.map((t) => ({ name: t.label, url: absoluteUrl(t.href) })),
+            ),
+          ),
+        }}
+      />
 
       <PageHero
         eyebrow="Glossary"
         title={`What is ${entry.term}?`}
         lede={entry.short}
+        breadcrumbs={trail}
       />
 
       {/* Back-to-glossary text link, near the top. */}

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui";
 import { slugify } from "@/lib/ia";
 import { CITIES, getCity } from "@/lib/content/programmatic";
-import { serviceSchema, absoluteUrl, socialMeta } from "@/lib/seo";
+import { serviceSchema, breadcrumbSchema, absoluteUrl, socialMeta } from "@/lib/seo";
 import { color, inkA } from "@/lib/theme";
 
 export function generateStaticParams() {
@@ -57,11 +57,27 @@ export default async function Page({
     areaServed: c.city,
   };
 
+  const trail = [
+    { label: "Home", href: "/" },
+    { label: "AI Consultant", href: "/ai-consultant" },
+    { label: c.city, href: `/ai-consultant/${city}` },
+  ];
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema(
+              trail.map((t) => ({ name: t.label, url: absoluteUrl(t.href) })),
+            ),
+          ),
+        }}
       />
 
       <PageHero
@@ -72,6 +88,7 @@ export default async function Page({
         }
         title={`AI consultant in ${c.city}`}
         lede={c.intro}
+        breadcrumbs={trail}
         cta={{ label: "Start a conversation", href: "/contact" }}
       />
 

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui";
 import { INDUSTRY_LEAVES } from "@/lib/ia";
 import { industrySpoke } from "@/lib/content/programmatic";
-import { serviceSchema, absoluteUrl, socialMeta } from "@/lib/seo";
+import { serviceSchema, breadcrumbSchema, absoluteUrl, socialMeta } from "@/lib/seo";
 import { color } from "@/lib/theme";
 
 export function generateStaticParams() {
@@ -54,17 +54,34 @@ export default async function Page({
     url: absoluteUrl(`/ai-consulting/${industry}`),
   });
 
+  const trail = [
+    { label: "Home", href: "/" },
+    { label: "AI Consulting", href: "/ai-consulting" },
+    { label, href: `/ai-consulting/${industry}` },
+  ];
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema(
+              trail.map((t) => ({ name: t.label, url: absoluteUrl(t.href) })),
+            ),
+          ),
+        }}
+      />
 
       <PageHero
         eyebrow="AI consulting"
         title={spoke.h1}
         lede={content.lede}
+        breadcrumbs={trail}
         cta={{ label: "Start a conversation", href: "/contact" }}
       />
 

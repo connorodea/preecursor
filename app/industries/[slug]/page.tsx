@@ -13,6 +13,7 @@ import {
 } from "@/components/ui";
 import { INDUSTRY_LEAVES } from "@/lib/ia";
 import { getIndustry } from "@/lib/content/services";
+import { breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 export function generateStaticParams() {
   return INDUSTRY_LEAVES.map((l) => ({ slug: l.slug }));
@@ -37,12 +38,30 @@ export default async function Page({
   const c = getIndustry(slug);
   const label = INDUSTRY_LEAVES.find((l) => l.slug === slug)?.label ?? c.title;
 
+  const trail = [
+    { label: "Home", href: "/" },
+    { label: "Industries", href: "/industries" },
+    { label, href: `/industries/${slug}` },
+  ];
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema(
+              trail.map((t) => ({ name: t.label, url: absoluteUrl(t.href) })),
+            ),
+          ),
+        }}
+      />
+
       <PageHero
         eyebrow="Industries"
         title={c.title}
         lede={c.lede}
+        breadcrumbs={trail}
         cta={{ label: "Start a conversation", href: "/contact" }}
       />
 

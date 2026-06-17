@@ -104,6 +104,25 @@ export function socialMeta({
   };
 }
 
+/**
+ * BreadcrumbList node — the structured-data trail for a deep page, used for
+ * breadcrumb rich results in search. `items` is the visible trail (root → …
+ * → current page); URLs should be absolute (use `absoluteUrl`). Positions are
+ * 1-indexed per schema.org.
+ */
+export function breadcrumbSchema(items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: it.url,
+    })),
+  };
+}
+
 /** ProfessionalService node for a programmatic service/landing page. */
 export function serviceSchema({
   name,

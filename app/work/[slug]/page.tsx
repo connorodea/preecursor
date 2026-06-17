@@ -11,6 +11,7 @@ import {
   Eyebrow,
 } from "@/components/ui";
 import { WORK_CASES, getCase } from "@/lib/content/work";
+import { breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 export function generateStaticParams() {
   return WORK_CASES.map((c) => ({ slug: c.slug }));
@@ -36,12 +37,30 @@ export default async function CasePage({
   const c = getCase(slug);
   if (!c) notFound();
 
+  const trail = [
+    { label: "Home", href: "/" },
+    { label: "Work", href: "/work" },
+    { label: c.headline, href: `/work/${slug}` },
+  ];
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema(
+              trail.map((t) => ({ name: t.label, url: absoluteUrl(t.href) })),
+            ),
+          ),
+        }}
+      />
+
       <PageHero
         eyebrow={c.sector}
         title={c.headline}
         lede={c.summary}
+        breadcrumbs={trail}
         cta={{ label: "Start a conversation", href: "/contact" }}
         secondaryCta={{ label: "See more work", href: "/work" }}
       />

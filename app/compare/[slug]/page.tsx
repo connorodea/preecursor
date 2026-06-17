@@ -6,7 +6,7 @@ import {
   getComparison,
   type Comparison,
 } from "@/lib/content/comparisons";
-import { serviceSchema, absoluteUrl, socialMeta } from "@/lib/seo";
+import { serviceSchema, breadcrumbSchema, absoluteUrl, socialMeta } from "@/lib/seo";
 import { color, inkA } from "@/lib/theme";
 
 export function generateStaticParams() {
@@ -131,14 +131,30 @@ export default async function Page({
     url: absoluteUrl(`/compare/${slug}`),
   });
 
+  const trail = [
+    { label: "Home", href: "/" },
+    { label: "Compare", href: "/compare" },
+    { label: cmp.h1, href: `/compare/${slug}` },
+  ];
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema(
+              trail.map((t) => ({ name: t.label, url: absoluteUrl(t.href) })),
+            ),
+          ),
+        }}
+      />
 
-      <PageHero eyebrow="Compare" title={cmp.h1} lede={cmp.intro} />
+      <PageHero eyebrow="Compare" title={cmp.h1} lede={cmp.intro} breadcrumbs={trail} />
 
       {/* Back-to-hub text link, near the top. */}
       <div
