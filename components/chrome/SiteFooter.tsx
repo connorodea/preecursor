@@ -9,6 +9,7 @@
 import Link from "next/link";
 import { FOOTER } from "@/lib/ia";
 import { color, mistA, container } from "@/lib/theme";
+import BrandMark from "@/components/BrandMark";
 
 const COLUMN_LABEL: React.CSSProperties = {
   fontSize: 12,
@@ -75,16 +76,7 @@ export default function SiteFooter() {
                 textDecoration: "none",
               }}
             >
-              <span
-                aria-hidden="true"
-                style={{
-                  width: 12,
-                  height: 12,
-                  background: color.azure,
-                  transform: "rotate(45deg)",
-                  flex: "0 0 auto",
-                }}
-              />
+              <BrandMark size={30} variant="reversed" />
               <span
                 style={{
                   fontWeight: 800,

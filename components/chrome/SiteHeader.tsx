@@ -14,6 +14,7 @@
 import Link from "next/link";
 import { glass, shadow, color } from "@/lib/theme";
 import { Magnetic } from "@/lib/motion";
+import BrandMark from "@/components/BrandMark";
 
 const PILL_BASE: React.CSSProperties = {
   ...glass(0.62),
@@ -37,16 +38,7 @@ function Logo({ onClick }: { onClick?: () => void }) {
         textDecoration: "none",
       }}
     >
-      <span
-        aria-hidden="true"
-        style={{
-          width: 12,
-          height: 12,
-          background: color.brand,
-          transform: "rotate(45deg)",
-          flex: "0 0 auto",
-        }}
-      />
+      <BrandMark size={30} variant="ink" />
       <span
         className="text-[18px] tracking-[0.12em] sm:text-[22px] sm:tracking-[0.18em]"
         style={{

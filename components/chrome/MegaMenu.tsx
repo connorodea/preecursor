@@ -18,6 +18,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { LEFT_ENTRIES, PANELS, type LeftEntry, type Leaf } from "@/lib/ia";
 import { color, inkA } from "@/lib/theme";
 import { EASE } from "@/lib/motion";
+import BrandMark from "@/components/BrandMark";
 
 const DEFAULT_PANEL = "industries";
 const HAIRLINE = inkA(0.08);
@@ -349,16 +350,7 @@ function Logo({ onClick }: { onClick: () => void }) {
       aria-label="Preecursor — home"
       style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}
     >
-      <span
-        aria-hidden="true"
-        style={{
-          width: 12,
-          height: 12,
-          background: color.brand,
-          transform: "rotate(45deg)",
-          flex: "0 0 auto",
-        }}
-      />
+      <BrandMark size={30} variant="ink" />
       <span
         style={{
           fontWeight: 800,
