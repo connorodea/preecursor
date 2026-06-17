@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import ShaderField from "@/components/ShaderField";
+import SectionSeam from "./SectionSeam";
 import { EASE, Magnetic } from "@/lib/motion";
-import { gradient, inkA, shadow } from "@/lib/theme";
+import { gradient, inkA, shadow, color, WASH_EDGE } from "@/lib/theme";
 
 export default function Hero() {
   const reduce = useReducedMotion();
@@ -26,13 +27,24 @@ export default function Hero() {
         position: "relative",
         minHeight: "100vh",
         overflow: "hidden",
-        background: gradient.heroWash,
+        // Wash flattened so its bottom edge is a uniform WASH_EDGE — the seam
+        // below ramps cleanly from that single colour into the navy band.
+        background: gradient.washFlat(WASH_EDGE),
         display: "flex",
         flexDirection: "column",
       }}
     >
-      {/* Animated aurora field — reacts subtly to the pointer in the hero. */}
-      <ShaderField interactive style={{ zIndex: 0 }} />
+      {/* Animated aurora field — reacts subtly to the pointer in the hero.
+          Masked so the aurora thins out toward the navy band below. */}
+      <ShaderField
+        interactive
+        style={{ zIndex: 0 }}
+        maskImage="linear-gradient(180deg, #000 0%, #000 52%, transparent 88%)"
+      />
+
+      {/* Bottom seam — the page sinks from the light wash into the navy
+          ImpactBand below. Owned here (the light side carries the ramp). */}
+      <SectionSeam edge="bottom" from={WASH_EDGE} to={color.ink} />
 
       {/* Light vignette for headline legibility. */}
       <div
@@ -49,7 +61,7 @@ export default function Hero() {
 
       {/* Hero content */}
       <div
-        className="mx-auto w-full max-w-[1340px] px-6 pt-10 pb-20 md:px-10 lg:px-[50px] lg:pb-[88px]"
+        className="mx-auto w-full max-w-[1340px] px-6 pt-10 pb-[180px] md:px-10 lg:px-[50px] lg:pb-[240px]"
         style={{
           position: "relative",
           zIndex: 5,

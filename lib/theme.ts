@@ -26,10 +26,24 @@ export const inkA = (a: number) => `rgba(17,33,56,${a})`;
 /** Mist (on-dark text) at an alpha. */
 export const mistA = (a: number) => `rgba(234,241,251,${a})`;
 
+/**
+ * Canonical flat handoff colour for the hero / contact wash bottoms. The wash
+ * resolves to this uniform tone at its lower edge so a SectionSeam can ramp
+ * cleanly from it into the navy below (no diagonal banding at the seam).
+ */
+export const WASH_EDGE = "#dce8f7";
+
 /** Signature gradients reused across hero / contact / cards. */
 export const gradient = {
   /** Hero & contact light wash. */
   heroWash: "linear-gradient(125deg,#d8e6f7 0%,#e6eefb 42%,#d2e4f5 100%)",
+  /**
+   * The diagonal heroWash flattened so its BOTTOM edge resolves to a uniform
+   * `bottomColor` — a vertical overlay (transparent → bottomColor) laid over
+   * the diagonal wash. Lets a SectionSeam ramp from a single known colour.
+   */
+  washFlat: (bottomColor: string) =>
+    `linear-gradient(180deg, transparent 0%, transparent 52%, ${bottomColor} 100%), linear-gradient(125deg,#d8e6f7 0%,#e6eefb 42%,#d2e4f5 100%)`,
   /** Dark band with a soft blue corner glow. */
   inkBand: (corner = "82% -10%") =>
     `radial-gradient(130% 150% at ${corner}, #1a356180, transparent 55%), ${color.ink}`,

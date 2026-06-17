@@ -4,15 +4,22 @@ import Link from "next/link";
 import PlaceholderImage from "@/components/PlaceholderImage";
 import { Reveal } from "@/lib/motion";
 import { Eyebrow } from "./_shared";
+import SectionSeam from "./SectionSeam";
 import { color, inkA } from "@/lib/theme";
 
 export default function Careers() {
   return (
-    <section style={{ background: "#e1e8f1" }}>
-      <div className="grid grid-cols-1 items-stretch lg:grid-cols-2">
+    <section
+      style={{ position: "relative", overflow: "hidden", background: color.paper2 }}
+    >
+      {/* Symmetric seams — rises out of the People navy pool at the top and
+          sinks into the FeaturedInsights navy pool at the bottom. */}
+      <SectionSeam edge="top" from={color.ink} to={color.paper2} />
+      <SectionSeam edge="bottom" from={color.paper2} to={color.ink} />
+      <div className="relative z-[1] grid grid-cols-1 items-stretch lg:grid-cols-2">
         {/* Left — copy */}
         <Reveal
-          className="px-6 py-20 md:px-10 lg:py-[108px] lg:pr-14 lg:pl-[max(50px,calc((100vw-1340px)/2+50px))]"
+          className="px-6 pt-[180px] pb-[180px] md:px-10 lg:pt-[240px] lg:pb-[240px] lg:pr-14 lg:pl-[max(50px,calc((100vw-1340px)/2+50px))]"
         >
           <Eyebrow
             label="Preecursor careers"
@@ -82,9 +89,10 @@ export default function Careers() {
           </div>
         </Reveal>
 
-        {/* Right — framed image */}
+        {/* Right — framed image. Extra vertical padding keeps the frame clear
+            of the top + bottom ramps. */}
         <div
-          className="min-h-[420px] p-10 md:min-h-[560px] md:p-14"
+          className="min-h-[420px] px-10 py-[200px] md:min-h-[560px] md:px-14 md:py-[240px]"
           style={{
             position: "relative",
             overflow: "hidden",

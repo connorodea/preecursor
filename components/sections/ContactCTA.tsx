@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import ShaderField from "@/components/ShaderField";
+import SectionSeam from "./SectionSeam";
 import { Reveal, Magnetic } from "@/lib/motion";
-import { color, inkA } from "@/lib/theme";
+import { color, inkA, WASH_EDGE } from "@/lib/theme";
 
 export default function ContactCTA() {
   return (
@@ -12,14 +13,26 @@ export default function ContactCTA() {
       style={{
         position: "relative",
         overflow: "hidden",
+        // Diagonal wash flattened at BOTH edges to the uniform WASH_EDGE so the
+        // top + bottom seams ramp cleanly from a single colour into the navy
+        // pools above (FeaturedInsights) and below (the footer).
         background:
-          "linear-gradient(125deg,#d8e6f7 0%,#e6eefb 45%,#d2e4f5 100%)",
+          "linear-gradient(180deg, #dce8f7 0%, transparent 22%, transparent 78%, #dce8f7 100%), linear-gradient(125deg,#d8e6f7 0%,#e6eefb 45%,#d2e4f5 100%)",
       }}
     >
-      <ShaderField style={{ zIndex: 0 }} />
+      {/* Masked aurora — fades in at the top, out at the bottom. */}
+      <ShaderField
+        style={{ zIndex: 0 }}
+        maskImage="linear-gradient(180deg, transparent 0%, #000 26%, #000 74%, transparent 100%)"
+      />
+
+      {/* Symmetric seams — rises out of the FeaturedInsights navy pool at the
+          top and sinks into the solid-navy footer below at the bottom. */}
+      <SectionSeam edge="top" from={color.ink} to={WASH_EDGE} />
+      <SectionSeam edge="bottom" from={WASH_EDGE} to={color.ink} />
 
       <div
-        className="mx-auto max-w-[1340px] px-6 py-24 md:px-10 lg:px-[50px] lg:py-[128px]"
+        className="mx-auto max-w-[1340px] px-6 pt-[200px] pb-[200px] md:px-10 lg:px-[50px] lg:pt-[240px] lg:pb-[240px]"
         style={{
           position: "relative",
           zIndex: 5,

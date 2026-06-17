@@ -2,21 +2,20 @@
 
 import PlaceholderImage from "@/components/PlaceholderImage";
 import { Reveal } from "@/lib/motion";
-import { EdgeFade } from "./_shared";
-import { gradient, color, mistA } from "@/lib/theme";
+import { color, mistA } from "@/lib/theme";
 
 export default function FeaturedInsights() {
   return (
     <section
       style={{
+        // Solid navy "pool" — the dissolve is owned by the light neighbours
+        // (Careers above, ContactCTA below) via SectionSeam.
         position: "relative",
         overflow: "hidden",
-        background: gradient.inkBand("15% -10%"),
+        background: color.ink,
         color: color.mist,
       }}
     >
-      <EdgeFade top bottom={false} topColor={color.paper2} size={120} />
-      <EdgeFade top={false} bottom bottomColor="#d8e6f7" size={132} />
       {/* Top split grid */}
       <div className="relative z-[1] grid grid-cols-1 lg:grid-cols-2">
         <Reveal

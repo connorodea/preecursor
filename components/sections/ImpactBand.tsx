@@ -1,8 +1,7 @@
 "use client";
 
 import { Reveal } from "@/lib/motion";
-import { EdgeFade } from "./_shared";
-import { gradient, color, mistA } from "@/lib/theme";
+import { color, mistA } from "@/lib/theme";
 
 const NUM_STYLE: React.CSSProperties = {
   fontFamily: "var(--font-newsreader)",
@@ -46,13 +45,12 @@ export default function ImpactBand() {
   return (
     <section
       style={{
-        position: "relative",
-        overflow: "hidden",
-        background: gradient.inkBand("82% -10%"),
+        // Solid navy "pool" — the dissolve is owned by the light neighbours
+        // (Hero below the wash, Capabilities above) via SectionSeam.
+        background: color.ink,
         color: color.mist,
       }}
     >
-      <EdgeFade topColor="#d9e6f7" bottomColor={color.paper} size={132} />
       <div className="relative mx-auto max-w-[1340px] px-6 py-16 md:px-10 lg:px-[50px] lg:py-[78px]">
         {/* Eyebrow row */}
         <div

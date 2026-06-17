@@ -38,12 +38,15 @@ describe("ImpactBand", () => {
     expect(out).not.toContain("Enterprise value influenced");
   });
 
-  it("renders the de-fogged EdgeFade — neighbour seam colours, blue waypoint, size 132", () => {
+  it("is a solid-navy pool — no EdgeFade band, no gradient background", () => {
     const out = html();
-    expect(out).toContain("linear-gradient(180deg, #d9e6f7 0%"); // top → hero light
-    expect(out).toContain("linear-gradient(0deg, #edf1f7 0%"); // bottom → paper
-    expect(out).toContain("rgba(60,98,164,0.42)"); // saturated-blue waypoint, not grey
-    expect(out).not.toContain("#e6eefb, transparent"); // old grey-fog form gone
-    expect((out.match(/height:132px/g) ?? []).length).toBe(2);
+    // Background is solid ink; the dissolve is owned by the light neighbours.
+    expect(out).toContain("background:#112138");
+    // No EdgeFade / gradient band lives inside this section any more.
+    expect(out).not.toContain("linear-gradient");
+    expect(out).not.toContain("rgba(60,98,164,0.42)"); // old EdgeFade waypoint gone
+    // Content still renders above the (now external) seam.
+    expect(out).toContain("How we work");
+    expect(out).toContain("Senior-only");
   });
 });

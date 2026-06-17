@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { color, inkA, mistA, gradient, glass, shadow, container } from "./theme";
+import { color, inkA, mistA, gradient, glass, shadow, container, WASH_EDGE } from "./theme";
 
 describe("theme palette", () => {
   it("exposes the brand colours", () => {
@@ -28,6 +28,14 @@ describe("gradients", () => {
     expect(gradient.inkBand()).toContain(color.ink);
     expect(gradient.inkBand()).toContain("82% -10%");
     expect(gradient.inkBand("18% -10%")).toContain("18% -10%");
+  });
+  it("washFlat resolves the bottom to a uniform flat colour over the diagonal wash", () => {
+    expect(WASH_EDGE).toBe("#dce8f7");
+    const w = gradient.washFlat(WASH_EDGE);
+    expect(w).toContain("linear-gradient");
+    expect(w).toContain(WASH_EDGE); // the flat handoff colour is present
+    // the diagonal heroWash is layered underneath
+    expect(w).toContain("#d8e6f7");
   });
 });
 

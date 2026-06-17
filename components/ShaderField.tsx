@@ -142,9 +142,20 @@ type Props = {
   style?: React.CSSProperties;
   /** Enable the subtle pointer-reactive warp/brighten (hero only). */
   interactive?: boolean;
+  /**
+   * Optional CSS mask applied to the aurora canvas so its alpha fades at the
+   * edges (dissolving into adjacent sections instead of hard-clipping). Set as
+   * both `maskImage` and `WebkitMaskImage` on the canvas (and the host).
+   */
+  maskImage?: string;
 };
 
-export default function ShaderField({ className, style, interactive = false }: Props) {
+export default function ShaderField({
+  className,
+  style,
+  interactive = false,
+  maskImage,
+}: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -158,6 +169,12 @@ export default function ShaderField({ className, style, interactive = false }: P
     const canvas = document.createElement("canvas");
     canvas.style.cssText =
       "position:absolute;inset:0;width:100%;height:100%;display:block";
+    // Fade the aurora's alpha toward the edges so it dissolves into the
+    // neighbouring sections rather than clipping at a hard boundary.
+    if (maskImage) {
+      canvas.style.maskImage = maskImage;
+      canvas.style.webkitMaskImage = maskImage;
+    }
     host.appendChild(canvas);
 
     let gl: WebGLRenderingContext | null = null;
@@ -294,14 +311,22 @@ export default function ShaderField({ className, style, interactive = false }: P
       host.removeEventListener("pointerleave", onLeave);
       canvas.remove();
     };
-  }, [interactive]);
+  }, [interactive, maskImage]);
 
   return (
     <div
       ref={hostRef}
       aria-hidden="true"
       className={className}
-      style={{ position: "absolute", inset: 0, overflow: "hidden", ...style }}
+      style={{
+        position: "absolute",
+        inset: 0,
+        overflow: "hidden",
+        ...(maskImage
+          ? { maskImage, WebkitMaskImage: maskImage }
+          : null),
+        ...style,
+      }}
     />
   );
 }

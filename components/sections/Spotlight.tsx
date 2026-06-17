@@ -3,6 +3,7 @@
 import Link from "next/link";
 import PlaceholderImage from "@/components/PlaceholderImage";
 import { Reveal } from "@/lib/motion";
+import SectionSeam from "./SectionSeam";
 import { color, mistA } from "@/lib/theme";
 
 /** Azure pill shared by the spotlight cards. */
@@ -47,9 +48,13 @@ function SmallEyebrow({ label }: { label: string }) {
 
 export default function Spotlight() {
   return (
-    <section>
+    <section
+      style={{ position: "relative", overflow: "hidden", background: color.paper }}
+    >
+      {/* Subtle light↔light seam — paper2 (SelectedWork) into paper. */}
+      <SectionSeam edge="top" from={color.paper2} to={color.paper} height={150} />
       <div
-        className="mx-auto grid max-w-[1340px] grid-cols-1 px-6 py-20 md:px-10 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:px-[50px] lg:py-[108px]"
+        className="relative z-[1] mx-auto grid max-w-[1340px] grid-cols-1 px-6 py-20 md:px-10 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:px-[50px] lg:py-[108px]"
         style={{
           gap: 24,
         }}
