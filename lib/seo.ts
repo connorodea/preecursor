@@ -8,6 +8,9 @@ import { INDUSTRY_LEAVES, CAPABILITY_LEAVES, CONTACT_EMAIL } from "./ia";
 import { WORK_CASES } from "./content/work";
 import { INSIGHTS } from "./content/insights";
 import { PROGRAMMATIC_ROUTES } from "./content/programmatic";
+import { USE_CASE_ROUTES } from "./content/usecases";
+import { GLOSSARY_ROUTES } from "./content/glossary";
+import { COMPARISON_ROUTES } from "./content/comparisons";
 
 export const BASE_URL = "https://preecursor.com";
 
@@ -34,6 +37,9 @@ export function siteRoutes(): string[] {
     ...WORK_CASES.map((c) => `/work/${c.slug}`),
     ...INSIGHTS.map((a) => `/insights/${a.slug}`),
     ...PROGRAMMATIC_ROUTES,
+    ...USE_CASE_ROUTES,
+    ...GLOSSARY_ROUTES,
+    ...COMPARISON_ROUTES,
   ];
 }
 
