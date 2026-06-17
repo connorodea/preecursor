@@ -394,6 +394,64 @@ export const COMPARISONS: Comparison[] = [
       { label: "Boutique vs big-firm AI consulting", href: "/compare/boutique-vs-big-firm-ai-consulting" },
     ],
   },
+  {
+    slug: "rag-vs-fine-tuning",
+    title: "RAG vs Fine-Tuning — Which to Use and When",
+    h1: "RAG vs fine-tuning",
+    metaDescription:
+      "An honest comparison of retrieval-augmented generation and fine-tuning for adapting a language model to your needs — what each actually changes, when each wins, and why they are often combined.",
+    optionA: {
+      name: "RAG (retrieval-augmented generation)",
+      summary:
+        "Grounds answers at query time by retrieving your documents into the prompt — the model's weights are untouched.",
+    },
+    optionB: {
+      name: "Fine-tuning",
+      summary:
+        "Adjusts the model's weights by training on examples, baking new behaviour, format, or domain style into the model itself.",
+    },
+    intro:
+      "\"RAG or fine-tuning?\" is one of the first real architecture decisions on most applied-AI builds, and the two are often framed as rivals when they actually solve different problems. RAG changes what the model knows at the moment it answers; fine-tuning changes how the model behaves in general. Picking the wrong one is a common and expensive mistake — most often, fine-tuning to teach facts that should have been retrieved. This page lays out what each technique actually does so you can match it to the problem in front of you.",
+    rows: [
+      {
+        dimension: "What it changes",
+        a: "Adds knowledge at query time by retrieving relevant documents into the prompt. The model itself is unchanged.",
+        b: "Changes the model's weights by training on examples, so new behaviour, format, or style is built in.",
+      },
+      {
+        dimension: "Best for",
+        a: "Grounding answers in specific, private, or fast-changing facts — knowledge bases, documentation, policies, records.",
+        b: "Teaching a consistent output format, a domain tone, or a narrow task the base model handles clumsily.",
+      },
+      {
+        dimension: "Keeping knowledge current",
+        a: "Re-index the documents and the system is up to date — no retraining required.",
+        b: "New facts need a fresh training run; between runs the model's knowledge goes stale.",
+      },
+      {
+        dimension: "Traceability",
+        a: "Answers can cite the exact passages they were drawn from, which matters in regulated settings.",
+        b: "Knowledge is diffused into the weights — there is no source to point back to.",
+      },
+      {
+        dimension: "Cost and effort",
+        a: "Mostly engineering: chunking, embeddings, retrieval tuning, and an index to operate.",
+        b: "Data preparation plus training compute, and recurring cost to re-train as the data shifts.",
+      },
+      {
+        dimension: "Effect on hallucination",
+        a: "Lower when retrieval is good; the failure mode is confidently answering when the right context wasn't found.",
+        b: "Improves format and adherence, but does not ground facts — the model can still invent confidently.",
+      },
+    ],
+    verdict:
+      "For almost any \"make the model know our data\" problem, start with RAG: it is cheaper, keeps knowledge current, and lets you cite sources. Reach for fine-tuning when the issue is behaviour rather than knowledge — a consistent output format, a domain voice, a narrow task the base model does poorly, or cost and latency pressure that favours a smaller specialised model. The two are not mutually exclusive: many production systems fine-tune for format and tone while using RAG for facts. The costly mistake is fine-tuning to teach facts that change, then watching the model quietly drift out of date.",
+    related: [
+      { label: "What is RAG?", href: "/glossary/retrieval-augmented-generation-rag" },
+      { label: "What is fine-tuning?", href: "/glossary/fine-tuning" },
+      { label: "AI consulting", href: "/ai-consulting" },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {
