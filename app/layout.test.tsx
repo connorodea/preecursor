@@ -9,12 +9,16 @@ vi.mock("next/font/google", () => ({
   Archivo: () => ({ variable: "--font-archivo", className: "" }),
 }));
 
-const { default: RootLayout, metadata } = await import("./layout");
+const { default: RootLayout, metadata, viewport } = await import("./layout");
 
 describe("app/layout (RootLayout)", () => {
   it("exposes site-level metadata", () => {
     expect(metadata.title).toBeTruthy();
     expect(typeof metadata.description).toBe("string");
+  });
+
+  it("sets a brand theme-color for the mobile browser chrome", () => {
+    expect(viewport.themeColor).toBe("#dce8f7");
   });
 
   it("renders <html lang=en> with the JSON-LD Organization schema", () => {
