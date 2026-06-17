@@ -28,7 +28,12 @@ describe("ContactCTA", () => {
     expect(out).toContain('href="/work"');
   });
 
-  it("renders the background ShaderField host (aria-hidden)", () => {
-    expect(html()).toContain('aria-hidden="true"');
+  it("is a solid-navy finale with the aurora lazy-mounted (deferred from SSR)", () => {
+    const out = html();
+    // Navy background — the aurora glows over it client-side; no grey wash.
+    expect(out).toContain("background:#112138");
+    // The decorative WebGL field is deferred until near-viewport, so its
+    // aria-hidden host isn't present in the static markup.
+    expect(out).not.toContain('aria-hidden="true"');
   });
 });
