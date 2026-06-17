@@ -1,9 +1,25 @@
 import { describe, it, expect } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { StrategyIcon, BuildIcon, ScaleIcon, EnableIcon } from "./icons";
+import {
+  StrategyIcon,
+  BuildIcon,
+  ScaleIcon,
+  EnableIcon,
+  EmbedIcon,
+  OutcomeIcon,
+  HandoffIcon,
+} from "./icons";
 
-const ICONS = { StrategyIcon, BuildIcon, ScaleIcon, EnableIcon };
+const ICONS = {
+  StrategyIcon,
+  BuildIcon,
+  ScaleIcon,
+  EnableIcon,
+  EmbedIcon,
+  OutcomeIcon,
+  HandoffIcon,
+};
 
 describe("icons", () => {
   it("each icon renders a 24x24 currentColor stroke SVG", () => {
