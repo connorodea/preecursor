@@ -50,6 +50,12 @@ describe("SectionSeam", () => {
     expect(out).toContain("rgba(237,241,247,0.5)");
   });
 
+  it("expands #rgb shorthand hex when deriving the glow", () => {
+    // #abc → #aabbcc → rgb(170,187,204); lighter than navy, so it's the glow.
+    const out = html({ edge: "top", from: "#112138", to: "#abc" });
+    expect(out).toContain("rgba(170,187,204,0.5)");
+  });
+
   it("accepts an explicit glow override verbatim", () => {
     const out = html({
       edge: "bottom",
