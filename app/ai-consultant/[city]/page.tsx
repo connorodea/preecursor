@@ -11,7 +11,7 @@ import {
 } from "@/components/ui";
 import { slugify } from "@/lib/ia";
 import { CITIES, getCity } from "@/lib/content/programmatic";
-import { serviceSchema, absoluteUrl } from "@/lib/seo";
+import { serviceSchema, absoluteUrl, socialMeta } from "@/lib/seo";
 import { color, inkA } from "@/lib/theme";
 
 export function generateStaticParams() {
@@ -26,12 +26,14 @@ export async function generateMetadata({
   const { city: slug } = await params;
   const c = getCity(slug);
   if (!c) return { title: "AI Consultant" };
+  const title = `AI Consultant in ${c.city}`;
+  const description = `Senior, hands-on AI consultants serving ${c.city}${
+    c.office ? "" : " (remote-first)"
+  } — applied AI from diagnostic to production. ${c.intro.slice(0, 90)}`;
   return {
-    title: `AI Consultant in ${c.city}`,
-    description: `Senior, hands-on AI consultants serving ${c.city}${
-      c.office ? "" : " (remote-first)"
-    } — applied AI from diagnostic to production. ${c.intro.slice(0, 90)}`,
-    alternates: { canonical: absoluteUrl(`/ai-consultant/${slug}`) },
+    title,
+    description,
+    ...socialMeta({ title, description, path: `/ai-consultant/${slug}` }),
   };
 }
 

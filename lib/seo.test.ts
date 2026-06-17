@@ -4,6 +4,7 @@ import {
   organizationSchema,
   websiteSchema,
   serviceSchema,
+  socialMeta,
   BASE_URL,
 } from "./seo";
 import { INDUSTRY_LEAVES, CAPABILITY_LEAVES } from "./ia";
@@ -78,6 +79,22 @@ describe("JSON-LD schema", () => {
     expect(s.url).toBe(`${BASE_URL}/ai-consulting/`);
     expect(s.provider["@type"]).toBe("Organization");
     expect(s.provider.name).toBe("Preecursor");
+  });
+});
+
+describe("socialMeta", () => {
+  it("builds canonical + OpenGraph + Twitter for a path", () => {
+    const m = socialMeta({
+      title: "AI Consulting",
+      description: "Applied-AI consulting.",
+      path: "/ai-consulting",
+    });
+    expect(m.alternates.canonical).toBe(`${BASE_URL}/ai-consulting/`);
+    expect(m.openGraph.title).toBe("AI Consulting");
+    expect(m.openGraph.url).toBe(`${BASE_URL}/ai-consulting/`);
+    expect(m.openGraph.siteName).toBe("Preecursor");
+    expect(m.twitter.card).toBe("summary_large_image");
+    expect(m.twitter.title).toBe("AI Consulting");
   });
 });
 
