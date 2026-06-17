@@ -53,29 +53,55 @@ const FRAG = `
   void main(){
     vec2 uv = gl_FragCoord.xy / u_res.xy;
     float asp = u_res.x / u_res.y;
-    vec2 p = vec2(uv.x * asp, uv.y) * 2.0;
-    float t = u_time * 0.06;
+    vec2 ar = vec2(uv.x * asp, uv.y);   // aspect-corrected coords
+    vec2 p = ar * 1.7;                   // slightly larger features than before
+    float t = u_time * 0.05;
 
-    vec2 q = vec2(fbm(p + vec2(0.0, t)), fbm(p + vec2(5.2, 1.3 - t)));
-    vec2 r = vec2(fbm(p + 2.0 * q + vec2(1.7, 9.2) + 0.15 * t),
-                  fbm(p + 2.0 * q + vec2(8.3, 2.8) - 0.13 * t));
-    float f = fbm(p + 2.4 * r);
+    // Diagonal advection — the whole field flows top-left -> bottom-right,
+    // giving the BCG-style directional drift instead of a static shimmer.
+    vec2 flow = vec2(t * 0.65, t * 0.38);
+
+    // Two-level domain warp (organic morphing masses).
+    vec2 q = vec2(fbm(p + flow), fbm(p + vec2(5.2, 1.3) - flow));
+    vec2 r = vec2(fbm(p + 2.2 * q + vec2(1.7, 9.2) + 0.20 * t),
+                  fbm(p + 2.2 * q + vec2(8.3, 2.8) - 0.17 * t));
+    float f = fbm(p + 2.6 * r);
     f = clamp(f * 0.5 + 0.5, 0.0, 1.0);
     float rl = clamp(length(r), 0.0, 1.0);
 
-    vec3 c1 = vec3(0.847, 0.902, 0.969); // #d8e6f7 pale
-    vec3 c2 = vec3(0.561, 0.722, 0.941); // #8fb8f0 periwinkle
-    vec3 c3 = vec3(0.373, 0.784, 0.910); // #5fc8e8 cyan
-    vec3 c4 = vec3(0.890, 0.933, 0.988); // #e3eefc near-white
-    vec3 c5 = vec3(0.310, 0.557, 0.941); // #4f8ef0 azure
+    // A luminous core that drifts in a slow Lissajous path (the bright
+    // "hot spot" that flows through BCG's mesh), nudged by the warp.
+    vec2 center = vec2(0.66 + 0.16 * sin(t * 0.7) + 0.10 * (r.x - 0.5),
+                       0.46 + 0.16 * cos(t * 0.55) + 0.10 * (r.y - 0.5));
+    float d = distance(ar, vec2(center.x * asp, center.y));
+    float glow = smoothstep(1.05, 0.0, d) * (0.55 + 0.45 * f);
 
-    vec3 col = mix(c1, c2, smoothstep(0.25, 0.65, f));
-    col = mix(col, c3, smoothstep(0.55, 0.92, f) * 0.55);
-    col = mix(col, c4, smoothstep(0.0, 0.30, 1.0 - f) * 0.8);
-    col = mix(col, c5, smoothstep(0.6, 1.0, rl) * 0.30);
-    // lighten the left third so headline text stays legible
-    col = mix(col, c4, (1.0 - smoothstep(0.0, 0.6, uv.x)) * 0.40);
-    col = mix(col, vec3(1.0), 0.05);
+    // A second, sharper highlight that rides the high ridges of the warp —
+    // the sweeping bright streak.
+    float streak = smoothstep(0.58, 1.0, f) * smoothstep(0.45, 1.0, rl);
+
+    // Blue brand palette (Preecursor is the blue counterpart to BCG's green).
+    vec3 deep  = vec3(0.169, 0.392, 0.831); // ~#2b64d4 rich blue (depth)
+    vec3 azure = vec3(0.310, 0.557, 0.941); // #4f8ef0
+    vec3 peri  = vec3(0.561, 0.722, 0.941); // #8fb8f0 periwinkle
+    vec3 cyan  = vec3(0.373, 0.784, 0.910); // #5fc8e8
+    vec3 pale  = vec3(0.847, 0.902, 0.969); // #d8e6f7
+    vec3 white = vec3(0.957, 0.976, 1.000); // luminous near-white
+
+    // Rich, flowing masses (deep -> azure -> periwinkle) with cyan ribbons,
+    // pale only in the very brightest ridges, then a blown-out luminous core —
+    // the depth + luminance range that reads like the BCG mesh.
+    vec3 col = mix(deep, azure, smoothstep(0.10, 0.55, f));
+    col = mix(col, peri, smoothstep(0.45, 0.88, f));
+    col = mix(col, cyan, smoothstep(0.45, 1.0, rl) * 0.60);
+    col = mix(col, pale, smoothstep(0.72, 1.0, f) * 0.55);
+    col = mix(col, white, clamp(glow * 0.72 + streak * 0.42, 0.0, 0.90));
+
+    // Keep the left side light so the dark headline stays legible — fade the
+    // rich field out to pale/white over the left ~55%.
+    float leftLight = 1.0 - smoothstep(0.0, 0.55, uv.x);
+    col = mix(col, pale, leftLight * 0.62);
+    col = mix(col, white, leftLight * 0.28);
 
     gl_FragColor = vec4(col, 1.0);
   }
