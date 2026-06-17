@@ -5,23 +5,32 @@ import EducationMarks from "./EducationMarks";
 
 const html = () => renderToStaticMarkup(createElement(EducationMarks));
 
+const SCHOOLS = [
+  "University of Michigan",
+  "Columbia University",
+  "Harvard University",
+  "Johns Hopkins University",
+  "UC Berkeley",
+];
+
 describe("EducationMarks", () => {
-  it("renders both institutions by name", () => {
+  it("renders all five institutions by name", () => {
     const out = html();
-    expect(out).toContain("University of Michigan");
-    expect(out).toContain("Columbia University");
+    for (const s of SCHOOLS) expect(out, s).toContain(s);
   });
 
   it("renders an emblem (svg) for each institution", () => {
     const out = html();
-    expect((out.match(/<svg/g) ?? []).length).toBe(2);
+    expect((out.match(/<svg/g) ?? []).length).toBe(SCHOOLS.length);
   });
 
-  it("uses Michigan maize for its emblem on the dark band", () => {
+  it("colours the Michigan emblem maize", () => {
     expect(html()).toContain("#ffcb05");
   });
 
-  it("marks the decorative emblems aria-hidden", () => {
-    expect((html().match(/aria-hidden="true"/g) ?? []).length).toBe(2);
+  it("marks every decorative emblem aria-hidden", () => {
+    expect((html().match(/aria-hidden="true"/g) ?? []).length).toBe(
+      SCHOOLS.length,
+    );
   });
 });

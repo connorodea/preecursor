@@ -1,107 +1,76 @@
 /**
- * EducationMarks — the two universities where Preecursor's co-founders earned
- * their master's degrees, shown as a small honest credential lockup (emblem +
- * institution name). Emblems are simple original SVG glyphs (a block "M" and a
- * coronet) tuned to read on the dark People band; the wordmark uses the site
- * serif. Recolour via the `tone` prop so the same marks work on light or dark.
+ * EducationMarks — the universities where Preecursor's co-founders studied,
+ * shown as an honest credential strip (a small emblem + the institution name).
+ *
+ * The emblem is a single original shield glyph, recoloured per school in that
+ * school's brand colour — a clean, original treatment (not a reproduction of
+ * any institution's crest or seal) that simply signals the affiliation. The
+ * recognisable element is the institution name; colours aid quick reading on
+ * the dark band.
  */
 
-type Tone = { emblemMaize: string; emblemLight: string; text: string };
+type School = { name: string; mark: string };
 
-const DARK: Tone = {
-  emblemMaize: "#ffcb05", // Michigan maize
-  emblemLight: "#9fc2e8", // soft Columbia blue, legible on navy
-  text: "#eaf1fb", // mist
-};
+// Brand-derived accent colours chosen to stay legible on the navy band.
+const SCHOOLS: School[] = [
+  { name: "University of Michigan", mark: "#ffcb05" }, // maize
+  { name: "Columbia University", mark: "#9fc2e8" }, // Columbia blue (light)
+  { name: "Harvard University", mark: "#e0697a" }, // crimson, lightened for navy
+  { name: "Johns Hopkins University", mark: "#68ace5" }, // Hopkins spirit blue
+  { name: "UC Berkeley", mark: "#fdb515" }, // California gold
+];
 
-function Lockup({
-  emblem,
-  name,
-  textColor,
+function ShieldEmblem({ fill }: { fill: string }) {
+  return (
+    <svg
+      width="22"
+      height="26"
+      viewBox="0 0 24 28"
+      aria-hidden="true"
+      role="presentation"
+    >
+      <path
+        d="M12 1 23 5v9c0 7-5 11-11 13C6 25 1 21 1 14V5Z"
+        fill={fill}
+      />
+    </svg>
+  );
+}
+
+export default function EducationMarks({
+  textColor = "#eaf1fb",
 }: {
-  emblem: React.ReactNode;
-  name: string;
-  textColor: string;
+  textColor?: string;
 }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
-      {emblem}
-      <span
-        style={{
-          fontFamily: "var(--font-newsreader)",
-          fontSize: 19,
-          lineHeight: 1.05,
-          letterSpacing: "-0.005em",
-          color: textColor,
-          whiteSpace: "nowrap",
-        }}
-      >
-        {name}
-      </span>
-    </div>
-  );
-}
-
-/** Simplified block-M emblem (original geometric rendering). */
-function MichiganEmblem({ fill }: { fill: string }) {
-  return (
-    <svg
-      width="30"
-      height="30"
-      viewBox="0 0 100 100"
-      aria-hidden="true"
-      role="presentation"
-    >
-      <path
-        d="M6 88V12h22l22 30 22-30h22v76H72V44L55 67H45L28 44v44Z"
-        fill={fill}
-      />
-    </svg>
-  );
-}
-
-/** Simplified coronet emblem (original geometric rendering). */
-function ColumbiaEmblem({ fill }: { fill: string }) {
-  return (
-    <svg
-      width="30"
-      height="30"
-      viewBox="0 0 100 100"
-      aria-hidden="true"
-      role="presentation"
-    >
-      {/* small cross atop the centre point */}
-      <path d="M46 6h8v9h9v8h-9v9h-8v-9h-9v-8h9Z" fill={fill} />
-      {/* coronet: zig-zag points rising from a base band */}
-      <path
-        d="M12 70 L26 40 L40 62 L50 36 L60 62 L74 40 L88 70 Z"
-        fill={fill}
-      />
-      <rect x="14" y="72" width="72" height="13" rx="2" fill={fill} />
-    </svg>
-  );
-}
-
-export default function EducationMarks({ tone = DARK }: { tone?: Tone }) {
   return (
     <div
       style={{
         display: "flex",
         alignItems: "center",
-        gap: 40,
+        gap: "18px 38px",
         flexWrap: "wrap",
       }}
     >
-      <Lockup
-        emblem={<MichiganEmblem fill={tone.emblemMaize} />}
-        name="University of Michigan"
-        textColor={tone.text}
-      />
-      <Lockup
-        emblem={<ColumbiaEmblem fill={tone.emblemLight} />}
-        name="Columbia University"
-        textColor={tone.text}
-      />
+      {SCHOOLS.map((s) => (
+        <div
+          key={s.name}
+          style={{ display: "flex", alignItems: "center", gap: 11 }}
+        >
+          <ShieldEmblem fill={s.mark} />
+          <span
+            style={{
+              fontFamily: "var(--font-newsreader)",
+              fontSize: 17.5,
+              lineHeight: 1.05,
+              letterSpacing: "-0.005em",
+              color: textColor,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {s.name}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }

@@ -37,8 +37,8 @@ type RevealProps = HTMLMotionProps<"div"> & {
 
 export function Reveal({
   delay = 0,
-  y = 28,
-  duration = 0.7,
+  y = 8,
+  duration = 0.85,
   children,
   ...rest
 }: RevealProps) {
@@ -68,7 +68,7 @@ const staggerParent = (stagger: number, start: number): Variants => ({
 
 const staggerChild = (y: number): Variants => ({
   hidden: { opacity: 0, y },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.85, ease: EASE } },
 });
 
 export function Stagger({
@@ -94,7 +94,7 @@ export function Stagger({
 
 export function StaggerItem({
   children,
-  y = 24,
+  y = 8,
   ...rest
 }: HTMLMotionProps<"div"> & { y?: number; children: ReactNode }) {
   const reduce = useReducedMotion();

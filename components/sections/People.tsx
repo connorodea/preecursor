@@ -79,7 +79,7 @@ export default function People() {
                 marginBottom: 24,
               }}
             >
-              Our co-founders earned their master&rsquo;s degrees at
+              Our co-founders studied at
             </div>
             <EducationMarks />
           </div>
