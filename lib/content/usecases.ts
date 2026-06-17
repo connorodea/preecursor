@@ -406,6 +406,43 @@ export const USE_CASES: UseCase[] = [
       { label: "AI consulting for the public sector", href: "/ai-consulting/public-sector" },
     ],
   },
+
+  {
+    slug: "agentic-workflow-automation",
+    name: "Agentic workflow automation",
+    h1: "AI consulting for agentic workflow automation",
+    title: "AI Consulting for Agentic Workflow Automation",
+    metaDescription:
+      "Applied-AI consulting for agentic workflow automation: agents that carry multi-step, multi-system work end to end — with the bounded tool surface, evals, and observability to run them safely in production.",
+    lede: "Agents that carry multi-step work across your systems end to end — bounded, evaluated, and observable enough to trust in production.",
+    problem:
+      "A lot of work is multi-step and spread across several systems: a request arrives, someone checks three tools, copies data between them, applies judgment, and files a result. It is too variable for a rules engine and too repetitive for senior people, so it sits in a queue. The temptation is to point an autonomous agent at it; the hard part is bounding what the agent can touch, proving it does the right thing on real cases, and being able to see every step it took when something goes wrong.",
+    approach: [
+      {
+        title: "A tight, well-bounded tool surface",
+        desc: "We define exactly which systems and actions the agent can reach, with permissions and reversibility designed in — so its autonomy never exceeds what the task actually needs.",
+      },
+      {
+        title: "Evaluation against real cases",
+        desc: "We test the agent on your real historical workload, not demos — measuring completion, error rate, and the cases where it should stop and ask, before it touches anything live.",
+      },
+      {
+        title: "Human-in-the-loop where it earns its place",
+        desc: "High-stakes or low-confidence steps route to a person while routine ones run unattended; the boundary is explicit and widens only as the evaluations hold.",
+      },
+      {
+        title: "Full observability of every step",
+        desc: "Every decision, tool call, and output is traced, so you can audit what the agent did and why — and intervene the moment its behavior drifts.",
+      },
+    ],
+    outcome:
+      "A narrow workflow that runs end to end without a person in every step — and a complete trace you can stand behind when someone asks exactly what it did.",
+    relatedCapabilities: [
+      { label: "Agentic Systems", href: "/capabilities/agentic-systems" },
+      { label: "Evaluation & Safety", href: "/capabilities/evaluation-and-safety" },
+      { label: "Applied Builds", href: "/capabilities/applied-builds" },
+    ],
+  },
 ];
 
 export function getUseCase(slug: string): UseCase | undefined {
@@ -448,6 +485,7 @@ export const USE_CASE_CONCEPTS: Record<string, string[]> = {
     "ai-governance",
     "hallucination",
   ],
+  "agentic-workflow-automation": ["ai-agents", "guardrails", "evals"],
 };
 
 /** Every use-case route (hub + detail pages), for sitemap inclusion. */
