@@ -125,6 +125,63 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
   };
 }
 
+const MONTHS: Record<string, string> = {
+  January: "01",
+  February: "02",
+  March: "03",
+  April: "04",
+  May: "05",
+  June: "06",
+  July: "07",
+  August: "08",
+  September: "09",
+  October: "10",
+  November: "11",
+  December: "12",
+};
+
+/** Best-effort "Month YYYY" → ISO date (first of that month). Undefined if the
+ *  display string isn't in that shape, so callers can omit datePublished. */
+export function displayDateToISO(date: string): string | undefined {
+  const m = date.trim().match(/^([A-Za-z]+)\s+(\d{4})$/);
+  const mm = m ? MONTHS[m[1]] : undefined;
+  return m && mm ? `${m[2]}-${mm}-01` : undefined;
+}
+
+/**
+ * BlogPosting (Article) node for an insights piece — makes the article eligible
+ * for article rich results. `url` should be absolute. `image` may be a site-
+ * relative path (resolved against BASE_URL) or an absolute URL.
+ */
+export function articleSchema({
+  title,
+  description,
+  author,
+  date,
+  url,
+  image = "/og.png",
+}: {
+  title: string;
+  description: string;
+  author: string;
+  date: string;
+  url: string;
+  image?: string;
+}) {
+  const iso = displayDateToISO(date);
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: title,
+    description,
+    ...(iso ? { datePublished: iso } : {}),
+    author: { "@type": "Organization", name: author },
+    publisher: { "@type": "Organization", name: "Preecursor", url: BASE_URL },
+    image: image.startsWith("http") ? image : `${BASE_URL}${image}`,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  };
+}
+
 /** ProfessionalService node for a programmatic service/landing page. */
 export function serviceSchema({
   name,
