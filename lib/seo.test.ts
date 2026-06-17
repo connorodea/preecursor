@@ -1,0 +1,62 @@
+import { describe, it, expect } from "vitest";
+import { siteRoutes, organizationSchema, websiteSchema, BASE_URL } from "./seo";
+import { INDUSTRY_LEAVES, CAPABILITY_LEAVES } from "./ia";
+import { WORK_CASES } from "./content/work";
+import { INSIGHTS } from "./content/insights";
+
+describe("siteRoutes", () => {
+  it("includes the home page and every hub", () => {
+    const r = siteRoutes();
+    for (const p of [
+      "/",
+      "/industries",
+      "/capabilities",
+      "/labs",
+      "/insights",
+      "/work",
+      "/about",
+      "/careers",
+      "/worldwide",
+      "/leadership",
+      "/contact",
+    ]) {
+      expect(r, p).toContain(p);
+    }
+  });
+
+  it("includes every industry + capability detail route", () => {
+    const r = siteRoutes();
+    for (const l of INDUSTRY_LEAVES) expect(r).toContain(`/industries/${l.slug}`);
+    for (const l of CAPABILITY_LEAVES) expect(r).toContain(`/capabilities/${l.slug}`);
+  });
+
+  it("includes every work case + insight article", () => {
+    const r = siteRoutes();
+    for (const c of WORK_CASES) expect(r).toContain(`/work/${c.slug}`);
+    for (const a of INSIGHTS) expect(r).toContain(`/insights/${a.slug}`);
+  });
+
+  it("has no duplicate routes and they all start with '/'", () => {
+    const r = siteRoutes();
+    expect(new Set(r).size).toBe(r.length);
+    expect(r.every((p) => p.startsWith("/"))).toBe(true);
+  });
+});
+
+describe("JSON-LD schema", () => {
+  it("organizationSchema is a valid Organization node", () => {
+    const s = organizationSchema();
+    expect(s["@context"]).toBe("https://schema.org");
+    expect(s["@type"]).toBe("Organization");
+    expect(s.name).toBe("Preecursor");
+    expect(s.url).toBe(BASE_URL);
+    expect(s.email).toContain("@preecursor.com");
+  });
+
+  it("websiteSchema is a valid WebSite node pointing at the org", () => {
+    const s = websiteSchema();
+    expect(s["@type"]).toBe("WebSite");
+    expect(s.url).toBe(BASE_URL);
+    expect(s.name).toBe("Preecursor");
+  });
+});
