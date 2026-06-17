@@ -36,4 +36,14 @@ describe("Capabilities", () => {
     expect(out).toContain("04");
     expect(out).toContain("Capability &amp; Enablement");
   });
+
+  it("renders an icon for each capability row, with a hover group", () => {
+    const out = html();
+    // One geometric line icon per row (currentColor stroke SVG).
+    expect((out.match(/<svg/g) ?? []).length).toBeGreaterThanOrEqual(4);
+    expect(out).toContain('stroke="currentColor"');
+    // The calm hover micro-interaction is wired via a group + transitions.
+    expect(out).toContain("group-hover:scale-110");
+    expect(out).toContain("group-hover:text-azure");
+  });
 });

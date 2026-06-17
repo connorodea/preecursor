@@ -3,26 +3,31 @@
 import { Reveal } from "@/lib/motion";
 import { Eyebrow } from "./_shared";
 import SectionSeam from "./SectionSeam";
+import { StrategyIcon, BuildIcon, ScaleIcon, EnableIcon } from "@/components/icons";
 import { color, inkA } from "@/lib/theme";
 
 const ROWS = [
   {
     n: "01",
+    Icon: StrategyIcon,
     title: "AI Strategy & Diagnostics",
     body: "Where AI creates durable advantage — and where it doesn't. A clear-eyed portfolio of bets, sequenced by value and feasibility, with the economics modeled before a line of code is written.",
   },
   {
     n: "02",
+    Icon: BuildIcon,
     title: "Applied Builds",
     body: "Production systems, not prototypes: agents, retrieval, evaluation harnesses, and the infrastructure around them. Built to your security and reliability bar, instrumented to prove their value.",
   },
   {
     n: "03",
+    Icon: ScaleIcon,
     title: "Scale & Operate",
     body: "From pilot to platform. Evaluation, monitoring, cost control and the guardrails to run AI in front of real customers — and the operating model to keep it improving.",
   },
   {
     n: "04",
+    Icon: EnableIcon,
     title: "Capability & Enablement",
     body: "Your teams own it after we leave. We embed, document, and train — transferring the judgment, not just the codebase — so the capability compounds long after the engagement ends.",
   },
@@ -86,7 +91,7 @@ export default function Capabilities() {
           <Reveal
             key={row.n}
             delay={i * 0.07}
-            className="grid grid-cols-1 items-baseline lg:grid-cols-[84px_1fr_1.1fr]"
+            className="group grid grid-cols-1 items-start lg:grid-cols-[84px_1fr_1.1fr]"
             style={{
               gap: 34,
               padding: "36px 0",
@@ -97,13 +102,17 @@ export default function Capabilities() {
             }}
           >
             <div
-              style={{
-                fontFamily: "var(--font-newsreader)",
-                fontSize: 25,
-                color: color.brand,
-              }}
+              className="text-brand transition-colors duration-300 group-hover:text-azure"
+              style={{ display: "flex", flexDirection: "column", gap: 16 }}
             >
-              {row.n}
+              <row.Icon
+                size={30}
+                className="transition-transform duration-300 ease-out group-hover:scale-110"
+                style={{ transformOrigin: "left bottom" }}
+              />
+              <span style={{ fontFamily: "var(--font-newsreader)", fontSize: 25 }}>
+                {row.n}
+              </span>
             </div>
             <div style={{ fontSize: 26, fontWeight: 600, color: color.ink }}>
               {row.title}
