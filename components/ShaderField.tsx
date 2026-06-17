@@ -1,14 +1,16 @@
 "use client";
 
 /**
- * ShaderField — animated WebGL gradient field (domain-warped fBm flow).
+ * ShaderField — animated WebGL "aurora / flowing silk" field.
  *
- * Ported verbatim (shader maths) from the design handoff's `shader-field.js`,
- * wrapped as a React client component with three production niceties:
+ * A domain-warped fBm flow shaped into smooth silk ribbons, coloured with an
+ * iridescent blue→cyan→periwinkle→violet ramp, with fine grain to kill banding.
+ * Production niceties:
+ *   - `interactive`: the field gently warps + brightens toward the pointer
+ *   - entrance "bloom": ramps from a calm pale state to full flow on mount
  *   - pauses the RAF loop when scrolled offscreen (IntersectionObserver)
- *   - renders a single static frame (no loop) under prefers-reduced-motion
- *   - falls back to nothing if WebGL is unavailable, so the parent's CSS
- *     gradient remains visible
+ *   - one static frame (no loop, no pointer) under prefers-reduced-motion
+ *   - falls back to nothing if WebGL is unavailable (parent CSS bg shows)
  *
  * The parent must be positioned and supply a CSS background as the fallback.
  */
@@ -22,8 +24,11 @@ const VERT = `
 
 const FRAG = `
   precision highp float;
-  uniform vec2 u_res;
+  uniform vec2  u_res;
   uniform float u_time;
+  uniform vec2  u_mouse;  // pointer in [0,1] uv space (y up)
+  uniform float u_mInf;   // eased pointer influence 0..1
+  uniform float u_intro;  // entrance bloom 0..1
 
   vec2 hash22(vec2 p){
     p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
@@ -50,58 +55,71 @@ const FRAG = `
     return v;
   }
 
+  // 5-stop gradient: deep azure → azure → cyan → periwinkle → soft violet.
+  // Deliberately blue-only (no green) — Preecursor's brand, not BCG's.
+  vec3 grad5(float s){
+    vec3 c0 = vec3(0.16, 0.34, 0.76);
+    vec3 c1 = vec3(0.33, 0.58, 0.93);
+    vec3 c2 = vec3(0.44, 0.78, 0.93);
+    vec3 c3 = vec3(0.62, 0.72, 0.96);
+    vec3 c4 = vec3(0.64, 0.57, 0.96);
+    s = clamp(s, 0.0, 1.0) * 4.0;
+    if (s < 1.0) return mix(c0, c1, s);
+    if (s < 2.0) return mix(c1, c2, s - 1.0);
+    if (s < 3.0) return mix(c2, c3, s - 2.0);
+    return mix(c3, c4, s - 3.0);
+  }
+
   void main(){
     vec2 uv = gl_FragCoord.xy / u_res.xy;
     float asp = u_res.x / u_res.y;
-    vec2 ar = vec2(uv.x * asp, uv.y);   // aspect-corrected coords
-    vec2 p = ar * 1.7;                   // slightly larger features than before
-    float t = u_time * 0.05;
+    vec2 ar = vec2(uv.x * asp, uv.y);          // aspect-corrected
+    float t = u_time * 0.045;
 
-    // Diagonal advection — the whole field flows top-left -> bottom-right,
-    // giving the BCG-style directional drift instead of a static shimmer.
-    vec2 flow = vec2(t * 0.65, t * 0.38);
+    // Pointer influence — a soft falloff around the cursor.
+    vec2 m = vec2(u_mouse.x * asp, u_mouse.y);
+    float mInf = u_mInf * smoothstep(0.85, 0.0, distance(ar, m));
 
-    // Two-level domain warp (organic morphing masses).
-    vec2 q = vec2(fbm(p + flow), fbm(p + vec2(5.2, 1.3) - flow));
-    vec2 r = vec2(fbm(p + 2.2 * q + vec2(1.7, 9.2) + 0.20 * t),
-                  fbm(p + 2.2 * q + vec2(8.3, 2.8) - 0.17 * t));
-    float f = fbm(p + 2.6 * r);
-    f = clamp(f * 0.5 + 0.5, 0.0, 1.0);
+    vec2 p = ar * 1.6;
+    vec2 flow = vec2(t * 0.5, t * 0.32);       // slow diagonal drift
+
+    // Two-level domain warp, gently pulled toward the pointer.
+    vec2 q = vec2(fbm(p + flow), fbm(p + vec2(3.7, 1.3) - flow * 0.85));
+    q += (m - ar) * mInf * 0.5;
+    vec2 r = vec2(fbm(p + 1.9 * q + vec2(1.7, 9.2) + 0.16 * t),
+                  fbm(p + 1.9 * q + vec2(8.3, 2.8) - 0.13 * t));
+    float f = fbm(p + 2.3 * r);
+
+    // Silk folds — smooth bands flowing across the warped field.
+    float band = sin((f * 3.2 + r.x * 2.2 + length(q) * 1.5 + t * 0.5) * 3.14159);
+    float silk = 0.5 + 0.5 * band;
+    float fold = pow(silk, 5.0);                // bright fold sheen
+
+    float fv = clamp(f * 0.5 + 0.5, 0.0, 1.0);
     float rl = clamp(length(r), 0.0, 1.0);
 
-    // A luminous core that drifts in a slow Lissajous path (the bright
-    // "hot spot" that flows through BCG's mesh), nudged by the warp.
-    vec2 center = vec2(0.66 + 0.16 * sin(t * 0.7) + 0.10 * (r.x - 0.5),
-                       0.46 + 0.16 * cos(t * 0.55) + 0.10 * (r.y - 0.5));
-    float d = distance(ar, vec2(center.x * asp, center.y));
-    float glow = smoothstep(1.05, 0.0, d) * (0.55 + 0.45 * f);
+    // Luminous core drifting on a slow Lissajous path; pointer brightens it.
+    vec2 ctr = vec2(0.64 + 0.16 * sin(t * 0.6), 0.46 + 0.15 * cos(t * 0.5));
+    float glow = smoothstep(1.0, 0.0, distance(ar, vec2(ctr.x * asp, ctr.y)));
+    glow += mInf * 0.6;
 
-    // A second, sharper highlight that rides the high ridges of the warp —
-    // the sweeping bright streak.
-    float streak = smoothstep(0.58, 1.0, f) * smoothstep(0.45, 1.0, rl);
+    // Iridescent colour across the blue gradient, lifted to white along folds.
+    float hue = fv * 0.55 + silk * 0.28 + rl * 0.18 + 0.05 * sin(t);
+    vec3 col = grad5(hue);
+    col = mix(col, vec3(0.97, 0.98, 1.0), clamp(fold * 0.5 + glow * 0.5, 0.0, 0.9));
 
-    // Blue brand palette (Preecursor is the blue counterpart to BCG's green).
-    vec3 deep  = vec3(0.169, 0.392, 0.831); // ~#2b64d4 rich blue (depth)
-    vec3 azure = vec3(0.310, 0.557, 0.941); // #4f8ef0
-    vec3 peri  = vec3(0.561, 0.722, 0.941); // #8fb8f0 periwinkle
-    vec3 cyan  = vec3(0.373, 0.784, 0.910); // #5fc8e8
-    vec3 pale  = vec3(0.847, 0.902, 0.969); // #d8e6f7
-    vec3 white = vec3(0.957, 0.976, 1.000); // luminous near-white
+    // Entrance bloom — start calm/pale, ramp to full flow.
+    vec3 calm = vec3(0.86, 0.91, 0.97);
+    col = mix(calm, col, smoothstep(0.0, 1.0, u_intro));
 
-    // Rich, flowing masses (deep -> azure -> periwinkle) with cyan ribbons,
-    // pale only in the very brightest ridges, then a blown-out luminous core —
-    // the depth + luminance range that reads like the BCG mesh.
-    vec3 col = mix(deep, azure, smoothstep(0.10, 0.55, f));
-    col = mix(col, peri, smoothstep(0.45, 0.88, f));
-    col = mix(col, cyan, smoothstep(0.45, 1.0, rl) * 0.60);
-    col = mix(col, pale, smoothstep(0.72, 1.0, f) * 0.55);
-    col = mix(col, white, clamp(glow * 0.72 + streak * 0.42, 0.0, 0.90));
-
-    // Keep the left side light so the dark headline stays legible — fade the
-    // rich field out to pale/white over the left ~55%.
+    // Keep the left side light so the dark headline stays legible.
     float leftLight = 1.0 - smoothstep(0.0, 0.55, uv.x);
-    col = mix(col, pale, leftLight * 0.62);
-    col = mix(col, white, leftLight * 0.28);
+    col = mix(col, vec3(0.88, 0.92, 0.98), leftLight * 0.55);
+    col = mix(col, vec3(1.0), leftLight * 0.22);
+
+    // Fine animated grain to kill gradient banding.
+    float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + u_time) * 43758.5453);
+    col += (g - 0.5) * 0.022;
 
     gl_FragColor = vec4(col, 1.0);
   }
@@ -122,9 +140,11 @@ function compile(gl: WebGLRenderingContext, type: number, src: string) {
 type Props = {
   className?: string;
   style?: React.CSSProperties;
+  /** Enable the subtle pointer-reactive warp/brighten (hero only). */
+  interactive?: boolean;
 };
 
-export default function ShaderField({ className, style }: Props) {
+export default function ShaderField({ className, style, interactive = false }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -185,6 +205,9 @@ export default function ShaderField({ className, style }: Props) {
 
     const uRes = gl.getUniformLocation(prog, "u_res");
     const uTime = gl.getUniformLocation(prog, "u_time");
+    const uMouse = gl.getUniformLocation(prog, "u_mouse");
+    const uMInf = gl.getUniformLocation(prog, "u_mInf");
+    const uIntro = gl.getUniformLocation(prog, "u_intro");
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 
     const resize = () => {
@@ -199,23 +222,57 @@ export default function ShaderField({ className, style }: Props) {
     const ro = new ResizeObserver(resize);
     ro.observe(host);
 
+    // Pointer state (smoothed). target* is where the cursor is; the rendered
+    // values ease toward it for a fluid, non-jittery reaction.
+    let mx = 0.5,
+      my = 0.5,
+      tmx = 0.5,
+      tmy = 0.5;
+    let mInf = 0,
+      tMInf = 0;
+
+    const onMove = (e: PointerEvent) => {
+      const rect = host.getBoundingClientRect();
+      tmx = (e.clientX - rect.left) / rect.width;
+      tmy = 1 - (e.clientY - rect.top) / rect.height;
+      tMInf = 0.55;
+    };
+    const onLeave = () => {
+      tMInf = 0;
+    };
+    if (interactive && !prefersReduced) {
+      host.addEventListener("pointermove", onMove);
+      host.addEventListener("pointerleave", onLeave);
+    }
+
     const start = performance.now();
     let raf = 0;
     let visible = true;
 
-    const draw = (now: number) => {
+    const draw = (now: number, intro: number) => {
+      // Ease pointer state toward its target.
+      mx += (tmx - mx) * 0.1;
+      my += (tmy - my) * 0.1;
+      mInf += (tMInf - mInf) * 0.07;
+
       gl!.uniform2f(uRes, canvas.width, canvas.height);
       gl!.uniform1f(uTime, (now - start) / 1000);
+      gl!.uniform2f(uMouse, mx, my);
+      gl!.uniform1f(uMInf, mInf);
+      gl!.uniform1f(uIntro, intro);
       gl!.drawArrays(gl!.TRIANGLES, 0, 3);
     };
 
     if (prefersReduced) {
-      // One representative static frame; no animation loop.
-      draw(start + 3200);
+      // One representative, fully-bloomed static frame; no loop, no pointer.
+      draw(start + 3200, 1);
     } else {
+      const INTRO_MS = 1400;
       const loop = (now: number) => {
         raf = requestAnimationFrame(loop);
-        if (visible) draw(now);
+        if (!visible) return;
+        const intro = Math.min(1, (now - start) / INTRO_MS);
+        draw(now, intro);
       };
       raf = requestAnimationFrame(loop);
     }
@@ -233,9 +290,11 @@ export default function ShaderField({ className, style }: Props) {
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
+      host.removeEventListener("pointermove", onMove);
+      host.removeEventListener("pointerleave", onLeave);
       canvas.remove();
     };
-  }, []);
+  }, [interactive]);
 
   return (
     <div
