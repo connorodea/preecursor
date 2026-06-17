@@ -44,6 +44,14 @@ describe("app/compare/[slug]/page", () => {
       for (const r of cmp.related) {
         expect(out, `${slug} -> ${r.href}`).toContain(r.href);
       }
+      // Sibling comparison interlinking (3 wrapping neighbours, never self).
+      expect(out, slug).toContain("More comparisons");
+      const idx = COMPARISONS.findIndex((c) => c.slug === slug);
+      const siblings = [1, 2, 3].map((n) => COMPARISONS[(idx + n) % COMPARISONS.length]);
+      for (const s of siblings) {
+        expect(s.slug, `${slug} sibling`).not.toBe(slug);
+        expect(out, `${slug} -> sibling ${s.slug}`).toContain(`/compare/${s.slug}`);
+      }
     }
   });
 
