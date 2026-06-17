@@ -62,20 +62,25 @@ export default function FeaturedInsights() {
       {/* Newsletter bar */}
       <div className="relative mx-auto max-w-[1340px] px-6 md:px-10 lg:px-[50px]">
         <div
-          className="mt-[-46px] mb-20 flex flex-col items-start gap-6 p-6 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-8 md:mb-[88px] md:p-[30px_36px]"
+          className="relative z-10 mt-[-64px] mb-[-52px] flex flex-col items-start gap-7 p-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-10 md:mt-[-84px] md:mb-[-68px] md:p-[46px_52px]"
           style={{
-            background: mistA(0.1),
-            backdropFilter: "blur(14px)",
-            WebkitBackdropFilter: "blur(14px)",
-            border: `1px solid ${mistA(0.14)}`,
-            borderRadius: 18,
-            boxShadow: "0 24px 60px -24px rgba(0,0,0,0.5)",
+            // Semi-opaque frosted navy so the card reads as one cohesive piece
+            // whether it sits over the dark band above or the light section it
+            // now overlaps below.
+            background: "rgba(17,33,56,0.78)",
+            backdropFilter: "blur(16px) saturate(1.2)",
+            WebkitBackdropFilter: "blur(16px) saturate(1.2)",
+            border: `1px solid ${mistA(0.16)}`,
+            borderRadius: 22,
+            boxShadow: "0 34px 80px -26px rgba(11,19,34,0.62)",
           }}
         >
           <div
             style={{
               fontFamily: "var(--font-newsreader)",
-              fontSize: "clamp(22px,2vw,30px)",
+              fontSize: "clamp(26px,2.4vw,38px)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.01em",
               color: "#fff",
             }}
           >
@@ -83,15 +88,15 @@ export default function FeaturedInsights() {
           </div>
 
           <div
-            className="w-full pl-5 sm:w-auto sm:min-w-[340px] sm:max-w-[460px] sm:flex-1 sm:pl-6"
+            className="w-full pl-6 sm:w-auto sm:min-w-[400px] sm:max-w-[540px] sm:flex-1 sm:pl-7"
             style={{
               display: "flex",
               alignItems: "center",
               background: "#fff",
               borderRadius: 999,
-              paddingTop: 6,
-              paddingRight: 6,
-              paddingBottom: 6,
+              paddingTop: 7,
+              paddingRight: 7,
+              paddingBottom: 7,
             }}
           >
             <input
@@ -102,7 +107,7 @@ export default function FeaturedInsights() {
                 flex: 1,
                 border: "none",
                 background: "transparent",
-                fontSize: 15,
+                fontSize: 16,
                 color: color.ink,
                 minWidth: 0,
               }}
@@ -115,9 +120,9 @@ export default function FeaturedInsights() {
                 cursor: "pointer",
                 color: color.mist,
                 borderRadius: 999,
-                padding: "12px 22px",
+                padding: "15px 30px",
                 fontWeight: 700,
-                fontSize: 13.5,
+                fontSize: 14.5,
                 letterSpacing: "0.04em",
                 whiteSpace: "nowrap",
               }}
