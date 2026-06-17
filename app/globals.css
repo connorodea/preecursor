@@ -1,26 +1,84 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   Preecursor design tokens — lifted from the design handoff
+   (Praxis.dc.html). Boutique-BCG palette: paper + navy + blue.
+   ============================================================ */
+@theme {
+  /* Surfaces (light) */
+  --color-paper: #edf1f7;
+  --color-paper-2: #e1e8f1;
+  --color-paper-3: #e6eefb;
+
+  /* Ink (dark surfaces + text) */
+  --color-ink: #112138;
+  --color-ink-deep: #0b1322;
+
+  /* Brand blues */
+  --color-brand: #1b4fc7;
+  --color-azure: #5b8def;
+  --color-azure-light: #7fa6f2;
+  --color-cyan: #5fc8e8;
+
+  /* On-dark text */
+  --color-mist: #eaf1fb;
+
+  /* Typefaces (wired to next/font CSS variables in layout.tsx) */
+  --font-serif: var(--font-newsreader), Newsreader, ui-serif, Georgia, serif;
+  --font-sans: var(--font-archivo), Archivo, ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ---- Base reset / globals (mirrors the prototype) ---- */
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: var(--color-mist);
+}
+
+/* Visible keyboard focus (most controls are inline-styled and can't express
+   :focus, so this global rule gives keyboard users a consistent brand ring).
+   Mouse users don't see it thanks to :focus-visible. */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Horizontal scrollers (e.g. Selected Work) hide their scrollbar. */
+.no-scrollbar::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Respect users who ask for reduced motion: kill long/animated transitions
+   and the shader/keyframe loops. Component JS also checks this. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -1,0 +1,47 @@
+import { describe, it, expect } from "vitest";
+import { getIndustry, getCapability, type ServiceContent } from "./services";
+import { INDUSTRY_LEAVES, CAPABILITY_LEAVES } from "@/lib/ia";
+
+/** A well-formed ServiceContent has non-empty copy and at least some structure. */
+function expectWellFormed(c: ServiceContent, slug: string) {
+  expect(c, slug).toBeDefined();
+  expect(c.slug, slug).toBe(slug);
+  expect(c.title.length, slug).toBeGreaterThan(0);
+  expect(c.lede.length, slug).toBeGreaterThan(0);
+  expect(c.overview.length, slug).toBeGreaterThan(0);
+  expect(c.approach.length, slug).toBeGreaterThan(0);
+  expect(c.stats.length, slug).toBeGreaterThan(0);
+  for (const r of c.related) {
+    expect(r.href.startsWith("/"), `${slug} related ${r.href}`).toBe(true);
+  }
+}
+
+describe("service content coverage", () => {
+  it("returns well-formed content for every industry slug", () => {
+    for (const l of INDUSTRY_LEAVES) {
+      expectWellFormed(getIndustry(l.slug), l.slug);
+    }
+  });
+
+  it("returns well-formed content for every capability slug", () => {
+    for (const l of CAPABILITY_LEAVES) {
+      expectWellFormed(getCapability(l.slug), l.slug);
+    }
+  });
+});
+
+describe("unknown slug fallback (build must never break)", () => {
+  it("getIndustry returns a usable fallback for an unknown slug", () => {
+    const c = getIndustry("totally-made-up-sector");
+    expect(c).toBeDefined();
+    expect(c.title.length).toBeGreaterThan(0);
+    expect(c.approach.length).toBeGreaterThan(0);
+    expect(c.stats.length).toBeGreaterThan(0);
+  });
+
+  it("getCapability returns a usable fallback for an unknown slug", () => {
+    const c = getCapability("totally-made-up-capability");
+    expect(c).toBeDefined();
+    expect(c.title.length).toBeGreaterThan(0);
+  });
+});
