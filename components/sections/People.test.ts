@@ -31,9 +31,11 @@ describe("People", () => {
     expect(html()).toContain("P&amp;L");
   });
 
-  it("renders the EdgeFade gradients at size 90", () => {
+  it("renders the de-fogged EdgeFade — neighbour seam colours + blue waypoint, size 130", () => {
     const out = html();
-    expect(out).toContain("linear-gradient(180deg, #e6eefb, transparent)");
-    expect((out.match(/height:90px/g) ?? []).length).toBe(2);
+    expect(out).toContain("linear-gradient(180deg, #edf1f7 0%"); // top → Locations paper
+    expect(out).toContain("linear-gradient(0deg, #e1e8f1 0%"); // bottom → Careers paper2
+    expect(out).toContain("rgba(60,98,164,0.42)"); // saturated-blue waypoint, not grey
+    expect((out.match(/height:130px/g) ?? []).length).toBe(2);
   });
 });

@@ -17,7 +17,7 @@ export default function People() {
         color: color.mist,
       }}
     >
-      <EdgeFade size={90} />
+      <EdgeFade topColor={color.paper} bottomColor={color.paper2} size={130} />
       <div className="relative mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[104px]">
         <div
           className="grid grid-cols-1 items-end lg:grid-cols-2"

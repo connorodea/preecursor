@@ -61,7 +61,7 @@ export default function ImpactBand() {
         color: color.mist,
       }}
     >
-      <EdgeFade size={90} />
+      <EdgeFade topColor="#d9e6f7" bottomColor={color.paper} size={132} />
       <div className="relative mx-auto max-w-[1340px] px-6 py-16 md:px-10 lg:px-[50px] lg:py-[78px]">
         {/* Eyebrow row */}
         <div

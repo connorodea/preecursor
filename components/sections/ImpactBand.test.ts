@@ -31,10 +31,12 @@ describe("ImpactBand", () => {
     expect(out).toContain("/10"); // suffix span on stat 4
   });
 
-  it("renders the EdgeFade top + bottom gradient at size 90", () => {
+  it("renders the de-fogged EdgeFade — neighbour seam colours, blue waypoint, size 132", () => {
     const out = html();
-    expect(out).toContain("linear-gradient(180deg, #e6eefb, transparent)");
-    expect(out).toContain("linear-gradient(0deg, #e6eefb, transparent)");
-    expect((out.match(/height:90px/g) ?? []).length).toBe(2);
+    expect(out).toContain("linear-gradient(180deg, #d9e6f7 0%"); // top → hero light
+    expect(out).toContain("linear-gradient(0deg, #edf1f7 0%"); // bottom → paper
+    expect(out).toContain("rgba(60,98,164,0.42)"); // saturated-blue waypoint, not grey
+    expect(out).not.toContain("#e6eefb, transparent"); // old grey-fog form gone
+    expect((out.match(/height:132px/g) ?? []).length).toBe(2);
   });
 });
