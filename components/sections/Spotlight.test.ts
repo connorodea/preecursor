@@ -33,4 +33,10 @@ describe("Spotlight", () => {
     expect(out).toContain('href="/capabilities"');
     expect(out).toContain('href="/labs"');
   });
+
+  it("renders an icon on each of the two right cards", () => {
+    // The two right cards carry currentColor-stroke line icons; the left card
+    // is image-led, so it has none.
+    expect((html().match(/stroke="currentColor"/g) ?? []).length).toBe(2);
+  });
 });

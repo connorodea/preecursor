@@ -114,3 +114,28 @@ export function HandoffIcon(p: IconProps) {
     </Svg>
   );
 }
+
+/** Network — connected nodes (a platform at scale). */
+export function NetworkIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <circle cx="6" cy="7" r="2.4" />
+      <circle cx="18" cy="7" r="2.4" />
+      <circle cx="12" cy="18" r="2.4" />
+      <path d="M8.4 7h7.2" />
+      <path d="M7.2 9.1 10.8 15.9" />
+      <path d="M16.8 9.1 13.2 15.9" />
+    </Svg>
+  );
+}
+
+/** Labs — a flask (experimentation, R&D). */
+export function LabsIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M9 3h6" />
+      <path d="M10 3v6l-4.8 8.4A1.3 1.3 0 0 0 6.4 19.5h11.2a1.3 1.3 0 0 0 1.2-2.1L14 9V3" />
+      <path d="M8.2 14h7.6" />
+    </Svg>
+  );
+}

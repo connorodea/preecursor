@@ -4,6 +4,7 @@ import Link from "next/link";
 import PlaceholderImage from "@/components/PlaceholderImage";
 import { Reveal } from "@/lib/motion";
 import SectionSeam from "./SectionSeam";
+import { NetworkIcon, LabsIcon } from "@/components/icons";
 import { color, mistA } from "@/lib/theme";
 
 /** Azure pill shared by the spotlight cards. */
@@ -135,7 +136,10 @@ export default function Spotlight() {
             justifyContent: "space-between",
           }}
         >
-          <SmallEyebrow label="Lead with advantage" />
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            <NetworkIcon size={28} style={{ color: color.azure }} />
+            <SmallEyebrow label="Lead with advantage" />
+          </div>
           <div>
             <h3
               style={{
@@ -171,7 +175,10 @@ export default function Spotlight() {
             justifyContent: "space-between",
           }}
         >
-          <SmallEyebrow label="Build tomorrow" />
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            <LabsIcon size={28} style={{ color: color.azure }} />
+            <SmallEyebrow label="Build tomorrow" />
+          </div>
           <div>
             <h3
               style={{
