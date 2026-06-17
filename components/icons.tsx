@@ -82,3 +82,35 @@ export function EnableIcon(p: IconProps) {
     </Svg>
   );
 }
+
+/** Embedded — a smaller form nested inside a larger one (inside your teams). */
+export function EmbedIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <rect x="3" y="3" width="18" height="18" rx="2.5" />
+      <rect x="8.5" y="8.5" width="7" height="7" rx="1.5" />
+    </Svg>
+  );
+}
+
+/** Outcomes — a measured result reached (the number moved). */
+export function OutcomeIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 12 11 15 16 9" />
+    </Svg>
+  );
+}
+
+/** Hand-off — transfer from us to your team (A → B). */
+export function HandoffIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <circle cx="5" cy="12" r="2.5" />
+      <circle cx="19" cy="12" r="2.5" />
+      <path d="M8 12h6" />
+      <path d="M12.5 9.5 15 12 12.5 14.5" />
+    </Svg>
+  );
+}

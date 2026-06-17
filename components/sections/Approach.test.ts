@@ -28,4 +28,12 @@ describe("Approach", () => {
     expect(out).toContain("We sit inside your teams");
     expect(out).toContain("We&#x27;re optimizing for the day we leave.");
   });
+
+  it("renders an icon for each principle, with a hover group", () => {
+    const out = html();
+    expect((out.match(/<svg/g) ?? []).length).toBe(3);
+    expect(out).toContain('stroke="currentColor"');
+    expect(out).toContain("group-hover:scale-110");
+    expect(out).toContain("group-hover:text-azure");
+  });
 });
