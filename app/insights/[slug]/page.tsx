@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageHero, Section, CTASection } from "@/components/ui";
 import { INSIGHTS, getArticle } from "@/lib/content/insights";
-import { breadcrumbSchema, absoluteUrl } from "@/lib/seo";
+import { breadcrumbSchema, articleSchema, absoluteUrl } from "@/lib/seo";
 
 export function generateStaticParams() {
   return INSIGHTS.map((a) => ({ slug: a.slug }));
@@ -39,11 +39,18 @@ export default async function ArticlePage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: JSON.stringify([
+            articleSchema({
+              title: a.title,
+              description: a.dek,
+              author: a.author,
+              date: a.date,
+              url: absoluteUrl(`/insights/${slug}`),
+            }),
             breadcrumbSchema(
               trail.map((t) => ({ name: t.label, url: absoluteUrl(t.href) })),
             ),
-          ),
+          ]),
         }}
       />
 

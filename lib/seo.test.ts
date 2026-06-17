@@ -5,6 +5,8 @@ import {
   websiteSchema,
   serviceSchema,
   breadcrumbSchema,
+  articleSchema,
+  displayDateToISO,
   socialMeta,
   BASE_URL,
 } from "./seo";
@@ -107,6 +109,43 @@ describe("JSON-LD schema", () => {
     // First item is position 1 (not 0), last carries the deepest URL.
     expect(s.itemListElement[0].position).toBe(1);
     expect(s.itemListElement[2].item).toBe(`${BASE_URL}/glossary/rag/`);
+  });
+
+  it("displayDateToISO parses 'Month YYYY' and is undefined otherwise", () => {
+    expect(displayDateToISO("May 2026")).toBe("2026-05-01");
+    expect(displayDateToISO("February 2026")).toBe("2026-02-01");
+    expect(displayDateToISO("Q2 2026")).toBeUndefined();
+    expect(displayDateToISO("2026-05")).toBeUndefined();
+  });
+
+  it("articleSchema builds a BlogPosting with an absolute image + Preecursor publisher", () => {
+    const s = articleSchema({
+      title: "Evals are the product",
+      description: "Why evaluation is the real deliverable.",
+      author: "Preecursor Labs",
+      date: "May 2026",
+      url: `${BASE_URL}/insights/evals-are-the-product/`,
+    });
+    expect(s["@type"]).toBe("BlogPosting");
+    expect(s.headline).toBe("Evals are the product");
+    expect(s.datePublished).toBe("2026-05-01");
+    expect(s.author.name).toBe("Preecursor Labs");
+    expect(s.publisher.name).toBe("Preecursor");
+    expect(s.image).toBe(`${BASE_URL}/og.png`); // relative resolved to absolute
+    expect(s.mainEntityOfPage["@id"]).toBe(
+      `${BASE_URL}/insights/evals-are-the-product/`,
+    );
+  });
+
+  it("articleSchema omits datePublished when the date isn't parseable", () => {
+    const s = articleSchema({
+      title: "T",
+      description: "D",
+      author: "A",
+      date: "Spring 2026",
+      url: `${BASE_URL}/insights/t/`,
+    });
+    expect(s.datePublished).toBeUndefined();
   });
 });
 
