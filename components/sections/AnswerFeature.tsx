@@ -1,6 +1,7 @@
 "use client";
 
 import ShaderField from "@/components/ShaderField";
+import LazyMount from "@/components/LazyMount";
 import { Reveal, Magnetic } from "@/lib/motion";
 import { Eyebrow, PillLink } from "./_shared";
 import { color, inkA, shadow } from "@/lib/theme";
@@ -77,7 +78,11 @@ export default function AnswerFeature() {
             boxShadow: shadow.cardLg,
           }}
         >
-          <ShaderField style={{ zIndex: 0 }} />
+          {/* Lazy-mounted: this below-fold WebGL context isn't created until
+              the tile nears the viewport. */}
+          <LazyMount>
+            <ShaderField style={{ zIndex: 0 }} />
+          </LazyMount>
           <div
             style={{
               position: "absolute",

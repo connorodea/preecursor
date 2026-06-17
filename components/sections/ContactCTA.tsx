@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import ShaderField from "@/components/ShaderField";
+import LazyMount from "@/components/LazyMount";
 import { Reveal, Magnetic } from "@/lib/motion";
 import { color, inkA } from "@/lib/theme";
 
@@ -20,11 +21,15 @@ export default function ContactCTA() {
       }}
     >
       {/* Masked aurora — fades up out of the navy at the top and back into it
-          at the bottom, leaving a wide luminous blue field behind the content. */}
-      <ShaderField
-        style={{ zIndex: 0 }}
-        maskImage="linear-gradient(180deg, transparent 0%, #000 16%, #000 84%, transparent 100%)"
-      />
+          at the bottom, leaving a wide luminous blue field behind the content.
+          Lazy-mounted: this below-fold WebGL context isn't created until the
+          section nears the viewport. */}
+      <LazyMount>
+        <ShaderField
+          style={{ zIndex: 0 }}
+          maskImage="linear-gradient(180deg, transparent 0%, #000 16%, #000 84%, transparent 100%)"
+        />
+      </LazyMount>
 
       <div
         className="mx-auto max-w-[1340px] px-6 pt-[150px] pb-[150px] md:px-10 lg:px-[50px] lg:pt-[180px] lg:pb-[180px]"
