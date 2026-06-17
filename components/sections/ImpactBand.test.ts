@@ -16,6 +16,14 @@ describe("ImpactBand", () => {
     expect(out).not.toContain("Client impact");
   });
 
+  it("leads with the co-founders' university trust strip", () => {
+    const out = html();
+    expect(out).toContain("Our co-founders studied at");
+    expect(out).toContain("University of Michigan");
+    expect(out).toContain("Harvard University");
+    expect(out).toContain("UC Berkeley");
+  });
+
   it("renders four operating-principle headlines + their explanations", () => {
     const out = html();
     expect(out).toContain("Senior-only");

@@ -1,6 +1,7 @@
 "use client";
 
 import { Reveal } from "@/lib/motion";
+import EducationMarks from "./EducationMarks";
 import { color, mistA } from "@/lib/theme";
 
 const NUM_STYLE: React.CSSProperties = {
@@ -52,6 +53,32 @@ export default function ImpactBand() {
       }}
     >
       <div className="relative mx-auto max-w-[1340px] px-6 py-16 md:px-10 lg:px-[50px] lg:py-[78px]">
+        {/* Trust strip — co-founders' universities, the first thing the page
+            shows as it dissolves out of the hero into this dark band. */}
+        <Reveal>
+          <div
+            style={{
+              paddingBottom: 40,
+              marginBottom: 50,
+              borderBottom: `1px solid ${mistA(0.16)}`,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 12.5,
+                fontWeight: 700,
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: mistA(0.5),
+                marginBottom: 22,
+              }}
+            >
+              Our co-founders studied at
+            </div>
+            <EducationMarks />
+          </div>
+        </Reveal>
+
         {/* Eyebrow row */}
         <div
           style={{
