@@ -58,7 +58,7 @@ export default function ImpactBand() {
         color: color.mist,
       }}
     >
-      <div style={{ maxWidth: 1340, margin: "0 auto", padding: "78px 50px" }}>
+      <div className="mx-auto max-w-[1340px] px-6 py-16 md:px-10 lg:px-[50px] lg:py-[78px]">
         {/* Eyebrow row */}
         <div
           style={{
@@ -86,13 +86,7 @@ export default function ImpactBand() {
         </div>
 
         {/* Stat grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4,1fr)",
-            gap: 40,
-          }}
-        >
+        <div className="grid grid-cols-2 gap-10 lg:grid-cols-4">
           {STATS.map((s, i) => (
             <Reveal
               key={i}

@@ -54,19 +54,17 @@ function FooterColumn({
 export default function SiteFooter() {
   return (
     <footer style={{ background: color.ink, color: color.mist }}>
-      <div className={container} style={{ padding: "64px 50px 44px" }}>
+      <div className={`${container} px-6 pt-16 pb-11 md:px-10 lg:px-[50px]`}>
         {/* Top: brand + three link columns */}
         <div
+          className="grid grid-cols-2 gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1.4fr 1fr 1fr 1fr",
-            gap: 40,
             paddingBottom: 48,
             borderBottom: `1px solid ${mistA(0.18)}`,
           }}
         >
-          {/* Brand column */}
-          <div>
+          {/* Brand column — spans both columns on mobile, one cell at lg. */}
+          <div className="col-span-2 lg:col-span-1">
             <Link
               href="/"
               aria-label="Preecursor — home"

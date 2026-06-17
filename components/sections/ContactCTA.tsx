@@ -19,12 +19,10 @@ export default function ContactCTA() {
       <ShaderField style={{ zIndex: 0 }} />
 
       <div
+        className="mx-auto max-w-[1340px] px-6 py-24 md:px-10 lg:px-[50px] lg:py-[128px]"
         style={{
           position: "relative",
           zIndex: 5,
-          maxWidth: 1340,
-          margin: "0 auto",
-          padding: "128px 50px",
           textAlign: "center",
           display: "flex",
           flexDirection: "column",

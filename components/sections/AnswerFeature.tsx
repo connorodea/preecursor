@@ -9,14 +9,9 @@ export default function AnswerFeature() {
   return (
     <section style={{ background: "#edf1f7" }}>
       <div
+        className="mx-auto grid max-w-[1340px] grid-cols-1 items-center px-6 py-20 md:px-10 lg:grid-cols-[0.92fr_1.08fr] lg:px-[50px] lg:py-[108px]"
         style={{
-          maxWidth: 1340,
-          margin: "0 auto",
-          padding: "108px 50px",
-          display: "grid",
-          gridTemplateColumns: "0.92fr 1.08fr",
           gap: 64,
-          alignItems: "center",
         }}
       >
         {/* Left */}

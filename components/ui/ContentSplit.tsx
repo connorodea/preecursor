@@ -44,8 +44,7 @@ export default function ContentSplit({
 
   return (
     <div
-      className={`${container} grid grid-cols-1 items-center lg:grid-cols-[1.05fr_0.95fr]`}
-      style={{ gap: 60, padding: "96px 50px" }}
+      className={`${container} grid grid-cols-1 items-center gap-10 px-6 py-20 md:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-[60px] lg:px-[50px] lg:py-24`}
     >
       {/* Text column */}
       <Reveal style={reverse ? { order: 2 } : undefined}>

@@ -83,20 +83,20 @@ function MenuOverlay({ onClose }: { onClose: () => void }) {
         >
           {/* ---- Top bar ---- */}
           <div
+            className="flex items-center gap-4 px-5 py-4 md:gap-[30px] md:px-10 md:py-[22px]"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 30,
-              padding: "22px 40px",
               borderBottom: `1px solid ${HAIRLINE}`,
             }}
           >
             <CloseButton onClick={onClose} />
             <Logo onClick={onClose} />
-            <SearchBox ref={searchRef} />
+            {/* Search box is hidden below md so the close button + logo + Log in
+                fit on phones; full search returns at md+. */}
+            <SearchBox ref={searchRef} className="hidden md:flex" />
             <Link
               href="/contact"
               onClick={onClose}
+              className="ml-auto md:ml-0"
               style={{
                 textTransform: "uppercase",
                 fontWeight: 700,
@@ -112,22 +112,12 @@ function MenuOverlay({ onClose }: { onClose: () => void }) {
           </div>
 
           {/* ---- Body ---- */}
-          <div
-            style={{
-              flex: 1,
-              display: "grid",
-              gridTemplateColumns: "0.8fr 1.2fr",
-              overflow: "hidden",
-            }}
-          >
+          {/* Mobile: single column, the whole body scrolls (index above panel).
+              Desktop (lg): the prototype's 0.8fr/1.2fr split with each pane
+              scrolling independently and a divider between them. */}
+          <div className="flex-1 grid grid-cols-1 overflow-y-auto lg:grid-cols-[0.8fr_1.2fr] lg:overflow-hidden">
             {/* Left index */}
-            <nav
-              style={{
-                overflowY: "auto",
-                padding: "18px 40px 60px",
-                borderRight: `1px solid ${HAIRLINE}`,
-              }}
-            >
+            <nav className="px-5 pt-4 pb-8 lg:overflow-y-auto lg:border-r lg:border-[rgba(17,33,56,0.08)] lg:px-10 lg:pt-[18px] lg:pb-[60px]">
               {LEFT_ENTRIES.map((entry, i) => (
                 <LeftRow
                   key={entry.type === "header" ? `header-${i}` : entry.id}
@@ -140,7 +130,7 @@ function MenuOverlay({ onClose }: { onClose: () => void }) {
             </nav>
 
             {/* Right panel — cross-fades on active change */}
-            <div style={{ overflowY: "auto", padding: "50px 60px 60px" }}>
+            <div className="px-5 pt-6 pb-10 lg:overflow-y-auto lg:px-[60px] lg:pt-[50px] lg:pb-[60px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={active}
@@ -285,13 +275,7 @@ function RightPanel({
         </p>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "0 64px",
-        }}
-      >
+      <div className="grid grid-cols-1 gap-x-0 sm:grid-cols-2 sm:gap-x-16">
         <div>
           {panel.col1.map((leaf) => (
             <LeafLink key={leaf.href} leaf={leaf} onClose={onClose} />
@@ -400,13 +384,19 @@ function CloseButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-const SearchBox = ({ ref }: { ref: React.Ref<HTMLInputElement> }) => {
+const SearchBox = ({
+  ref,
+  className = "",
+}: {
+  ref: React.Ref<HTMLInputElement>;
+  className?: string;
+}) => {
   return (
     <div
+      className={className}
       style={{
         flex: 1,
         maxWidth: 760,
-        display: "flex",
         alignItems: "center",
         gap: 14,
         border: `1px solid ${inkA(0.22)}`,

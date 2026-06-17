@@ -48,10 +48,9 @@ function Logo({ onClick }: { onClick?: () => void }) {
         }}
       />
       <span
+        className="text-[18px] tracking-[0.12em] sm:text-[22px] sm:tracking-[0.18em]"
         style={{
           fontWeight: 800,
-          fontSize: 22,
-          letterSpacing: "0.18em",
           color: color.ink,
         }}
       >
@@ -73,14 +72,7 @@ export default function SiteHeader({ onOpenMenu }: { onOpenMenu: () => void }) {
       }}
     >
       <div
-        className="mx-auto w-full max-w-[1340px]"
-        style={{
-          padding: "26px 34px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 20,
-        }}
+        className="mx-auto flex w-full max-w-[1340px] items-center justify-between gap-5 px-4 py-[26px] md:px-[34px]"
       >
         {/* Left pill: hamburger + logo */}
         <div style={{ ...PILL_BASE, padding: "14px 22px", gap: 18 }}>
@@ -111,8 +103,14 @@ export default function SiteHeader({ onOpenMenu }: { onOpenMenu: () => void }) {
           <Logo />
         </div>
 
-        {/* Right pill: search glyph + Log in */}
-        <div style={{ ...PILL_BASE, padding: "13px 22px", gap: 16 }}>
+        {/* Right pill: search glyph + Log in — hidden on mobile (Log in is
+            reachable inside the mega-menu), so the two pills never overflow.
+            `display` is left to the `hidden md:flex` class — setting it inline
+            would override the class and defeat the hide. */}
+        <div
+          className="hidden md:flex"
+          style={{ ...PILL_BASE, display: undefined, padding: "13px 22px", gap: 16 }}
+        >
           <SearchGlyph />
           <Magnetic strength={0.2}>
             <Link

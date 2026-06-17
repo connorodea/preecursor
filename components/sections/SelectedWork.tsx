@@ -135,14 +135,11 @@ export default function SelectedWork() {
 
   return (
     <section id="work" style={{ background: "#e1e8f1" }}>
-      <div style={{ maxWidth: 1340, margin: "0 auto", padding: "104px 50px" }}>
+      <div className="mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[104px]">
         {/* Header row */}
         <div
+          className="flex flex-col items-start gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-10"
           style={{
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            gap: 40,
             marginBottom: 54,
           }}
         >

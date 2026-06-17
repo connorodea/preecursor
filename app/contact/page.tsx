@@ -59,12 +59,13 @@ export default function ContactPage() {
         />
 
         <div
-          className={container}
+          className={`${container} px-6 md:px-10 lg:px-[50px]`}
           style={{
             position: "relative",
             zIndex: 5,
             // Clears the fixed ~96px header.
-            padding: "clamp(140px,16vh,180px) 50px 72px",
+            paddingTop: "clamp(120px,16vh,180px)",
+            paddingBottom: 72,
           }}
         >
           <Eyebrow label="Contact" tone="brand" style={{ marginBottom: 26 }} />

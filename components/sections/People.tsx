@@ -12,13 +12,11 @@ export default function People() {
       id="people"
       style={{ background: gradient.inkBand("18% -10%"), color: color.mist }}
     >
-      <div style={{ maxWidth: 1340, margin: "0 auto", padding: "104px 50px" }}>
+      <div className="mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[104px]">
         <div
+          className="grid grid-cols-1 items-end lg:grid-cols-2"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
             gap: 60,
-            alignItems: "end",
           }}
         >
           <Reveal>

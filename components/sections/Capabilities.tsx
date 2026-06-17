@@ -30,14 +30,12 @@ const ROWS = [
 export default function Capabilities() {
   return (
     <section id="capabilities">
-      <div style={{ maxWidth: 1340, margin: "0 auto", padding: "108px 50px" }}>
+      <div className="mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[108px]">
         {/* Header grid */}
         <div
+          className="grid grid-cols-1 items-start lg:grid-cols-[0.92fr_1.08fr]"
           style={{
-            display: "grid",
-            gridTemplateColumns: "0.92fr 1.08fr",
             gap: 54,
-            alignItems: "start",
             marginBottom: 66,
           }}
         >
@@ -82,11 +80,9 @@ export default function Capabilities() {
           <Reveal
             key={row.n}
             delay={i * 0.07}
+            className="grid grid-cols-1 items-baseline lg:grid-cols-[84px_1fr_1.1fr]"
             style={{
-              display: "grid",
-              gridTemplateColumns: "84px 1fr 1.1fr",
               gap: 34,
-              alignItems: "baseline",
               padding: "36px 0",
               borderTop: `1px solid ${inkA(0.14)}`,
               ...(i === ROWS.length - 1

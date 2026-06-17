@@ -60,7 +60,10 @@ export default function Section({
         ...style,
       }}
     >
-      <div className={container} style={{ padding: `${py}px 50px` }}>
+      <div
+        className={`${container} px-6 md:px-10 lg:px-[50px]`}
+        style={{ paddingTop: py, paddingBottom: py }}
+      >
         {children}
       </div>
     </section>

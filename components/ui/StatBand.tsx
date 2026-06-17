@@ -46,7 +46,7 @@ export default function StatBand({ eyebrow, stats }: Props) {
 
   return (
     <section style={{ background: gradient.inkBand("82% -10%"), color: color.mist }}>
-      <div className={container} style={{ padding: "78px 50px" }}>
+      <div className={`${container} px-6 py-16 md:px-10 lg:px-[50px] lg:py-[78px]`}>
         {eyebrow && (
           <Eyebrow label={eyebrow} tone="azure" style={{ marginBottom: 50 }} />
         )}

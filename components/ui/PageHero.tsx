@@ -75,14 +75,13 @@ export default function PageHero({
       )}
 
       <div
+        className="mx-auto w-full max-w-[1340px] px-6 md:px-10 lg:px-[50px]"
         style={{
           position: "relative",
           zIndex: 5,
-          maxWidth: 1340,
-          width: "100%",
-          margin: "0 auto",
           // Top pad clears the fixed ~96px header.
-          padding: "clamp(140px,16vh,180px) 50px 72px",
+          paddingTop: "clamp(120px,16vh,180px)",
+          paddingBottom: 72,
         }}
       >
         <HeroStagger

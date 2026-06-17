@@ -49,20 +49,15 @@ export default function Spotlight() {
   return (
     <section>
       <div
+        className="mx-auto grid max-w-[1340px] grid-cols-1 px-6 py-20 md:px-10 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:px-[50px] lg:py-[108px]"
         style={{
-          maxWidth: 1340,
-          margin: "0 auto",
-          padding: "108px 50px",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gridTemplateRows: "auto auto",
           gap: 24,
         }}
       >
         {/* Tall left card */}
         <Reveal
+          className="lg:row-span-2"
           style={{
-            gridRow: "span 2",
             position: "relative",
             minHeight: 620,
             borderRadius: 12,

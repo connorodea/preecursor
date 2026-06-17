@@ -8,17 +8,9 @@ export default function FeaturedInsights() {
   return (
     <section style={{ background: gradient.inkBand("15% -10%"), color: color.mist }}>
       {/* Top split grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-        }}
-      >
+      <div className="grid grid-cols-1 lg:grid-cols-2">
         <Reveal
-          style={{
-            padding:
-              "104px 56px 0 max(50px, calc((100vw - 1340px) / 2 + 50px))",
-          }}
+          className="px-6 pt-20 md:px-10 lg:pt-[104px] lg:pr-14 lg:pb-0 lg:pl-[max(50px,calc((100vw-1340px)/2+50px))]"
         >
           <p
             style={{
@@ -44,9 +36,9 @@ export default function FeaturedInsights() {
         </Reveal>
 
         <div
+          className="mt-12 min-h-[300px] md:mt-0 md:min-h-[440px]"
           style={{
             position: "relative",
-            minHeight: 440,
             overflow: "hidden",
           }}
         >
@@ -68,29 +60,15 @@ export default function FeaturedInsights() {
       </div>
 
       {/* Newsletter bar */}
-      <div
-        style={{
-          maxWidth: 1340,
-          margin: "0 auto",
-          padding: "0 50px",
-          position: "relative",
-        }}
-      >
+      <div className="relative mx-auto max-w-[1340px] px-6 md:px-10 lg:px-[50px]">
         <div
+          className="mt-[-46px] mb-20 flex flex-col items-start gap-6 p-6 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-8 md:mb-[88px] md:p-[30px_36px]"
           style={{
-            marginTop: -46,
-            marginBottom: 88,
             background: mistA(0.1),
             backdropFilter: "blur(14px)",
             WebkitBackdropFilter: "blur(14px)",
             border: `1px solid ${mistA(0.14)}`,
             borderRadius: 18,
-            padding: "30px 36px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 32,
-            flexWrap: "wrap",
             boxShadow: "0 24px 60px -24px rgba(0,0,0,0.5)",
           }}
         >
@@ -105,15 +83,15 @@ export default function FeaturedInsights() {
           </div>
 
           <div
+            className="w-full pl-5 sm:w-auto sm:min-w-[340px] sm:max-w-[460px] sm:flex-1 sm:pl-6"
             style={{
               display: "flex",
               alignItems: "center",
               background: "#fff",
               borderRadius: 999,
-              padding: "6px 6px 6px 24px",
-              minWidth: 340,
-              flex: 1,
-              maxWidth: 460,
+              paddingTop: 6,
+              paddingRight: 6,
+              paddingBottom: 6,
             }}
           >
             <input

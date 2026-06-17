@@ -22,20 +22,14 @@ const ITEMS = [
 export default function Approach() {
   return (
     <section id="approach">
-      <div style={{ maxWidth: 1340, margin: "0 auto", padding: "108px 50px" }}>
+      <div className="mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[108px]">
         <Eyebrow
           label="How we work"
           barColor={color.brand}
           textColor={color.brand}
           style={{ marginBottom: 54 }}
         />
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3,1fr)",
-            gap: 48,
-          }}
-        >
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
           {ITEMS.map((it, i) => (
             <Reveal key={it.title} delay={i * 0.08}>
               <h3

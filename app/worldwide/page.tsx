@@ -51,15 +51,13 @@ export default function WorldwidePage() {
             }
           />
           <div
+            className="mx-auto max-w-[1340px] px-6 pb-2 md:px-10 lg:px-[50px]"
             style={{
               fontSize: 13,
               fontWeight: 700,
               letterSpacing: "0.12em",
               textTransform: "uppercase",
               color: inkA(0.5),
-              padding: "0 50px 8px",
-              maxWidth: 1340,
-              margin: "0 auto",
             }}
           >
             {office.addressHint}

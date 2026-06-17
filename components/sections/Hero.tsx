@@ -36,14 +36,11 @@ export default function Hero() {
 
       {/* Hero content */}
       <div
+        className="mx-auto w-full max-w-[1340px] px-6 pt-10 pb-20 md:px-10 lg:px-[50px] lg:pb-[88px]"
         style={{
           position: "relative",
           zIndex: 5,
           flex: 1,
-          maxWidth: 1340,
-          width: "100%",
-          margin: "0 auto",
-          padding: "40px 50px 88px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

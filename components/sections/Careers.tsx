@@ -9,19 +9,10 @@ import { color, inkA } from "@/lib/theme";
 export default function Careers() {
   return (
     <section style={{ background: "#e1e8f1" }}>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          alignItems: "stretch",
-        }}
-      >
+      <div className="grid grid-cols-1 items-stretch lg:grid-cols-2">
         {/* Left — copy */}
         <Reveal
-          style={{
-            padding:
-              "108px 56px 108px max(50px, calc((100vw - 1340px) / 2 + 50px))",
-          }}
+          className="px-6 py-20 md:px-10 lg:py-[108px] lg:pr-14 lg:pl-[max(50px,calc((100vw-1340px)/2+50px))]"
         >
           <Eyebrow
             label="Preecursor careers"
@@ -93,16 +84,15 @@ export default function Careers() {
 
         {/* Right — framed image */}
         <div
+          className="min-h-[420px] p-10 md:min-h-[560px] md:p-14"
           style={{
             position: "relative",
-            minHeight: 560,
             overflow: "hidden",
             background:
               "radial-gradient(circle at 70% 40%, rgba(95,200,232,0.5), transparent 55%), radial-gradient(circle at 40% 80%, rgba(91,141,239,0.45), transparent 55%), #0b1322",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: 56,
           }}
         >
           <div
