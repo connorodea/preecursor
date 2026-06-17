@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Newsreader, Archivo } from "next/font/google";
 import "./globals.css";
 import { organizationSchema, websiteSchema } from "@/lib/seo";
@@ -53,6 +53,12 @@ export const metadata: Metadata = {
       "An applied-AI studio for leaders who need more than advice.",
     images: ["/og.png"],
   },
+};
+
+export const viewport: Viewport = {
+  // Tints the mobile browser chrome to match the top of the page (the hero
+  // wash), so the address bar blends into the design instead of clashing.
+  themeColor: "#dce8f7",
 };
 
 export default function RootLayout({
