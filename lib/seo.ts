@@ -7,6 +7,7 @@
 import { INDUSTRY_LEAVES, CAPABILITY_LEAVES, CONTACT_EMAIL } from "./ia";
 import { WORK_CASES } from "./content/work";
 import { INSIGHTS } from "./content/insights";
+import { PROGRAMMATIC_ROUTES } from "./content/programmatic";
 
 export const BASE_URL = "https://preecursor.com";
 
@@ -32,6 +33,7 @@ export function siteRoutes(): string[] {
     ...CAPABILITY_LEAVES.map((l) => `/capabilities/${l.slug}`),
     ...WORK_CASES.map((c) => `/work/${c.slug}`),
     ...INSIGHTS.map((a) => `/insights/${a.slug}`),
+    ...PROGRAMMATIC_ROUTES,
   ];
 }
 
@@ -61,5 +63,31 @@ export function websiteSchema() {
     "@type": "WebSite",
     name: "Preecursor",
     url: BASE_URL,
+  };
+}
+
+/** ProfessionalService node for a programmatic service/landing page. */
+export function serviceSchema({
+  name,
+  description,
+  url,
+}: {
+  name: string;
+  description: string;
+  url?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name,
+    description,
+    ...(url ? { url } : {}),
+    serviceType: "Applied AI consulting",
+    areaServed: "Worldwide",
+    provider: {
+      "@type": "Organization",
+      name: "Preecursor",
+      url: BASE_URL,
+    },
   };
 }
