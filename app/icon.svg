@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eef4ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <g transform="translate(32,32) scale(0.42)">
+    <g fill="#3a4569">
+      <path d="M0,-50 C1.6,-44 1.6,-37 0,-31 C-1.6,-37 -1.6,-44 0,-50 Z" transform="rotate(0)"/>
+      <path d="M0,-42 C1.5,-38 1.5,-34 0,-31 C-1.5,-34 -1.5,-38 0,-42 Z" transform="rotate(30)"/>
+      <path d="M0,-50 C1.6,-44 1.6,-37 0,-31 C-1.6,-37 -1.6,-44 0,-50 Z" transform="rotate(60)"/>
+      <path d="M0,-42 C1.5,-38 1.5,-34 0,-31 C-1.5,-34 -1.5,-38 0,-42 Z" transform="rotate(90)"/>
+      <path d="M0,-50 C1.6,-44 1.6,-37 0,-31 C-1.6,-37 -1.6,-44 0,-50 Z" transform="rotate(120)"/>
+      <path d="M0,-42 C1.5,-38 1.5,-34 0,-31 C-1.5,-34 -1.5,-38 0,-42 Z" transform="rotate(150)"/>
+      <path d="M0,-50 C1.6,-44 1.6,-37 0,-31 C-1.6,-37 -1.6,-44 0,-50 Z" transform="rotate(180)"/>
+      <path d="M0,-42 C1.5,-38 1.5,-34 0,-31 C-1.5,-34 -1.5,-38 0,-42 Z" transform="rotate(210)"/>
+      <path d="M0,-50 C1.6,-44 1.6,-37 0,-31 C-1.6,-37 -1.6,-44 0,-50 Z" transform="rotate(240)"/>
+      <path d="M0,-42 C1.5,-38 1.5,-34 0,-31 C-1.5,-34 -1.5,-38 0,-42 Z" transform="rotate(270)"/>
+      <path d="M0,-50 C1.6,-44 1.6,-37 0,-31 C-1.6,-37 -1.6,-44 0,-50 Z" transform="rotate(300)"/>
+      <path d="M0,-42 C1.5,-38 1.5,-34 0,-31 C-1.5,-34 -1.5,-38 0,-42 Z" transform="rotate(330)"/>
+    </g>
+    <circle r="26" fill="none" stroke="#6473a0" stroke-width="2"/>
+    <path d="M0,-21 C3,-7 7,-3 21,0 C7,3 3,7 0,21 C-3,7 -7,3 -21,0 C-7,-3 -3,-7 0,-21 Z" fill="#0d1b2e"/>
+  </g>
+</svg>
