@@ -11,6 +11,13 @@ describe("People", () => {
     expect(html()).toContain('id="people"');
   });
 
+  it("shows the co-founders' graduate credentials (Michigan + Columbia)", () => {
+    const out = html();
+    expect(out).toContain("master"); // "...earned their master's degrees at"
+    expect(out).toContain("University of Michigan");
+    expect(out).toContain("Columbia University");
+  });
+
   it("contains the eyebrow + headline", () => {
     const out = html();
     expect(out).toContain("Our people");
