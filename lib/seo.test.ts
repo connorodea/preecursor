@@ -124,6 +124,18 @@ describe("socialMeta", () => {
     expect(m.twitter.card).toBe("summary_large_image");
     expect(m.twitter.title).toBe("AI Consulting");
   });
+
+  it("attaches the branded OG image to both cards", () => {
+    const m = socialMeta({
+      title: "AI Consulting",
+      description: "Applied-AI consulting.",
+      path: "/ai-consulting",
+    });
+    expect(m.openGraph.images[0].url).toBe("/og.png");
+    expect(m.openGraph.images[0].width).toBe(1200);
+    expect(m.openGraph.images[0].height).toBe(630);
+    expect(m.twitter.images).toContain("/og.png");
+  });
 });
 
 describe("programmatic SEO routes", () => {

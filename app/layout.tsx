@@ -37,12 +37,21 @@ export const metadata: Metadata = {
     title: "Preecursor — Where strategic clarity meets applied AI",
     description:
       "An applied-AI studio for leaders who need more than advice — strategy and production engineering in one continuous engagement.",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Preecursor — applied-AI studio",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Preecursor — Where strategic clarity meets applied AI",
     description:
       "An applied-AI studio for leaders who need more than advice.",
+    images: ["/og.png"],
   },
 };
 
