@@ -19,6 +19,12 @@ describe("Capabilities", () => {
     );
   });
 
+  it("renders a top SectionSeam ramping out of the navy pool into paper", () => {
+    const out = html();
+    expect(out).toContain("linear-gradient(180deg, #112138 0%, #edf1f7 100%)");
+    expect(out).toContain("radial-gradient(140% 75% at 50% 0%");
+  });
+
   it("renders all four capability rows by number + title", () => {
     const out = html();
     expect(out).toContain("01");

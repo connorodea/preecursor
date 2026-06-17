@@ -4,6 +4,7 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import PlaceholderImage from "@/components/PlaceholderImage";
 import { Eyebrow } from "./_shared";
+import SectionSeam from "./SectionSeam";
 import { color, inkA, gradient, shadow } from "@/lib/theme";
 
 const PAD_LEFT = 2; // matches scroller padding-left
@@ -135,8 +136,13 @@ export default function SelectedWork() {
   };
 
   return (
-    <section id="work" style={{ background: "#e1e8f1" }}>
-      <div className="mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[104px]">
+    <section
+      id="work"
+      style={{ position: "relative", overflow: "hidden", background: color.paper2 }}
+    >
+      {/* Subtle light↔light seam — paper (AnswerFeature) into paper2. */}
+      <SectionSeam edge="top" from={color.paper} to={color.paper2} height={150} />
+      <div className="relative z-[1] mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[104px]">
         {/* Header row */}
         <div
           className="flex flex-col items-start gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-10"

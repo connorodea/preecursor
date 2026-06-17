@@ -3,13 +3,18 @@
 import PlaceholderImage from "@/components/PlaceholderImage";
 import { Reveal, Magnetic } from "@/lib/motion";
 import { Eyebrow, PillLink } from "./_shared";
+import SectionSeam from "./SectionSeam";
 import { color, inkA } from "@/lib/theme";
 
 export default function Locations() {
   return (
-    <section style={{ background: "#edf1f7" }}>
+    <section
+      style={{ position: "relative", overflow: "hidden", background: color.paper }}
+    >
+      {/* Bottom seam — the page sinks from paper into the navy People pool. */}
+      <SectionSeam edge="bottom" from={color.paper} to={color.ink} />
       <div
-        className="mx-auto grid max-w-[1340px] grid-cols-1 items-center px-6 py-20 md:px-10 lg:grid-cols-[1.12fr_0.88fr] lg:px-[50px] lg:py-[108px]"
+        className="relative z-[1] mx-auto grid max-w-[1340px] grid-cols-1 items-center px-6 pt-20 pb-[180px] md:px-10 lg:grid-cols-[1.12fr_0.88fr] lg:px-[50px] lg:pt-[108px] lg:pb-[240px]"
         style={{
           gap: 60,
         }}

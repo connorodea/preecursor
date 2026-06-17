@@ -172,6 +172,30 @@ describe("ShaderField — happy path (WebGL available)", () => {
   });
 });
 
+describe("ShaderField — maskImage", () => {
+  it("applies the mask to the canvas (and host) so the aurora dissolves at edges", () => {
+    const gl = makeFakeGL();
+    installGetContext(gl);
+    const raf = vi.fn(() => 1);
+    globalThis.requestAnimationFrame = raf as unknown as typeof requestAnimationFrame;
+
+    const mask = "linear-gradient(180deg, #000 0%, #000 52%, transparent 88%)";
+    let container!: HTMLElement;
+    act(() => {
+      const r = render(createElement(ShaderField, { maskImage: mask }));
+      container = r.container as unknown as HTMLElement;
+    });
+
+    const host = container.firstChild as HTMLElement;
+    const canvas = host.querySelector("canvas") as HTMLCanvasElement;
+    expect(canvas).toBeTruthy();
+    // The mask is set on the canvas element style (standard + webkit).
+    expect(canvas.style.maskImage || canvas.style.webkitMaskImage).toContain(
+      "linear-gradient",
+    );
+  });
+});
+
 describe("ShaderField — reduced motion", () => {
   it("draws one static frame and does NOT start a RAF loop", () => {
     setReducedMotion(true);

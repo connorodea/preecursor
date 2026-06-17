@@ -11,11 +11,14 @@ describe("People", () => {
     expect(html()).toContain('id="people"');
   });
 
-  it("shows the co-founders' graduate credentials (Michigan + Columbia)", () => {
+  it("shows the co-founders' university credentials", () => {
     const out = html();
-    expect(out).toContain("master"); // "...earned their master's degrees at"
+    expect(out).toContain("Our co-founders studied at");
     expect(out).toContain("University of Michigan");
     expect(out).toContain("Columbia University");
+    expect(out).toContain("Harvard University");
+    expect(out).toContain("Johns Hopkins University");
+    expect(out).toContain("UC Berkeley");
   });
 
   it("contains the eyebrow + headline", () => {
@@ -38,11 +41,13 @@ describe("People", () => {
     expect(html()).toContain("P&amp;L");
   });
 
-  it("renders the de-fogged EdgeFade — neighbour seam colours + blue waypoint, size 130", () => {
+  it("is a solid-navy pool — no EdgeFade band, no gradient background", () => {
     const out = html();
-    expect(out).toContain("linear-gradient(180deg, #edf1f7 0%"); // top → Locations paper
-    expect(out).toContain("linear-gradient(0deg, #e1e8f1 0%"); // bottom → Careers paper2
-    expect(out).toContain("rgba(60,98,164,0.42)"); // saturated-blue waypoint, not grey
-    expect((out.match(/height:130px/g) ?? []).length).toBe(2);
+    expect(out).toContain("background:#112138");
+    expect(out).not.toContain("linear-gradient"); // no EdgeFade band inside
+    expect(out).not.toContain("rgba(60,98,164,0.42)"); // old EdgeFade waypoint gone
+    // Credentials still present (regression guard for the seam rework).
+    expect(out).toContain("University of Michigan");
+    expect(out).toContain("Columbia University");
   });
 });

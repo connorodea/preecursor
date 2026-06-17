@@ -1,22 +1,21 @@
 "use client";
 
 import { Reveal } from "@/lib/motion";
-import { Eyebrow, EdgeFade } from "./_shared";
+import { Eyebrow } from "./_shared";
 import EducationMarks from "./EducationMarks";
-import { gradient, color, mistA } from "@/lib/theme";
+import { color, mistA } from "@/lib/theme";
 
 export default function People() {
   return (
     <section
       id="people"
       style={{
-        position: "relative",
-        overflow: "hidden",
-        background: gradient.inkBand("18% -10%"),
+        // Solid navy "pool" — the dissolve is owned by the light neighbours
+        // (Locations above, Careers below) via SectionSeam.
+        background: color.ink,
         color: color.mist,
       }}
     >
-      <EdgeFade topColor={color.paper} bottomColor={color.paper2} size={130} />
       <div className="relative mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[104px]">
         <div
           className="grid grid-cols-1 items-end lg:grid-cols-2"
@@ -80,7 +79,7 @@ export default function People() {
                 marginBottom: 24,
               }}
             >
-              Our co-founders earned their master&rsquo;s degrees at
+              Our co-founders studied at
             </div>
             <EducationMarks />
           </div>

@@ -2,6 +2,7 @@
 
 import { Reveal } from "@/lib/motion";
 import { Eyebrow } from "./_shared";
+import SectionSeam from "./SectionSeam";
 import { color, inkA } from "@/lib/theme";
 
 const ROWS = [
@@ -29,8 +30,13 @@ const ROWS = [
 
 export default function Capabilities() {
   return (
-    <section id="capabilities">
-      <div className="mx-auto max-w-[1340px] px-6 py-20 md:px-10 lg:px-[50px] lg:py-[108px]">
+    <section
+      id="capabilities"
+      style={{ position: "relative", overflow: "hidden", background: color.paper }}
+    >
+      {/* Top seam — the page rises out of the navy ImpactBand pool into paper. */}
+      <SectionSeam edge="top" from={color.ink} to={color.paper} />
+      <div className="relative z-[1] mx-auto max-w-[1340px] px-6 pt-[160px] pb-20 md:px-10 lg:px-[50px] lg:pt-[200px] lg:pb-[108px]">
         {/* Header grid */}
         <div
           className="grid grid-cols-1 items-start lg:grid-cols-[0.92fr_1.08fr]"
