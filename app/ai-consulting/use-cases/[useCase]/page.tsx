@@ -48,6 +48,11 @@ export default async function Page({
   const uc = getUseCase(useCase);
   if (!uc) notFound();
 
+  // Three sibling use cases, wrapping from the current one, so each page links
+  // to a different trio — interlinking the cluster instead of dead-ending.
+  const idx = USE_CASES.findIndex((u) => u.slug === useCase);
+  const siblings = [1, 2, 3].map((n) => USE_CASES[(idx + n) % USE_CASES.length]);
+
   const schema = serviceSchema({
     name: `AI consulting for ${uc.name}`,
     description: uc.metaDescription,
@@ -163,6 +168,24 @@ export default async function Page({
             title="AI consulting"
             desc="Strategy and production engineering in one continuous engagement."
           />
+        </CardGrid>
+
+        {/* Sibling use cases — interlink the cluster. */}
+        <Eyebrow
+          label="More use cases"
+          tone="brand"
+          style={{ marginTop: 64, marginBottom: 32 }}
+        />
+        <CardGrid columns={3}>
+          {siblings.map((s) => (
+            <Card
+              key={s.slug}
+              href={`/ai-consulting/use-cases/${s.slug}`}
+              kicker="Use case"
+              title={s.name}
+              desc={s.lede}
+            />
+          ))}
         </CardGrid>
       </Section>
 
