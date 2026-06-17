@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import Page, { generateStaticParams, generateMetadata } from "./page";
-import { USE_CASES, getUseCase } from "@/lib/content/usecases";
+import { USE_CASES, getUseCase, USE_CASE_CONCEPTS } from "@/lib/content/usecases";
 
 // notFound() normally throws a Next.js redirect that jsdom can't navigate;
 // stub it to a plain throw so the unknown-slug branch is exercised cleanly.
@@ -54,6 +54,14 @@ describe("app/ai-consulting/use-cases/[useCase]/page", () => {
       expect(out, useCase).toContain("Related");
       for (const r of uc.relatedCapabilities) {
         expect(out, `${useCase} -> ${r.href}`).toContain(r.href);
+      }
+      // Cross-cluster glossary links (key concepts) render when mapped.
+      const concepts = USE_CASE_CONCEPTS[useCase] ?? [];
+      if (concepts.length > 0) {
+        expect(out, useCase).toContain("Key concepts");
+        for (const c of concepts) {
+          expect(out, `${useCase} -> glossary ${c}`).toContain(`/glossary/${c}`);
+        }
       }
       // Sibling use-case interlinking (3 wrapping neighbours, never self).
       expect(out, useCase).toContain("More use cases");

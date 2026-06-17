@@ -3,8 +3,10 @@ import {
   USE_CASES,
   getUseCase,
   USE_CASE_ROUTES,
+  USE_CASE_CONCEPTS,
   type UseCase,
 } from "./usecases";
+import { getTerm } from "./glossary";
 
 const SLUG_RE = /^[a-z0-9-]+$/;
 
@@ -86,5 +88,30 @@ describe("USE_CASE_ROUTES", () => {
 
   it("contains only unique routes", () => {
     expect(new Set(USE_CASE_ROUTES).size).toBe(USE_CASE_ROUTES.length);
+  });
+});
+
+describe("USE_CASE_CONCEPTS", () => {
+  it("maps every use case to its glossary concepts", () => {
+    for (const u of USE_CASES) {
+      const concepts = USE_CASE_CONCEPTS[u.slug];
+      expect(concepts, u.slug).toBeDefined();
+      expect(concepts.length, u.slug).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it("references only valid glossary slugs (no broken cross-links)", () => {
+    for (const [useCase, slugs] of Object.entries(USE_CASE_CONCEPTS)) {
+      for (const slug of slugs) {
+        expect(getTerm(slug), `${useCase} -> ${slug}`).toBeDefined();
+      }
+    }
+  });
+
+  it("does not reference a key that isn't a real use case", () => {
+    const valid = new Set(USE_CASES.map((u) => u.slug));
+    for (const key of Object.keys(USE_CASE_CONCEPTS)) {
+      expect(valid.has(key), key).toBe(true);
+    }
   });
 });
