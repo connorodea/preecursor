@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { getIndustry, getCapability, type ServiceContent } from "./services";
+import {
+  getIndustry,
+  getCapability,
+  cardBlurb,
+  type ServiceContent,
+} from "./services";
 import { INDUSTRY_LEAVES, CAPABILITY_LEAVES } from "@/lib/ia";
 
 /** A well-formed ServiceContent has non-empty copy and at least some structure. */
@@ -47,5 +52,24 @@ describe("unknown slug fallback (build must never break)", () => {
     const c = getCapability("totally-made-up-capability");
     expect(c).toBeDefined();
     expect(c.title.length).toBeGreaterThan(0);
+  });
+});
+
+describe("cardBlurb", () => {
+  // Only `overview` is read, so a minimal cast keeps the test focused.
+  const mk = (overview: string) => ({ overview }) as unknown as ServiceContent;
+
+  it("returns the first sentence untouched when it's short", () => {
+    expect(cardBlurb(mk("A short first sentence. And then more detail."))).toBe(
+      "A short first sentence.",
+    );
+  });
+
+  it("truncates a long first sentence to ≤140 chars with an ellipsis", () => {
+    const long =
+      "We design and ship production AI systems that move a real operating number for large organizations across many regulated markets and time zones every single day";
+    const out = cardBlurb(mk(long));
+    expect(out.endsWith("…")).toBe(true);
+    expect(out.length).toBeLessThanOrEqual(140);
   });
 });
