@@ -1,4 +1,10 @@
 import { vi } from "vitest";
+import { MotionGlobalConfig } from "motion-utils";
+
+// Make framer-motion animations resolve to their final keyframe instantly so
+// AnimatePresence exit/enter transitions settle synchronously in tests (no real
+// RAF clock). Render-presence and reduced-motion assertions are unaffected.
+MotionGlobalConfig.skipAnimations = true;
 
 // jsdom lacks these browser APIs that framer-motion + our components touch.
 // Provide inert stubs so components render without throwing in tests.
