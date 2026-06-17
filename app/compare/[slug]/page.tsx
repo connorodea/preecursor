@@ -125,6 +125,11 @@ export default async function Page({
     );
   }
 
+  // Three sibling comparisons, wrapping from this one, so each page links to a
+  // different trio — interlinking the cluster instead of dead-ending.
+  const idx = COMPARISONS.findIndex((c) => c.slug === slug);
+  const siblings = [1, 2, 3].map((n) => COMPARISONS[(idx + n) % COMPARISONS.length]);
+
   const schema = serviceSchema({
     name: cmp.h1,
     description: cmp.metaDescription,
@@ -252,6 +257,23 @@ export default async function Page({
             title="Start a conversation"
             desc="Bring us the metric you need to move and we'll tell you what we'd build."
           />
+        </CardGrid>
+
+        {/* Sibling comparisons — interlink the cluster. */}
+        <Eyebrow
+          label="More comparisons"
+          tone="brand"
+          style={{ marginTop: 64, marginBottom: 32 }}
+        />
+        <CardGrid columns={3}>
+          {siblings.map((s) => (
+            <Card
+              key={s.slug}
+              href={`/compare/${s.slug}`}
+              kicker="Compare"
+              title={s.h1}
+            />
+          ))}
         </CardGrid>
       </Section>
 
