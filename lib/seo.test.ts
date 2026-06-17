@@ -147,6 +147,18 @@ describe("JSON-LD schema", () => {
     });
     expect(s.datePublished).toBeUndefined();
   });
+
+  it("articleSchema keeps an absolute image URL verbatim", () => {
+    const s = articleSchema({
+      title: "T",
+      description: "D",
+      author: "A",
+      date: "May 2026",
+      url: `${BASE_URL}/insights/t/`,
+      image: "https://cdn.example.com/cover.png",
+    });
+    expect(s.image).toBe("https://cdn.example.com/cover.png");
+  });
 });
 
 describe("socialMeta", () => {
