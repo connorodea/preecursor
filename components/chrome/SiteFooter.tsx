@@ -10,6 +10,12 @@ import Link from "next/link";
 import { FOOTER } from "@/lib/ia";
 import { color, mistA, container } from "@/lib/theme";
 import BrandMark from "@/components/BrandMark";
+import { PILLARS } from "@/lib/content/programmatic";
+
+const SERVICE_LINKS = Object.values(PILLARS).map((p) => ({
+  label: p.eyebrow,
+  href: `/${p.slug}`,
+}));
 
 const COLUMN_LABEL: React.CSSProperties = {
   fontSize: 12,
@@ -58,7 +64,7 @@ export default function SiteFooter() {
       <div className={`${container} px-6 pt-16 pb-11 md:px-10 lg:px-[50px]`}>
         {/* Top: brand + three link columns */}
         <div
-          className="grid grid-cols-2 gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]"
+          className="grid grid-cols-2 gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]"
           style={{
             paddingBottom: 48,
             borderBottom: `1px solid ${mistA(0.18)}`,
@@ -102,6 +108,7 @@ export default function SiteFooter() {
             </p>
           </div>
 
+          <FooterColumn label="AI Consulting" links={SERVICE_LINKS} />
           <FooterColumn label="Firm" links={FOOTER.firm} />
           <FooterColumn label="Industries" links={FOOTER.industries} />
           <FooterColumn label="Contact" links={FOOTER.contact} />

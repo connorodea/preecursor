@@ -1,8 +1,15 @@
 import { describe, it, expect } from "vitest";
-import { siteRoutes, organizationSchema, websiteSchema, BASE_URL } from "./seo";
+import {
+  siteRoutes,
+  organizationSchema,
+  websiteSchema,
+  serviceSchema,
+  BASE_URL,
+} from "./seo";
 import { INDUSTRY_LEAVES, CAPABILITY_LEAVES } from "./ia";
 import { WORK_CASES } from "./content/work";
 import { INSIGHTS } from "./content/insights";
+import { PROGRAMMATIC_ROUTES } from "./content/programmatic";
 
 describe("siteRoutes", () => {
   it("includes the home page and every hub", () => {
@@ -58,5 +65,30 @@ describe("JSON-LD schema", () => {
     expect(s["@type"]).toBe("WebSite");
     expect(s.url).toBe(BASE_URL);
     expect(s.name).toBe("Preecursor");
+  });
+
+  it("serviceSchema builds a ProfessionalService provided by Preecursor", () => {
+    const s = serviceSchema({
+      name: "AI consulting",
+      description: "Applied-AI consulting.",
+      url: `${BASE_URL}/ai-consulting/`,
+    });
+    expect(s["@type"]).toBe("ProfessionalService");
+    expect(s.name).toBe("AI consulting");
+    expect(s.url).toBe(`${BASE_URL}/ai-consulting/`);
+    expect(s.provider["@type"]).toBe("Organization");
+    expect(s.provider.name).toBe("Preecursor");
+  });
+});
+
+describe("programmatic SEO routes", () => {
+  it("siteRoutes includes every pillar + industry/city spoke", () => {
+    const r = siteRoutes();
+    for (const p of PROGRAMMATIC_ROUTES) expect(r, p).toContain(p);
+  });
+
+  it("the programmatic routes are not duplicated in siteRoutes", () => {
+    const r = siteRoutes();
+    expect(new Set(r).size).toBe(r.length);
   });
 });
