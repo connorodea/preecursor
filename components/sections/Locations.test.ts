@@ -18,8 +18,8 @@ describe("Locations", () => {
 
   it("names the office cities in the body copy", () => {
     const out = html();
-    expect(out).toContain("New York, London");
-    expect(out).toContain("Singapore");
+    expect(out).toContain("Denver and");
+    expect(out).toContain("Detroit");
   });
 
   it("renders the 'Learn more' pill linking to /worldwide", () => {

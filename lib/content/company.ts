@@ -214,7 +214,7 @@ export const CAREERS = {
     {
       title: "Staff AI Engineer, Applied Builds",
       team: "Engineering",
-      location: "New York · Hybrid",
+      location: "Denver · Hybrid",
       type: "Full-time",
     },
     {
@@ -226,13 +226,13 @@ export const CAREERS = {
     {
       title: "Engagement Lead, AI Strategy",
       team: "Strategy",
-      location: "London · Hybrid",
+      location: "Remote",
       type: "Full-time",
     },
     {
       title: "Principal, Financial Services",
       team: "Strategy",
-      location: "New York · Hybrid",
+      location: "Detroit · Hybrid",
       type: "Full-time",
     },
     {
@@ -244,7 +244,7 @@ export const CAREERS = {
     {
       title: "AI Engineering Intern, Preecursor Labs",
       team: "Internships",
-      location: "New York · On-site",
+      location: "Denver · On-site",
       type: "Internship · Summer",
     },
   ] as OpenRole[],
@@ -260,7 +260,7 @@ export const CAREERS = {
   /** Life at Preecursor — narrative + perks. */
   life: {
     body: [
-      "We are small, senior, and remote-friendly — with hubs in New York, London, and Singapore for the people and the work that benefit from a room. The trade for staying small is real: fewer layers, more ownership, and your name on systems running inside organizations you have heard of.",
+      "We are a small, senior, remote-first firm — with offices in Denver and Detroit for the people and the work that benefit from a room. The trade for staying small is real: fewer layers, more ownership, and your name on systems running inside organizations you have heard of.",
       "We protect deep work, we travel to clients with intent rather than by default, and we hold a high bar precisely so the team stays a group of people you want to build with.",
     ] as string[],
     perks: [
@@ -273,8 +273,8 @@ export const CAREERS = {
         desc: "Small teams mean your work ships under your name and runs in production — not as a slide in someone else's deck.",
       },
       {
-        title: "Remote-friendly, hub-anchored",
-        desc: "Work from anywhere in our regions, gather in New York, London, or Singapore when the work calls for a room, and travel to clients with intent.",
+        title: "Remote-first, office-anchored",
+        desc: "Work from anywhere in our regions, gather in Denver or Detroit when the work calls for a room, and travel to clients with intent.",
       },
       {
         title: "Time to go deep",
