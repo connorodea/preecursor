@@ -87,22 +87,37 @@ describe("EdgeFade (section helper)", () => {
   const html = (props: Record<string, unknown> = {}) =>
     renderToStaticMarkup(createElement(EdgeFade, props as never));
 
+  // The waypoints that keep the seam blue instead of grey.
+  const GLOW = "rgba(60,98,164,0.42)";
+  const DEEP = "rgba(24,48,92,0.28)";
+
   it("default: renders both a top and a bottom gradient div", () => {
     const out = html();
     expect((out.match(/<div/g) ?? []).length).toBe(2);
-    expect(out).toContain("linear-gradient(180deg, #e6eefb, transparent)"); // top
-    expect(out).toContain("linear-gradient(0deg, #e6eefb, transparent)"); // bottom
+    expect(out).toContain("linear-gradient(180deg, #e6eefb 0%"); // top, default paper3
+    expect(out).toContain("linear-gradient(0deg, #e6eefb 0%"); // bottom
     expect(out).toContain("top:0");
     expect(out).toContain("bottom:0");
-    // default size 110
-    expect((out.match(/height:110px/g) ?? []).length).toBe(2);
+    // default size 124
+    expect((out.match(/height:124px/g) ?? []).length).toBe(2);
     expect(out).toContain('aria-hidden="true"');
+  });
+
+  it("routes the blend through saturated-blue waypoints, never a flat grey fade", () => {
+    const out = html();
+    // both waypoints present on each edge → no light→transparent grey midpoint
+    expect((out.match(new RegExp(GLOW.replace(/[().]/g, "\\$&"), "g")) ?? []).length).toBe(2);
+    expect((out.match(new RegExp(DEEP.replace(/[().]/g, "\\$&"), "g")) ?? []).length).toBe(2);
+    expect(out).toContain("transparent 100%");
+    // the old foggy form must be gone
+    expect(out).not.toContain("#e6eefb, transparent");
   });
 
   it("top only: single top-anchored gradient div, no bottom", () => {
     const out = html({ bottom: false });
     expect((out.match(/<div/g) ?? []).length).toBe(1);
-    expect(out).toContain("linear-gradient(180deg, #e6eefb, transparent)");
+    expect(out).toContain("linear-gradient(180deg, #e6eefb 0%");
+    expect(out).toContain(GLOW);
     expect(out).toContain("top:0");
     expect(out).not.toContain("bottom:0");
   });
@@ -110,15 +125,15 @@ describe("EdgeFade (section helper)", () => {
   it("bottom only: single bottom-anchored gradient div, no top", () => {
     const out = html({ top: false });
     expect((out.match(/<div/g) ?? []).length).toBe(1);
-    expect(out).toContain("linear-gradient(0deg, #e6eefb, transparent)");
+    expect(out).toContain("linear-gradient(0deg, #e6eefb 0%");
     expect(out).toContain("bottom:0");
     expect(out).not.toContain("top:0");
   });
 
-  it("custom size + color flow into both gradient stops + heights", () => {
-    const out = html({ color: "#102030", size: 64 });
-    expect(out).toContain("linear-gradient(180deg, #102030, transparent)");
-    expect(out).toContain("linear-gradient(0deg, #102030, transparent)");
+  it("topColor / bottomColor set the exact seam colour per edge + size flows through", () => {
+    const out = html({ topColor: "#102030", bottomColor: "#405060", size: 64 });
+    expect(out).toContain("linear-gradient(180deg, #102030 0%");
+    expect(out).toContain("linear-gradient(0deg, #405060 0%");
     expect((out.match(/height:64px/g) ?? []).length).toBe(2);
     expect(out).not.toContain("#e6eefb");
   });

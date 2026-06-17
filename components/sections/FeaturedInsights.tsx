@@ -15,8 +15,8 @@ export default function FeaturedInsights() {
         color: color.mist,
       }}
     >
-      <EdgeFade top bottom={false} size={88} />
-      <EdgeFade top={false} bottom size={120} />
+      <EdgeFade top bottom={false} topColor={color.paper2} size={120} />
+      <EdgeFade top={false} bottom bottomColor="#d8e6f7" size={132} />
       {/* Top split grid */}
       <div className="relative z-[1] grid grid-cols-1 lg:grid-cols-2">
         <Reveal

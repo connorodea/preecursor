@@ -62,33 +62,53 @@ export function Eyebrow({
    hard-cutting. Render as the first child of a position:relative
    section; keep the section's content in a position:relative wrapper
    so it paints above these fades.
+
+   A naive light→transparent fade over a dark band greys out at its
+   midpoint (≈50% near-white over navy resolves to a muddy steel) — the
+   "fog" between sections. To blend cleanly we route the seam through two
+   saturated-blue waypoints, so the edge reads as a luminous deep-blue glow
+   (matching the aurora hero) that resolves into the navy body — never grey.
+   Pass each edge the *exact* light colour of its neighbour so the join at
+   the very seam is invisible.
    ---------------------------------------------------------------- */
+const SEAM_GLOW = "rgba(60,98,164,0.42)"; // upper waypoint — luminous azure
+const SEAM_DEEP = "rgba(24,48,92,0.28)"; //  lower waypoint — settles toward navy
+
 export function EdgeFade({
-  color = "#e6eefb",
+  topColor = color.paper3,
+  bottomColor = color.paper3,
   top = true,
   bottom = true,
-  size = 110,
+  size = 124,
 }: {
-  /** The neighbouring light colour to fade toward. */
-  color?: string;
+  /** Exact light colour of the section ABOVE — the top edge melts into it. */
+  topColor?: string;
+  /** Exact light colour of the section BELOW — the bottom edge melts into it. */
+  bottomColor?: string;
   top?: boolean;
   bottom?: boolean;
   size?: number;
 }) {
+  const base: React.CSSProperties = {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    height: size,
+    pointerEvents: "none",
+    zIndex: 0,
+  };
+  // edge → azure glow → deep blue → navy (transparent lets the band show)
+  const stops = (edge: string) =>
+    `${edge} 0%, ${SEAM_GLOW} 30%, ${SEAM_DEEP} 62%, transparent 100%`;
   return (
     <>
       {top && (
         <div
           aria-hidden="true"
           style={{
-            position: "absolute",
+            ...base,
             top: 0,
-            left: 0,
-            right: 0,
-            height: size,
-            background: `linear-gradient(180deg, ${color}, transparent)`,
-            pointerEvents: "none",
-            zIndex: 0,
+            background: `linear-gradient(180deg, ${stops(topColor)})`,
           }}
         />
       )}
@@ -96,14 +116,9 @@ export function EdgeFade({
         <div
           aria-hidden="true"
           style={{
-            position: "absolute",
+            ...base,
             bottom: 0,
-            left: 0,
-            right: 0,
-            height: size,
-            background: `linear-gradient(0deg, ${color}, transparent)`,
-            pointerEvents: "none",
-            zIndex: 0,
+            background: `linear-gradient(0deg, ${stops(bottomColor)})`,
           }}
         />
       )}
