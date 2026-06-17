@@ -55,6 +55,16 @@ describe("app/ai-consulting/use-cases/[useCase]/page", () => {
       for (const r of uc.relatedCapabilities) {
         expect(out, `${useCase} -> ${r.href}`).toContain(r.href);
       }
+      // Sibling use-case interlinking (3 wrapping neighbours, never self).
+      expect(out, useCase).toContain("More use cases");
+      const idx = USE_CASES.findIndex((u) => u.slug === useCase);
+      const siblings = [1, 2, 3].map((n) => USE_CASES[(idx + n) % USE_CASES.length]);
+      for (const s of siblings) {
+        expect(s.slug, `${useCase} sibling`).not.toBe(useCase);
+        expect(out, `${useCase} -> sibling ${s.slug}`).toContain(
+          `/ai-consulting/use-cases/${s.slug}`,
+        );
+      }
     }
   });
 
