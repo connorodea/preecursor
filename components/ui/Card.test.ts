@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import Card from "./Card";
+import { SearchIcon } from "@/components/icons";
 import { color, shadow } from "@/lib/theme";
 
 const html = (props: Record<string, unknown>) =>
@@ -71,6 +72,20 @@ describe("Card — tone", () => {
     const out = html({ href: "/x", title: "T", tone: "dark" });
     expect(out).toContain("→");
     expect(out).toContain(color.azure);
+  });
+});
+
+describe("Card — optional icon", () => {
+  it("renders the accent icon (currentColor svg) when provided", () => {
+    const out = html({ title: "T", icon: createElement(SearchIcon) });
+    expect(out).toContain('stroke="currentColor"');
+    // icon carries the group-hover scale micro-interaction
+    expect(out).toContain("group-hover:scale-110");
+  });
+
+  it("renders no svg when no icon is provided", () => {
+    const out = html({ title: "T", kicker: "K", desc: "D" });
+    expect(out).not.toContain("<svg");
   });
 });
 

@@ -22,6 +22,12 @@ type Props = {
   desc?: string;
   stat?: string;
   tone?: Tone;
+  /**
+   * Optional accent icon element (e.g. `<ShieldIcon />`), rendered above the
+   * kicker in the accent colour. A pre-rendered element — not a component — so
+   * it can cross the server→client boundary from server pages.
+   */
+  icon?: React.ReactNode;
   className?: string;
 };
 
@@ -32,6 +38,7 @@ export default function Card({
   desc,
   stat,
   tone = "light",
+  icon,
   className = "",
 }: Props) {
   const dark = tone === "dark";
@@ -57,6 +64,21 @@ export default function Card({
 
   const body = (
     <>
+      {icon && (
+        <span
+          aria-hidden="true"
+          className="transition-transform duration-300 ease-out group-hover:scale-110"
+          style={{
+            display: "inline-flex",
+            transformOrigin: "left center",
+            color: dark ? color.azure : color.brand,
+            marginBottom: 18,
+          }}
+        >
+          {icon}
+        </span>
+      )}
+
       {kicker && (
         <span
           style={{

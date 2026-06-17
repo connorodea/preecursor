@@ -29,4 +29,11 @@ describe("app/ai-consulting/use-cases/page (hub)", () => {
     expect(typeof metadata.description).toBe("string");
     expect((metadata.description as string).length).toBeGreaterThan(0);
   });
+
+  it("renders one accent icon per use-case card (no card left plain)", () => {
+    // The only currentColor-stroke SVGs on the hub are the use-case card icons,
+    // so the count must match the number of use cases exactly.
+    const icons = (out.match(/stroke="currentColor"/g) ?? []).length;
+    expect(icons).toBe(USE_CASES.length);
+  });
 });
