@@ -350,6 +350,69 @@ export const GLOSSARY: GlossaryTerm[] = [
       { label: "What is agentic AI?", href: "/glossary/agentic-ai" },
     ],
   },
+  {
+    slug: "model-context-protocol-mcp",
+    term: "Model Context Protocol (MCP)",
+    title: "What is the Model Context Protocol (MCP)? | applied-AI glossary",
+    metaDescription:
+      "MCP is an open standard that gives AI models and agents a uniform way to connect to external tools, data, and services — so integrations are built once and reused everywhere. Here's how it works.",
+    short:
+      "The Model Context Protocol (MCP) is an open standard that gives language models and agents a uniform way to connect to external tools and data sources, so each integration is built once and reused across applications.",
+    body: [
+      "The Model Context Protocol, usually shortened to MCP, is an open standard for connecting AI models to the tools, data, and services they need to do useful work. Instead of every application inventing its own bespoke way to expose a database, an internal API, or a file store to a model, MCP defines a common interface: a \"server\" publishes resources and tools, and any MCP-aware \"client\" — a chat app, an IDE, an agent — can discover and use them. It is often described as a universal connector for context.",
+      "Mechanically, an MCP server advertises three kinds of capability: tools the model can call (actions with typed inputs and outputs), resources it can read (documents, records, files), and prompts or templates it can reuse. The client and server negotiate what is available, and the model is then given a structured menu of operations rather than a hard-coded integration. Because the contract is standardised, the same server that backs a coding assistant can back a customer-support agent without being rewritten.",
+      "In production, MCP matters most to teams running more than one AI surface or more than one data source. Without a standard, integrations grow as an N×M problem — every model or app times every system — and each one is brittle and separately maintained. MCP collapses that to N+M: expose each system once as a server, and every client can reach it. It is a poor fit only where a single, fixed, one-off integration is all you will ever need, or where the data is so sensitive that a narrower, fully-bespoke boundary is warranted.",
+      "MCP matters because the hard part of applied AI is rarely the model — it is wiring the model safely to the systems where the real data and actions live. A shared protocol turns that wiring into reusable infrastructure, makes the tool surface explicit and auditable, and lets governance and access controls be applied at the server rather than scattered through prompts. The teams getting leverage from it treat each MCP server as a durable internal product, with the same care for permissions and observability they would give any other production interface.",
+    ],
+    related: [
+      { label: "What is an AI agent?", href: "/glossary/ai-agents" },
+      { label: "What is RAG?", href: "/glossary/retrieval-augmented-generation-rag" },
+      { label: "Agentic systems", href: "/capabilities/agentic-systems" },
+      { label: "AI consulting", href: "/ai-consulting" },
+    ],
+  },
+  {
+    slug: "ai-governance",
+    term: "AI governance",
+    title: "What is AI governance? | applied-AI glossary",
+    metaDescription:
+      "AI governance is the set of policies, controls, and accountability that decide how an organization builds, approves, and operates AI responsibly. Here's what it covers and why it matters in production.",
+    short:
+      "AI governance is the framework of policies, controls, and accountability that decides how an organization builds, approves, monitors, and retires AI systems — so the technology is used responsibly and defensibly.",
+    body: [
+      "AI governance is how an organization decides what AI it will build, who is accountable for it, and what controls it must pass before and after it goes live. It spans policy (what uses are allowed, what data may be used), process (how a model gets reviewed, approved, and audited), and the technical controls that enforce both. Where model engineering answers \"can we build this,\" governance answers \"should we, under what conditions, and who answers for it when it goes wrong.\"",
+      "In practice, governance shows up as a set of concrete artifacts and gates: an inventory of where AI is used, documented risk assessments for each use, approval workflows with named owners, evaluation and monitoring requirements, data-handling and privacy rules, and a path to escalate or shut a system down. Mature programs tie these to existing risk and compliance functions rather than standing up a parallel bureaucracy — the model-risk team that already vets credit models, for example, extends to vetting AI systems.",
+      "Governance becomes load-bearing the moment AI touches regulated decisions, customer-facing outcomes, or anything where a wrong or unexplainable result has real consequences — lending, insurance, healthcare, hiring, public services. Frameworks like the EU AI Act and NIST's AI Risk Management Framework increasingly give it concrete shape, but even absent regulation, the discipline is what lets a business deploy AI it can stand behind. It is overhead where the stakes are genuinely low, and a prerequisite where they are not.",
+      "AI governance matters because the failure modes of AI are organizational as much as technical: an unmonitored model that drifts, a use case no one approved, a decision no one can explain to a regulator. Good governance is not a brake on building — it is what makes building safe to scale, by making risk visible, ownership clear, and controls testable. The teams that do it well treat it as engineering and operations, not paperwork: evaluations that actually run, monitoring that actually alerts, and controls that are proven to work rather than asserted.",
+    ],
+    related: [
+      { label: "What are guardrails?", href: "/glossary/guardrails" },
+      { label: "What are evals?", href: "/glossary/evals" },
+      { label: "Responsible AI", href: "/capabilities/responsible-ai" },
+      { label: "AI consulting", href: "/ai-consulting" },
+    ],
+  },
+  {
+    slug: "multimodal-ai",
+    term: "multimodal AI",
+    title: "What is multimodal AI? | applied-AI glossary",
+    metaDescription:
+      "Multimodal AI describes models that work across more than one kind of data — text, images, audio, and video — in a single system. Here's how it works and where it earns its keep in production.",
+    short:
+      "Multimodal AI describes models that take in or produce more than one kind of data — text, images, audio, video — in a single system, rather than handling only text.",
+    body: [
+      "Multimodal AI refers to models that operate across more than one modality of data at once — most commonly text and images, but increasingly audio and video as well. A multimodal model can read a chart and answer a question about it, transcribe and summarize a meeting recording, or describe what is happening in a photo. Where a text-only model is confined to language, a multimodal one can perceive and reason over the formats real-world information actually arrives in.",
+      "Under the hood, multimodal systems convert each modality into a shared representation the model can reason over — images and audio are encoded into the same kind of embedding space as text, so the model can attend across them jointly. Some systems are natively multimodal, trained from the start on mixed data; others stitch specialized encoders onto a language model. Either way, the practical surface is the same: a single call can mix a question, an image, and a document, and get one grounded answer back.",
+      "In production, multimodal AI unlocks workflows that were previously two or three disconnected steps: extracting structured data from scanned forms and invoices, triaging support tickets that include screenshots, quality-inspecting product photos, or analyzing medical and technical imagery alongside notes. It is most valuable where the source material is inherently non-textual and a human would otherwise have to look at it. It is unnecessary where the data is already clean text, where the added cost and latency of vision or audio buys nothing.",
+      "Multimodal AI matters because most of the information businesses run on is not tidy text — it is documents, images, recordings, and screens. Bringing those into the same system a model can reason over removes a whole class of brittle preprocessing and manual handoffs. The engineering discipline is the same as for any applied AI: ground the model in your data, evaluate it on the real artifacts it will see, and instrument it so you can trust what it extracts before a downstream system acts on it.",
+    ],
+    related: [
+      { label: "What is a large language model?", href: "/glossary/large-language-model" },
+      { label: "What is inference?", href: "/glossary/inference" },
+      { label: "Our capabilities", href: "/capabilities" },
+      { label: "AI consulting", href: "/ai-consulting" },
+    ],
+  },
 ];
 
 /** Look up a single glossary term by slug. */
