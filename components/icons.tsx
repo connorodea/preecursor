@@ -241,3 +241,29 @@ export function ChecklistIcon(p: IconProps) {
     </Svg>
   );
 }
+
+/** Database — a cylinder stack (data & platform engineering). */
+export function DatabaseIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <ellipse cx="12" cy="6" rx="7" ry="3" />
+      <path d="M5 6v12c0 1.66 3.13 3 7 3s7-1.34 7-3V6" />
+      <path d="M5 12c0 1.66 3.13 3 7 3s7-1.34 7-3" />
+    </Svg>
+  );
+}
+
+/** Balance — scales of justice (responsible AI / governance). */
+export function BalanceIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M12 3v18" />
+      <path d="M8 21h8" />
+      <path d="M5 6.5h14" />
+      <path d="M5 6.5 2.5 11.5h5Z" />
+      <path d="M2.5 11.5a2.5 2.5 0 0 0 5 0" />
+      <path d="M19 6.5 16.5 11.5h5Z" />
+      <path d="M16.5 11.5a2.5 2.5 0 0 0 5 0" />
+    </Svg>
+  );
+}

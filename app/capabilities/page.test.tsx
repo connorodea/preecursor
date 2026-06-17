@@ -19,4 +19,12 @@ describe("app/capabilities/page (hub)", () => {
       expect(out, leaf.slug).toContain(leaf.label.replace(/&/g, "&amp;"));
     }
   });
+
+  it("gives every discipline card an accent icon (one per leaf)", () => {
+    const out = renderToStaticMarkup(createElement(CapabilitiesPage));
+    // PlaceholderImage uses no currentColor stroke, so the only such SVGs are
+    // the capability card icons — one per leaf, none left plain.
+    const icons = (out.match(/stroke="currentColor"/g) ?? []).length;
+    expect(icons).toBe(CAPABILITY_LEAVES.length);
+  });
 });

@@ -10,6 +10,31 @@ import {
 } from "@/components/ui";
 import { PANELS, CAPABILITY_LEAVES } from "@/lib/ia";
 import { getCapability, cardBlurb } from "@/lib/content/services";
+import {
+  StrategyIcon,
+  BuildIcon,
+  NetworkIcon,
+  DatabaseIcon,
+  ShieldIcon,
+  ScaleIcon,
+  EnableIcon,
+  BalanceIcon,
+} from "@/components/icons";
+
+/** One accent icon per capability discipline, keyed by slug. */
+const CAPABILITY_ICONS: Record<
+  string,
+  React.ComponentType<{ size?: number; style?: React.CSSProperties }>
+> = {
+  "ai-strategy-and-diagnostics": StrategyIcon,
+  "applied-builds": BuildIcon,
+  "agentic-systems": NetworkIcon,
+  "data-and-platform-engineering": DatabaseIcon,
+  "evaluation-and-safety": ShieldIcon,
+  "mlops-and-scale": ScaleIcon,
+  "change-and-enablement": EnableIcon,
+  "responsible-ai": BalanceIcon,
+};
 
 export const metadata: Metadata = {
   title: "Capabilities",
@@ -47,10 +72,12 @@ export default function CapabilitiesPage() {
         <CardGrid columns={3}>
           {CAPABILITY_LEAVES.map((leaf) => {
             const c = getCapability(leaf.slug);
+            const Icon = CAPABILITY_ICONS[leaf.slug];
             return (
               <Card
                 key={leaf.slug}
                 href={leaf.href}
+                icon={Icon ? <Icon size={26} /> : undefined}
                 kicker="Capability"
                 title={leaf.label}
                 desc={cardBlurb(c)}
