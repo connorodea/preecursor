@@ -11,6 +11,37 @@ import {
 import { USE_CASES } from "@/lib/content/usecases";
 import { socialMeta } from "@/lib/seo";
 import { color } from "@/lib/theme";
+import {
+  ShieldIcon,
+  DocumentIcon,
+  ChatIcon,
+  ScaleIcon,
+  GaugeIcon,
+  PulseIcon,
+  GearIcon,
+  SearchIcon,
+  SparkIcon,
+  ChecklistIcon,
+  NetworkIcon,
+} from "@/components/icons";
+
+/** One accent icon per use case, keyed by slug (matches USE_CASES). */
+const USE_CASE_ICONS: Record<
+  string,
+  React.ComponentType<{ size?: number; style?: React.CSSProperties }>
+> = {
+  "fraud-and-aml-detection": ShieldIcon,
+  "document-and-data-extraction": DocumentIcon,
+  "customer-support-copilots": ChatIcon,
+  "demand-forecasting": ScaleIcon,
+  "underwriting-and-credit": GaugeIcon,
+  "clinical-documentation": PulseIcon,
+  "predictive-maintenance": GearIcon,
+  "knowledge-retrieval-rag": SearchIcon,
+  "content-generation": SparkIcon,
+  "contract-and-policy-review": ChecklistIcon,
+  "agentic-workflow-automation": NetworkIcon,
+};
 
 const TITLE = "AI Consulting Use Cases";
 const DESCRIPTION =
@@ -94,15 +125,19 @@ export default function UseCasesHubPage() {
         </p>
 
         <CardGrid columns={3}>
-          {USE_CASES.map((uc) => (
-            <Card
-              key={uc.slug}
-              href={`/ai-consulting/use-cases/${uc.slug}`}
-              kicker="Use case"
-              title={uc.name}
-              desc={uc.lede}
-            />
-          ))}
+          {USE_CASES.map((uc) => {
+            const Icon = USE_CASE_ICONS[uc.slug];
+            return (
+              <Card
+                key={uc.slug}
+                href={`/ai-consulting/use-cases/${uc.slug}`}
+                icon={Icon ? <Icon size={26} /> : undefined}
+                kicker="Use case"
+                title={uc.name}
+                desc={uc.lede}
+              />
+            );
+          })}
         </CardGrid>
       </Section>
 

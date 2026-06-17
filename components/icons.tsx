@@ -139,3 +139,105 @@ export function LabsIcon(p: IconProps) {
     </Svg>
   );
 }
+
+/** Shield — protection / detection (fraud & AML). */
+export function ShieldIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M12 3 4.5 6.2v5.3c0 4.4 3.2 7.6 7.5 8.7 4.3-1.1 7.5-4.3 7.5-8.7V6.2Z" />
+      <path d="M9 11.7 11.3 14 15.2 9.4" />
+    </Svg>
+  );
+}
+
+/** Document — a page with a folded corner and text (data extraction). */
+export function DocumentIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7Z" />
+      <path d="M14 3v4h4" />
+      <path d="M9 12.5h6" />
+      <path d="M9 16h4" />
+    </Svg>
+  );
+}
+
+/** Chat — a speech bubble (customer-support copilots). */
+export function ChatIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H10l-4 3.5V15H5.5A1.5 1.5 0 0 1 4 13.5Z" />
+      <path d="M8.5 9.5h.01" />
+      <path d="M12 9.5h.01" />
+      <path d="M15.5 9.5h.01" />
+    </Svg>
+  );
+}
+
+/** Gauge — a dial with a needle (risk assessment, underwriting & credit). */
+export function GaugeIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M5 16a7 7 0 0 1 14 0" />
+      <path d="M12 16 15.5 11.5" />
+      <path d="M12 16h.01" />
+    </Svg>
+  );
+}
+
+/** Pulse — an ECG trace (clinical documentation). */
+export function PulseIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M2 12h4l3 8 6-16 3 8h4" />
+    </Svg>
+  );
+}
+
+/** Gear — a cog (predictive maintenance). */
+export function GearIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <circle cx="12" cy="12" r="3.2" />
+      <path d="M12 6.4v2.4" />
+      <path d="M12 15.2v2.4" />
+      <path d="M6.4 12h2.4" />
+      <path d="M15.2 12h2.4" />
+      <path d="M8 8 9.7 9.7" />
+      <path d="M14.3 14.3 16 16" />
+      <path d="M16 8 14.3 9.7" />
+      <path d="M8 16 9.7 14.3" />
+    </Svg>
+  );
+}
+
+/** Search — a magnifier (knowledge retrieval & RAG). */
+export function SearchIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <circle cx="11" cy="11" r="6" />
+      <path d="M20 20 15.5 15.5" />
+    </Svg>
+  );
+}
+
+/** Spark — a four-point sparkle (content generation). */
+export function SparkIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M12 3.5 13.6 9.2a2 2 0 0 0 1.2 1.2L20.5 12l-5.7 1.6a2 2 0 0 0-1.2 1.2L12 20.5l-1.6-5.7a2 2 0 0 0-1.2-1.2L3.5 12l5.7-1.6a2 2 0 0 0 1.2-1.2Z" />
+    </Svg>
+  );
+}
+
+/** Checklist — a clipboard with a check (contract & policy review). */
+export function ChecklistIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <rect x="5" y="4.5" width="14" height="16" rx="1.8" />
+      <path d="M9 4.5V3.6A1.1 1.1 0 0 1 10.1 2.5h3.8A1.1 1.1 0 0 1 15 3.6v.9Z" />
+      <path d="M8.5 11 10 12.5 13 9.5" />
+      <path d="M8.5 16h7" />
+    </Svg>
+  );
+}
