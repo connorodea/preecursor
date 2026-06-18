@@ -34,6 +34,20 @@ const FOOTER_LINK: React.CSSProperties = {
   textDecoration: "none",
 };
 
+/**
+ * Footer-link hover: a hairline azure underline draws in from the left. Pure
+ * CSS (an ::after that scales from 0 → full on hover) so the footer stays a
+ * server component; the draw is motion-safe-gated for reduced motion.
+ *
+ * (The link colour is set inline, which beats a `hover:text-*` class on
+ * specificity — so the underline, a pseudo-element, is the hover affordance.)
+ */
+const FOOTER_LINK_CLASS =
+  "relative " +
+  "after:pointer-events-none after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-full " +
+  "after:origin-left after:scale-x-0 after:bg-azure after:content-[''] after:ease-out " +
+  "hover:after:scale-x-100 motion-safe:after:transition-transform motion-safe:after:duration-300";
+
 function FooterColumn({
   label,
   links,
@@ -44,13 +58,20 @@ function FooterColumn({
   return (
     <div>
       <div style={COLUMN_LABEL}>{label}</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 13 }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          gap: 13,
+        }}
+      >
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             style={FOOTER_LINK}
-            className="transition-colors hover:text-azure"
+            className={FOOTER_LINK_CLASS}
           >
             {link.label}
           </Link>
