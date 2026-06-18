@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import {
   PageHero,
   Section,
-  CardGrid,
+  RevealGrid,
   Card,
   CTASection,
   Eyebrow,
@@ -40,7 +40,7 @@ export default function GlossaryPage() {
 
       <Section tone="paper2">
         <Eyebrow label="A–Z" tone="brand" style={{ marginBottom: 48 }} />
-        <CardGrid columns={3}>
+        <RevealGrid columns={3} stagger={0.04}>
           {TERMS.map((t) => (
             <Card
               key={t.slug}
@@ -50,7 +50,7 @@ export default function GlossaryPage() {
               desc={t.short}
             />
           ))}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       <CTASection

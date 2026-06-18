@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageHero, Section, CardGrid, Card, CTASection, Eyebrow } from "@/components/ui";
+import { PageHero, Section, RevealGrid, Card, CTASection, Eyebrow } from "@/components/ui";
 import { COMPARISONS } from "@/lib/content/comparisons";
 import { socialMeta } from "@/lib/seo";
 
@@ -27,7 +27,7 @@ export default function ComparePage() {
 
       <Section tone="paper">
         <Eyebrow label="Comparisons" tone="brand" style={{ marginBottom: 48 }} />
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {COMPARISONS.map((c) => (
             <Card
               key={c.slug}
@@ -37,7 +37,7 @@ export default function ComparePage() {
               desc={c.metaDescription}
             />
           ))}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       <CTASection
