@@ -59,17 +59,27 @@ describe("PillLink — sizes", () => {
 describe("PillLink — arrow", () => {
   it("default → arrow renders as an aria-hidden span", () => {
     const out = html({ href: "/x", children: "Go" });
-    expect(out).toContain('<span aria-hidden="true">→</span>');
+    expect(out).toContain('aria-hidden="true"');
+    expect(out).toContain(">→</span>");
   });
 
   it("↗ arrow glyph", () => {
     const out = html({ href: "/x", children: "Go", arrow: "↗" });
-    expect(out).toContain('<span aria-hidden="true">↗</span>');
+    expect(out).toContain(">↗</span>");
   });
 
   it("arrow=false omits the trailing glyph", () => {
     const out = html({ href: "/x", children: "Go", arrow: false });
     expect(out).not.toContain("aria-hidden");
+  });
+
+  it("the arrow nudges on hover, motion-safe-gated; pill is a group", () => {
+    const out = html({ href: "/x", children: "Go" });
+    // The pill is a hover group and the arrow carries the reduced-motion-safe
+    // translate-on-hover (the same micro-interaction the cards use).
+    expect(out).toContain("group");
+    expect(out).toContain("motion-safe:group-hover:translate-x-1");
+    expect(out).toContain("motion-safe:transition-transform");
   });
 });
 

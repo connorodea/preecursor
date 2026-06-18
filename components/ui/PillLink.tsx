@@ -104,12 +104,21 @@ export default function PillLink({
     ...style,
   };
 
-  const cls = `${VARIANT_CLASS[variant]} ${className}`.trim();
+  // `group` lets the trailing arrow nudge on hover (matches Card); the nudge is
+  // motion-safe-gated so reduced-motion users get no movement.
+  const cls = `group ${VARIANT_CLASS[variant]} ${className}`.trim();
 
   const inner = (
     <>
       {children}
-      {arrow && <span aria-hidden="true">{arrow}</span>}
+      {arrow && (
+        <span
+          aria-hidden="true"
+          className="motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:translate-x-1"
+        >
+          {arrow}
+        </span>
+      )}
     </>
   );
 
