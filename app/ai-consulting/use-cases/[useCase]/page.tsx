@@ -6,7 +6,7 @@ import {
   PageHero,
   Section,
   ContentSplit,
-  CardGrid,
+  RevealGrid,
   Card,
   FeatureRows,
   CTASection,
@@ -153,7 +153,7 @@ export default async function Page({
 
       <Section tone="paper2">
         <Eyebrow label="Related" tone="brand" style={{ marginBottom: 48 }} />
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {/* Capability / industry cross-links from the use case's own data. */}
           {uc.relatedCapabilities.map((r) => (
             <Card key={r.href} href={r.href} kicker="Related" title={r.label} />
@@ -174,7 +174,7 @@ export default async function Page({
             title="AI consulting"
             desc="Strategy and production engineering in one continuous engagement."
           />
-        </CardGrid>
+        </RevealGrid>
 
         {/* Key concepts — cross-link into the glossary for the ideas this use
             case relies on. */}
@@ -185,7 +185,7 @@ export default async function Page({
               tone="brand"
               style={{ marginTop: 64, marginBottom: 32 }}
             />
-            <CardGrid columns={3}>
+            <RevealGrid columns={3}>
               {concepts.map((t) => (
                 <Card
                   key={t.slug}
@@ -195,7 +195,7 @@ export default async function Page({
                   desc={t.short}
                 />
               ))}
-            </CardGrid>
+            </RevealGrid>
           </>
         )}
 
@@ -205,7 +205,7 @@ export default async function Page({
           tone="brand"
           style={{ marginTop: 64, marginBottom: 32 }}
         />
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {siblings.map((s) => (
             <Card
               key={s.slug}
@@ -215,7 +215,7 @@ export default async function Page({
               desc={s.lede}
             />
           ))}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       <CTASection
