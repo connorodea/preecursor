@@ -10,10 +10,22 @@ import {
 } from "@/components/ui";
 import { PANELS } from "@/lib/ia";
 import { WORK_CASES } from "@/lib/content/work";
+import { GaugeIcon, GearIcon, PulseIcon, NetworkIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "The work",
   description: PANELS.impact.desc,
+};
+
+/** Accent icon per case study, keyed by slug — reuses the use-case marks. */
+const WORK_ICONS: Record<
+  string,
+  React.ComponentType<{ size?: number; style?: React.CSSProperties }>
+> = {
+  "underwriting-copilot": GaugeIcon,
+  "predictive-operations": GearIcon,
+  "clinical-documentation": PulseIcon,
+  "network-ops-copilot": NetworkIcon,
 };
 
 const METHODOLOGY = [
@@ -93,15 +105,19 @@ export default function WorkPage() {
           do — not specific delivered client results.
         </p>
         <CardGrid columns={2}>
-          {WORK_CASES.map((c) => (
-            <Card
-              key={c.slug}
-              href={`/work/${c.slug}`}
-              kicker={c.sector}
-              title={c.headline}
-              desc={c.summary}
-            />
-          ))}
+          {WORK_CASES.map((c) => {
+            const Icon = WORK_ICONS[c.slug];
+            return (
+              <Card
+                key={c.slug}
+                href={`/work/${c.slug}`}
+                icon={Icon ? <Icon size={26} /> : undefined}
+                kicker={c.sector}
+                title={c.headline}
+                desc={c.summary}
+              />
+            );
+          })}
         </CardGrid>
       </Section>
 

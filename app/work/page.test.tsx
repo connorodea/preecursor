@@ -21,4 +21,12 @@ describe("app/work/page (hub)", () => {
       expect(out, c.slug).toContain(`/work/${c.slug}`);
     }
   });
+
+  it("gives every case-study card an accent icon (one per case)", () => {
+    const out = renderToStaticMarkup(createElement(WorkPage));
+    // FeatureRows/figures use no currentColor stroke, so the only such SVGs are
+    // the case-study card icons — one per case.
+    const icons = (out.match(/stroke="currentColor"/g) ?? []).length;
+    expect(icons).toBe(WORK_CASES.length);
+  });
 });
