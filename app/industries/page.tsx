@@ -4,7 +4,7 @@ import {
   PageHero,
   Section,
   ContentSplit,
-  CardGrid,
+  RevealGrid,
   Card,
   CTASection,
 } from "@/components/ui";
@@ -77,7 +77,7 @@ export default function IndustriesPage() {
       />
 
       <Section tone="paper2">
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {INDUSTRY_LEAVES.map((leaf) => {
             const c = getIndustry(leaf.slug);
             const Icon = INDUSTRY_ICONS[leaf.slug];
@@ -92,7 +92,7 @@ export default function IndustriesPage() {
               />
             );
           })}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       <CTASection

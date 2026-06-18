@@ -12,6 +12,7 @@ export { default as Section } from "./Section";
 export { default as PageHero } from "./PageHero";
 export { default as ContentSplit } from "./ContentSplit";
 export { default as CardGrid } from "./CardGrid";
+export { default as RevealGrid } from "./RevealGrid";
 export { default as Card } from "./Card";
 export { default as StatBand } from "./StatBand";
 export { default as FeatureRows } from "./FeatureRows";

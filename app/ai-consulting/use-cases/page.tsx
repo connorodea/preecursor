@@ -4,6 +4,7 @@ import {
   PageHero,
   Section,
   CardGrid,
+  RevealGrid,
   Card,
   CTASection,
   Eyebrow,
@@ -124,7 +125,7 @@ export default function UseCasesHubPage() {
           ourselves to.
         </p>
 
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {USE_CASES.map((uc) => {
             const Icon = USE_CASE_ICONS[uc.slug];
             return (
@@ -138,7 +139,7 @@ export default function UseCasesHubPage() {
               />
             );
           })}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       <Section tone="paper2">
