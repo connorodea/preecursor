@@ -14,7 +14,8 @@ type Props = {
   style?: React.CSSProperties;
 };
 
-const COLS: Record<2 | 3 | 4, string> = {
+/** Responsive column classes per `columns`. Shared with RevealGrid. */
+export const GRID_COLS: Record<2 | 3 | 4, string> = {
   2: "grid-cols-1 sm:grid-cols-2",
   3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
   4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
@@ -28,7 +29,7 @@ export default function CardGrid({
 }: Props) {
   return (
     <div
-      className={`grid ${COLS[columns]} ${className}`.trim()}
+      className={`grid ${GRID_COLS[columns]} ${className}`.trim()}
       style={{ gap: 24, ...style }}
     >
       {children}

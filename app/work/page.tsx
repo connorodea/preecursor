@@ -3,6 +3,7 @@ import {
   PageHero,
   Section,
   CardGrid,
+  RevealGrid,
   Card,
   FeatureRows,
   CTASection,
@@ -104,7 +105,7 @@ export default function WorkPage() {
           The scenarios below are illustrative examples of the kind of work we
           do — not specific delivered client results.
         </p>
-        <CardGrid columns={2}>
+        <RevealGrid columns={2}>
           {WORK_CASES.map((c) => {
             const Icon = WORK_ICONS[c.slug];
             return (
@@ -118,7 +119,7 @@ export default function WorkPage() {
               />
             );
           })}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       {/* Outcomes — what moving the number looks like across the book. */}

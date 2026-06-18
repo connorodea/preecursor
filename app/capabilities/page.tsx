@@ -4,7 +4,7 @@ import {
   PageHero,
   Section,
   ContentSplit,
-  CardGrid,
+  RevealGrid,
   Card,
   CTASection,
 } from "@/components/ui";
@@ -69,7 +69,7 @@ export default function CapabilitiesPage() {
       />
 
       <Section tone="paper2">
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {CAPABILITY_LEAVES.map((leaf) => {
             const c = getCapability(leaf.slug);
             const Icon = CAPABILITY_ICONS[leaf.slug];
@@ -84,7 +84,7 @@ export default function CapabilitiesPage() {
               />
             );
           })}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       <CTASection
