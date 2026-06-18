@@ -267,3 +267,109 @@ export function BalanceIcon(p: IconProps) {
     </Svg>
   );
 }
+
+/** Bank — a classical columned facade (financial institutions). */
+export function BankIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M3 9 12 4l9 5" />
+      <path d="M4 9.5h16" />
+      <path d="M6 10v7" />
+      <path d="M10 10v7" />
+      <path d="M14 10v7" />
+      <path d="M18 10v7" />
+      <path d="M4 17.5h16" />
+      <path d="M3 20h18" />
+    </Svg>
+  );
+}
+
+/** Umbrella — coverage / protection (insurance). */
+export function UmbrellaIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M12 3a9 9 0 0 1 9 9H3a9 9 0 0 1 9-9Z" />
+      <path d="M12 12v6.5" />
+      <path d="M12 18.5a2.5 2.5 0 0 0 4 0" />
+    </Svg>
+  );
+}
+
+/** Bolt — a lightning bolt (energy & utilities). */
+export function BoltIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M13 2 4 14h6l-1 8 9-12h-6Z" />
+    </Svg>
+  );
+}
+
+/** Bag — a shopping bag (consumer & retail). */
+export function BagIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M5.5 8h13l-1 12a1 1 0 0 1-1 .9H7.5a1 1 0 0 1-1-.9Z" />
+      <path d="M9 9V6a3 3 0 0 1 6 0v3" />
+    </Svg>
+  );
+}
+
+/** Chip — a microchip (technology & software). */
+export function ChipIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <rect x="7" y="7" width="10" height="10" rx="1" />
+      <rect x="10.5" y="10.5" width="3" height="3" rx="0.5" />
+      <path d="M10 7V4" />
+      <path d="M14 7V4" />
+      <path d="M10 17v3" />
+      <path d="M14 17v3" />
+      <path d="M7 10H4" />
+      <path d="M7 14H4" />
+      <path d="M17 10h3" />
+      <path d="M17 14h3" />
+    </Svg>
+  );
+}
+
+/** Trend — a rising chart line with arrow (private equity / growth). */
+export function TrendIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M3 16 9 10l3 3 9-9" />
+      <path d="M16 4h5v5" />
+    </Svg>
+  );
+}
+
+/** Flag — a civic banner on a pole (public sector). */
+export function FlagIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M6 3v18" />
+      <path d="M6 4h11l-2.5 3.5L17 11H6Z" />
+    </Svg>
+  );
+}
+
+/** Truck — a delivery truck (transportation & logistics). */
+export function TruckIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M3 6h11v9.5H3Z" />
+      <path d="M14 9.5h4l3 3v3h-7Z" />
+      <circle cx="7" cy="17.5" r="1.7" />
+      <circle cx="17.5" cy="17.5" r="1.7" />
+    </Svg>
+  );
+}
+
+/** Plane — a paper plane / flight (travel & hospitality). */
+export function PlaneIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M21 3 3 9.5l7 3 3 7Z" />
+      <path d="M21 3 10 12.5" />
+    </Svg>
+  );
+}

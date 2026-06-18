@@ -10,10 +10,43 @@ import {
 } from "@/components/ui";
 import { PANELS, INDUSTRY_LEAVES } from "@/lib/ia";
 import { getIndustry, cardBlurb } from "@/lib/content/services";
+import {
+  BankIcon,
+  UmbrellaIcon,
+  PulseIcon,
+  GearIcon,
+  BoltIcon,
+  BagIcon,
+  ChipIcon,
+  TrendIcon,
+  FlagIcon,
+  NetworkIcon,
+  TruckIcon,
+  PlaneIcon,
+} from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Industries",
   description: PANELS.industries.desc,
+};
+
+/** One accent icon per sector, keyed by slug. Reuses pulse/gear/network. */
+const INDUSTRY_ICONS: Record<
+  string,
+  React.ComponentType<{ size?: number; style?: React.CSSProperties }>
+> = {
+  "financial-institutions": BankIcon,
+  insurance: UmbrellaIcon,
+  "healthcare-and-life-sciences": PulseIcon,
+  "industrial-goods": GearIcon,
+  "energy-and-utilities": BoltIcon,
+  "consumer-and-retail": BagIcon,
+  "technology-and-software": ChipIcon,
+  "private-equity": TrendIcon,
+  "public-sector": FlagIcon,
+  telecommunications: NetworkIcon,
+  "transportation-and-logistics": TruckIcon,
+  "travel-and-hospitality": PlaneIcon,
 };
 
 export default function IndustriesPage() {
@@ -47,10 +80,12 @@ export default function IndustriesPage() {
         <CardGrid columns={3}>
           {INDUSTRY_LEAVES.map((leaf) => {
             const c = getIndustry(leaf.slug);
+            const Icon = INDUSTRY_ICONS[leaf.slug];
             return (
               <Card
                 key={leaf.slug}
                 href={leaf.href}
+                icon={Icon ? <Icon size={26} /> : undefined}
                 kicker="Industry"
                 title={leaf.label}
                 desc={cardBlurb(c)}

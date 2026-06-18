@@ -19,4 +19,12 @@ describe("app/industries/page (hub)", () => {
       expect(out, leaf.slug).toContain(leaf.label.replace(/&/g, "&amp;"));
     }
   });
+
+  it("gives every sector card an accent icon (one per leaf)", () => {
+    const out = renderToStaticMarkup(createElement(IndustriesPage));
+    // PlaceholderImage uses no currentColor stroke, so the only such SVGs are
+    // the sector card icons — one per leaf, none left plain.
+    const icons = (out.match(/stroke="currentColor"/g) ?? []).length;
+    expect(icons).toBe(INDUSTRY_LEAVES.length);
+  });
 });
