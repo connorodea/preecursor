@@ -38,6 +38,11 @@ jobs:
 
       - name: Build static export
         run: npm run build
+        env:
+          # GA4 measurement id (public, not a secret). Set as a repo Variable
+          # to enable analytics; when empty the Analytics component renders
+          # nothing, so the build is unaffected.
+          NEXT_PUBLIC_GA_ID: ${{ vars.NEXT_PUBLIC_GA_ID }}
         # next.config.ts sets output:'export' → artifacts land in out/
 
       - name: Upload build artifact
