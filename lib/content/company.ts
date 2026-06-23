@@ -2,9 +2,9 @@
  * lib/content/company.ts — first-draft, on-brand copy for the three company
  * hub pages: About, Leadership, and Careers.
  *
- * Tone: boutique applied-AI studio — a sharper, smaller BCG. Specific,
- * outcome-led, engineering-credible, no hype. People, roles, and figures are
- * illustrative first-draft content meant to read as plausible and editable.
+ * Tone: boutique applied-AI studio in its own voice — specific, outcome-led,
+ * engineering-credible, no hype. People, roles, and figures are illustrative
+ * first-draft content meant to read as plausible and editable.
  */
 
 /* ------------------------------------------------------------------ About -- */
@@ -23,7 +23,7 @@ export const ABOUT = {
   story: [
     "Preecursor was founded on a frustration our partners had lived from both sides of the table: the people who could frame the AI strategy were rarely the people who could build it, and the gap between the two was where most initiatives quietly died.",
     "So we built the firm we wished we could have hired. Small by design. Senior by default. The same people who diagnose the opportunity stay through to the production system — no handoff to a junior bench, no second statement of work to make the pilot real.",
-    "Today we work with a deliberately short list of clients in the rooms where the standard gets set: global banks, Fortune 200 industrials, national health networks. We measure ourselves the way they do — against a number we agreed to move — and we leave when their people can run and improve the system without us.",
+    "Today we work with a deliberately short list of clients in industries where the cost of getting AI wrong is highest: global banks, Fortune 200 industrials, national health networks. We measure ourselves the way they do — against a number we agreed to move — and we leave when their people can run and improve the system without us.",
   ] as string[],
 
   /** What we believe — the values grid. */
@@ -200,8 +200,8 @@ export type Perk = { title: string; desc: string };
 
 export const CAREERS = {
   hero: {
-    title: "Go beyond the expected",
-    lede: "We hire operators and engineers who would rather ship than advise. Small teams, senior people, and the kind of problems that only show up in the rooms where the standard gets set.",
+    title: "Build what other firms only pitch",
+    lede: "We hire operators and engineers who would rather ship than advise. Small teams, senior people, and the kind of problems that only surface at real scale, under real scrutiny.",
   },
 
   intro:
