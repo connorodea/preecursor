@@ -13,7 +13,7 @@ describe("Careers", () => {
   it("contains the eyebrow + headline", () => {
     const out = html();
     expect(out).toContain("Preecursor careers");
-    expect(out).toContain("Go beyond the expected");
+    expect(out).toContain("Build what other firms only pitch");
   });
 
   it("renders the body copy", () => {

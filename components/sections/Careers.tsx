@@ -36,7 +36,7 @@ export default function Careers() {
               color: color.ink,
             }}
           >
-            Go beyond the expected
+            Build what other firms only pitch
           </h2>
           <p
             style={{
@@ -47,8 +47,8 @@ export default function Careers() {
               maxWidth: "42ch",
             }}
           >
-            We hire operators and engineers who would rather ship than advise.
-            Join a team that builds the systems other firms only present.
+            We hire operators and engineers who would rather ship than advise
+            &mdash; then hand them the systems, and the outcomes, from day one.
           </p>
           <div style={{ marginTop: 36, display: "flex", gap: 16, flexWrap: "wrap" }}>
             <Link
