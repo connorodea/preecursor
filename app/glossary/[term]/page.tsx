@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import {
   PageHero,
   Section,
-  CardGrid,
+  RevealGrid,
   Card,
   CTASection,
   Eyebrow,
@@ -130,7 +130,7 @@ export default async function GlossaryTermPage({
       {/* Related — cross-links to capabilities, industries, and sibling terms. */}
       <Section tone="paper2">
         <Eyebrow label="Related" tone="brand" style={{ marginBottom: 48 }} />
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {entry.related.map((r) => (
             <Card key={r.href} href={r.href} kicker="Related" title={r.label} />
           ))}
@@ -146,7 +146,7 @@ export default async function GlossaryTermPage({
             title="AI consulting"
             desc="Strategy and production engineering in one continuous engagement."
           />
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       <CTASection

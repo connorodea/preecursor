@@ -4,7 +4,7 @@ import {
   PageHero,
   Section,
   ContentSplit,
-  CardGrid,
+  RevealGrid,
   Card,
   FeatureRows,
   CTASection,
@@ -91,7 +91,7 @@ export default async function Page({
           tone="brand"
           style={{ marginBottom: 48 }}
         />
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {c.related.map((r) => (
             <Card
               key={r.href}
@@ -100,7 +100,7 @@ export default async function Page({
               title={r.label}
             />
           ))}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       <CTASection
