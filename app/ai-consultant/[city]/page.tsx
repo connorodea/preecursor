@@ -219,7 +219,7 @@ export default async function Page({
 
       <CTASection
         title={`Put a senior AI consultant on your ${c.city} team`}
-        body="Bring us the metric you need to move. We will tell you what we would build, how long it takes, and what it is worth."
+        body={`Whether your team sits in ${c.city} or across time zones, tell us the metric you need to move and we'll tell you exactly what we'd build to move it.`}
         primary={{ label: "Start a conversation", href: "/contact" }}
         secondary={{ label: "Preecursor worldwide", href: "/worldwide" }}
         shader
