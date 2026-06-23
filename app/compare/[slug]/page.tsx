@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHero, Section, CardGrid, Card, CTASection, Eyebrow } from "@/components/ui";
+import { PageHero, Section, RevealGrid, Card, CTASection, Eyebrow } from "@/components/ui";
 import {
   COMPARISONS,
   getComparison,
@@ -183,10 +183,10 @@ export default async function Page({
       {/* The two options, side by side, before the table. */}
       <Section tone="paper2">
         <Eyebrow label="The two options" tone="brand" style={{ marginBottom: 40 }} />
-        <CardGrid columns={2}>
+        <RevealGrid columns={2}>
           <Card kicker="Option A" title={cmp.optionA.name} desc={cmp.optionA.summary} />
           <Card kicker="Option B" title={cmp.optionB.name} desc={cmp.optionB.summary} />
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       {/* Comparison table. */}
@@ -241,7 +241,7 @@ export default async function Page({
       {/* Related comparisons + pillar + contact. */}
       <Section tone="paper">
         <Eyebrow label="Related" tone="brand" style={{ marginBottom: 48 }} />
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {cmp.related.map((r) => (
             <Card key={r.href} href={r.href} kicker="Compare" title={r.label} />
           ))}
@@ -257,7 +257,7 @@ export default async function Page({
             title="Start a conversation"
             desc="Bring us the metric you need to move and we'll tell you what we'd build."
           />
-        </CardGrid>
+        </RevealGrid>
 
         {/* Sibling comparisons — interlink the cluster. */}
         <Eyebrow
@@ -265,7 +265,7 @@ export default async function Page({
           tone="brand"
           style={{ marginTop: 64, marginBottom: 32 }}
         />
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {siblings.map((s) => (
             <Card
               key={s.slug}
@@ -274,7 +274,7 @@ export default async function Page({
               title={s.h1}
             />
           ))}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       <CTASection
