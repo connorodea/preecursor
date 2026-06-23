@@ -105,7 +105,7 @@ export default async function Page({
 
       <CTASection
         title={`Put AI to work in ${label.toLowerCase()}`}
-        body="Bring us the metric you need to move. We will tell you what we would build, how long it takes, and what it is worth."
+        body={`Tell us the number that matters most in ${label.toLowerCase()} right now, and we'll tell you what we'd build to move it — and what that's worth.`}
         primary={{ label: "Start a conversation", href: "/contact" }}
         secondary={{ label: "See our work", href: "/work" }}
         shader

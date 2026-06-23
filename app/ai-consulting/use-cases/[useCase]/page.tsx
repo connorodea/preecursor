@@ -220,7 +220,7 @@ export default async function Page({
 
       <CTASection
         title={`Put AI to work on ${uc.name.toLowerCase()}`}
-        body="Bring us the metric you need to move. We will tell you what we would build, how long it takes, and what it is worth."
+        body={`Bring us the outcome you need from ${uc.name.toLowerCase()} and we'll scope it honestly — what we'd build, the timeline, and what it's worth.`}
         primary={{ label: "Start a conversation", href: "/contact" }}
         secondary={{ label: "See our work", href: "/work" }}
         shader
