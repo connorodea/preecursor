@@ -7,6 +7,6 @@ describe("app/page (landing)", () => {
   it("renders without throwing and includes the hero headline", () => {
     const out = renderToStaticMarkup(createElement(Home));
     expect(out.length).toBeGreaterThan(0);
-    expect(out).toContain("strategic clarity meets applied AI");
+    expect(out).toContain("AI strategy, engineered to run");
   });
 });
