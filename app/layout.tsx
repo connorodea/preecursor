@@ -26,7 +26,7 @@ const SITE_URL = "https://preecursor.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Preecursor — Where strategic clarity meets applied AI",
+    default: "Preecursor — AI strategy, engineered to run",
     template: "%s · Preecursor",
   },
   description:
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Preecursor",
     url: SITE_URL,
-    title: "Preecursor — Where strategic clarity meets applied AI",
+    title: "Preecursor — AI strategy, engineered to run",
     description:
       "An applied-AI studio for leaders who need more than advice — strategy and production engineering in one continuous engagement.",
     images: [
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preecursor — Where strategic clarity meets applied AI",
+    title: "Preecursor — AI strategy, engineered to run",
     description:
       "An applied-AI studio for leaders who need more than advice.",
     images: ["/og.png"],

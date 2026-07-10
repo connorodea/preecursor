@@ -88,7 +88,7 @@ export default function Hero() {
         {/* Headline — cinematic mask reveal (wipes up from behind a clip). */}
         <div style={{ overflow: "hidden", paddingBottom: "0.12em" }}>
           {reduce ? (
-            <h1 style={headlineStyle}>Where strategic clarity meets applied AI</h1>
+            <h1 style={headlineStyle}>AI strategy, engineered to run</h1>
           ) : (
             <motion.h1
               initial={{ y: "115%" }}
@@ -96,7 +96,7 @@ export default function Hero() {
               transition={{ duration: 1.05, ease: EASE, delay: 0.28 }}
               style={headlineStyle}
             >
-              Where strategic clarity meets applied AI
+              AI strategy, engineered to run
             </motion.h1>
           )}
         </div>
@@ -111,8 +111,8 @@ export default function Hero() {
             maxWidth: "34ch",
           }}
         >
-          We&rsquo;re built for leaders who need more than advice &mdash; they need
-          it shipped.
+          Elite pedigree in AI engineering, and the delivery to match. We&rsquo;re
+          built for leaders who need more than advice &mdash; they need it shipped.
         </motion.p>
 
         <motion.div {...rise(0.68)} style={{ marginTop: 44 }}>

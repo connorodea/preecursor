@@ -12,7 +12,7 @@ describe("Hero", () => {
   });
 
   it("contains the signature headline", () => {
-    expect(html()).toContain("Where strategic clarity meets applied AI");
+    expect(html()).toContain("AI strategy, engineered to run");
   });
 
   it("contains the welcome eyebrow + subhead + CTA", () => {
