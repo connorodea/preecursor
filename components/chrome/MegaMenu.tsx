@@ -19,10 +19,39 @@ import { LEFT_ENTRIES, PANELS, type LeftEntry, type Leaf } from "@/lib/ia";
 import { color, inkA } from "@/lib/theme";
 import { EASE } from "@/lib/motion";
 import BrandMark from "@/components/BrandMark";
+import ShaderField from "@/components/ShaderField";
 
 const DEFAULT_PANEL = "industries";
 const HAIRLINE = inkA(0.08);
 const HAIRLINE_STRONG = inkA(0.12);
+
+/* -- Frosted-aurora treatment (subtle / boutique) -------------------------- */
+// A cool near-white base, a muted WebGL aurora masked to the upper-right (so the
+// left index stays clean for the serif text), and a frosted-glass scrim over it.
+const GLASS_BASE = "#eef3fa";
+const GLASS_SCRIM = "rgba(255,255,255,0.62)";
+const AURORA_OPACITY = 0.34;
+const AURORA_MASK =
+  "radial-gradient(130% 125% at 74% 6%, #000 28%, rgba(0,0,0,0.4) 66%, transparent 92%)";
+
+/* Staggered entrance for the index rows and the right-panel content. Callers
+   pass `undefined` variants + `initial={false}` under reduced motion. */
+const listContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.04, delayChildren: 0.06 } },
+};
+const listItem = {
+  hidden: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.42, ease: EASE } },
+};
+const leafContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.03, delayChildren: 0.04 } },
+};
+const leafItem = {
+  hidden: { opacity: 0, y: 6 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.34, ease: EASE } },
+};
 
 export default function MegaMenu({
   open,
@@ -101,11 +130,43 @@ function MenuOverlay({ onClose }: { onClose: () => void }) {
             position: "fixed",
             inset: 0,
             zIndex: 200,
-            background: "#fff",
-            display: "flex",
-            flexDirection: "column",
+            background: GLASS_BASE,
+            // Contain the backdrop-filter so it samples the aurora, not the page.
+            isolation: "isolate",
           }}
         >
+          {/* Aurora backdrop — a muted, edge-masked whisper of the hero shader. */}
+          <ShaderField
+            style={{ zIndex: 0, opacity: AURORA_OPACITY }}
+            maskImage={AURORA_MASK}
+          />
+
+          {/* Frosted-glass scrim — blurs + lightens the aurora behind the
+              content; the top hairline of light reads as an "expensive" edge. */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              background: GLASS_SCRIM,
+              backdropFilter: "blur(28px) saturate(1.3)",
+              WebkitBackdropFilter: "blur(28px) saturate(1.3)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.65)",
+            }}
+          />
+
+          {/* Content — above the glass; carries the flex-column layout. */}
+          <div
+            style={{
+              position: "relative",
+              zIndex: 2,
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+              minHeight: 0,
+            }}
+          >
           {/* ---- Top bar ---- */}
           <div
             className="flex items-center gap-4 px-5 py-4 md:gap-[30px] md:px-10 md:py-[22px]"
@@ -141,33 +202,43 @@ function MenuOverlay({ onClose }: { onClose: () => void }) {
               Desktop (lg): the prototype's 0.8fr/1.2fr split with each pane
               scrolling independently and a divider between them. */}
           <div className="flex-1 grid grid-cols-1 overflow-y-auto lg:grid-cols-[0.8fr_1.2fr] lg:overflow-hidden">
-            {/* Left index */}
-            <nav className="px-5 pt-4 pb-8 lg:overflow-y-auto lg:border-r lg:border-[rgba(17,33,56,0.08)] lg:px-10 lg:pt-[18px] lg:pb-[60px]">
+            {/* Left index — rows cascade in on open. */}
+            <motion.nav
+              className="px-5 pt-4 pb-8 lg:overflow-y-auto lg:border-r lg:border-[rgba(17,33,56,0.08)] lg:px-10 lg:pt-[18px] lg:pb-[60px]"
+              variants={reduce ? undefined : listContainer}
+              initial={reduce ? false : "hidden"}
+              animate={reduce ? undefined : "show"}
+            >
               {LEFT_ENTRIES.map((entry, i) => (
-                <LeftRow
+                <motion.div
                   key={entry.type === "header" ? `header-${i}` : entry.id}
-                  entry={entry}
-                  active={active}
-                  setActive={setActive}
-                  onClose={onClose}
-                />
+                  variants={reduce ? undefined : listItem}
+                >
+                  <LeftRow
+                    entry={entry}
+                    active={active}
+                    setActive={setActive}
+                    onClose={onClose}
+                  />
+                </motion.div>
               ))}
-            </nav>
+            </motion.nav>
 
             {/* Right panel — cross-fades on active change */}
             <div className="px-5 pt-6 pb-10 lg:overflow-y-auto lg:px-[60px] lg:pt-[50px] lg:pb-[60px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={active}
-                  initial={reduce ? false : { opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={reduce ? { opacity: 0 } : { opacity: 0, y: -6 }}
-                  transition={reduce ? { duration: 0 } : { duration: 0.32, ease: EASE }}
+                  initial={reduce ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={reduce ? { duration: 0 } : { duration: 0.22, ease: EASE }}
                 >
-                  <RightPanel panel={panel} onClose={onClose} />
+                  <RightPanel panel={panel} onClose={onClose} reduce={reduce} />
                 </motion.div>
               </AnimatePresence>
             </div>
+          </div>
           </div>
         </motion.div>
   );
@@ -261,13 +332,20 @@ function LeftRow({
 function RightPanel({
   panel,
   onClose,
+  reduce,
 }: {
   panel: (typeof PANELS)[string];
   onClose: () => void;
+  reduce: boolean | null;
 }) {
   return (
-    <div>
-      <div
+    <motion.div
+      variants={reduce ? undefined : leafContainer}
+      initial={reduce ? false : "hidden"}
+      animate={reduce ? undefined : "show"}
+    >
+      <motion.div
+        variants={reduce ? undefined : leafItem}
         style={{
           paddingBottom: 22,
           borderBottom: `1px solid ${HAIRLINE_STRONG}`,
@@ -298,21 +376,25 @@ function RightPanel({
         >
           {panel.desc}
         </p>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 gap-x-0 sm:grid-cols-2 sm:gap-x-16">
         <div>
           {panel.col1.map((leaf) => (
-            <LeafLink key={leaf.href} leaf={leaf} onClose={onClose} />
+            <motion.div key={leaf.href} variants={reduce ? undefined : leafItem}>
+              <LeafLink leaf={leaf} onClose={onClose} />
+            </motion.div>
           ))}
         </div>
         <div>
           {panel.col2.map((leaf) => (
-            <LeafLink key={leaf.href} leaf={leaf} onClose={onClose} />
+            <motion.div key={leaf.href} variants={reduce ? undefined : leafItem}>
+              <LeafLink leaf={leaf} onClose={onClose} />
+            </motion.div>
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -332,7 +414,8 @@ function LeafLink({ leaf, onClose }: { leaf: Leaf; onClose: () => void }) {
         padding: "14px 0",
         borderBottom: `1px solid ${inkA(0.07)}`,
         textDecoration: "none",
-        transition: "color 0.18s ease",
+        transform: hover ? "translateX(3px)" : "translateX(0)",
+        transition: "color 0.18s ease, transform 0.18s ease",
       }}
     >
       {leaf.label}
