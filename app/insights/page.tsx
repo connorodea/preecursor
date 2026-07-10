@@ -5,7 +5,7 @@ import {
   PageHero,
   Section,
   ContentSplit,
-  CardGrid,
+  RevealGrid,
   Card,
   CTASection,
   Eyebrow,
@@ -62,7 +62,7 @@ export default function InsightsPage() {
       {/* Reports — first menu leaf; also anchors the full index grid lead. */}
       <Section id="reports" className="scroll-mt-[110px]" tone="paper2">
         <Eyebrow label="The latest" tone="brand" style={{ marginBottom: 40 }} />
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {INSIGHTS.map((a) => (
             <Card
               key={a.slug}
@@ -72,7 +72,7 @@ export default function InsightsPage() {
               desc={a.dek}
             />
           ))}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       {/* Category anchors — Field Notes / Executive Briefings group the writing. */}
@@ -94,7 +94,7 @@ export default function InsightsPage() {
               {CATEGORY_BLURB[cat]}
             </p>
             {items.length > 0 && (
-              <CardGrid columns={3}>
+              <RevealGrid columns={3}>
                 {items.map((a) => (
                   <Card
                     key={a.slug}
@@ -104,7 +104,7 @@ export default function InsightsPage() {
                     desc={a.dek}
                   />
                 ))}
-              </CardGrid>
+              </RevealGrid>
             )}
           </Section>
         );

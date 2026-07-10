@@ -3,7 +3,7 @@ import PlaceholderImage from "@/components/PlaceholderImage";
 import {
   PageHero,
   Section,
-  CardGrid,
+  RevealGrid,
   CTASection,
   Eyebrow,
 } from "@/components/ui";
@@ -114,11 +114,11 @@ export default function LeadershipPage() {
             >
               {g.blurb}
             </p>
-            <CardGrid columns={3}>
+            <RevealGrid columns={3}>
               {people.map((p) => (
                 <PersonCard key={p.name} person={p} />
               ))}
-            </CardGrid>
+            </RevealGrid>
           </Section>
         );
       })}
