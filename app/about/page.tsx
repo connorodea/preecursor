@@ -4,7 +4,7 @@ import {
   PageHero,
   Section,
   ContentSplit,
-  CardGrid,
+  RevealGrid,
   Card,
   FeatureRows,
   CTASection,
@@ -48,11 +48,11 @@ export default function AboutPage() {
       {/* Values */}
       <Section id="values" className="scroll-mt-[110px]" tone="paper2">
         <Eyebrow label="What we believe" tone="brand" style={{ marginBottom: 40 }} />
-        <CardGrid columns={3}>
+        <RevealGrid columns={3}>
           {ABOUT.values.map((v) => (
             <Card key={v.title} title={v.title} desc={v.desc} />
           ))}
-        </CardGrid>
+        </RevealGrid>
       </Section>
 
       {/* How We Work — footer links /about#how-we-work, id MUST be how-we-work */}
