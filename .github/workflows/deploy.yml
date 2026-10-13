@@ -3,6 +3,8 @@ name: CI / Deploy
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 # Prevent concurrent deploys; never cancel an in-progress run so we don't
@@ -33,16 +35,34 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Test acquisition service
+        run: |
+          python -m pip install -r services/acquisition/requirements.txt
+          python -m unittest discover -s services/acquisition/tests -v
+
       - name: Run tests
         run: npm test
 
       - name: Build static export
-        run: npm run build
+        run: |
+          if [ -n "$NEXT_PUBLIC_LEAD_INTAKE_URL" ] && [ -z "$NEXT_PUBLIC_TURNSTILE_SITE_KEY" ]; then
+            echo 'Configure the public Turnstile site key before activating lead capture.'
+            exit 1
+          fi
+          npm run build
         env:
           # GA4 measurement id (public, not a secret). Set as a repo Variable
           # to enable analytics; when empty the Analytics component renders
           # nothing, so the build is unaffected.
           NEXT_PUBLIC_GA_ID: ${{ vars.NEXT_PUBLIC_GA_ID }}
+          NEXT_PUBLIC_LEAD_INTAKE_URL: ${{ vars.NEXT_PUBLIC_LEAD_INTAKE_URL }}
+          NEXT_PUBLIC_BOOKING_URL: ${{ vars.NEXT_PUBLIC_BOOKING_URL }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
         # next.config.ts sets output:'export' → artifacts land in out/
 
       - name: Upload build artifact
@@ -64,7 +84,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
 
     env:
       APP_DIR: ${{ vars.APP_DIR || '/var/www/preecursor' }}

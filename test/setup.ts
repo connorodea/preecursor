@@ -10,7 +10,7 @@ MotionGlobalConfig.skipAnimations = true;
 // Provide inert stubs so components render without throwing in tests.
 const g = globalThis as unknown as Record<string, unknown>;
 
-if (!window.matchMedia) {
+if (typeof window !== "undefined" && !window.matchMedia) {
   g.matchMedia = vi.fn((query: string) => ({
     matches: false,
     media: query,

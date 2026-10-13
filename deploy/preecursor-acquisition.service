@@ -1,0 +1,30 @@
+[Unit]
+Description=Preecursor acquisition API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=preecursor-acq
+Group=preecursor-acq
+WorkingDirectory=/opt/preecursor-acquisition/current
+EnvironmentFile=/etc/preecursor/acquisition.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/preecursor-acquisition/venv/bin/gunicorn --bind 127.0.0.1:8091 --workers 2 --worker-class sync --timeout 30 --error-logfile - services.acquisition.app:create_app()
+Restart=on-failure
+RestartSec=5
+StateDirectory=preecursor-acquisition
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/var/lib/preecursor-acquisition
+
+[Install]
+WantedBy=multi-user.target

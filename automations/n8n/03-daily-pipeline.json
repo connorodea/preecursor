@@ -1,0 +1,62 @@
+{
+  "name": "Preecursor | Daily pipeline snapshot",
+  "active": false,
+  "nodes": [
+    {
+      "id": "daily-at-eight-thirty",
+      "name": "Daily at eight thirty",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "triggerAtHour": 8,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "record-pipeline",
+      "name": "Record pipeline",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        260,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO preecursor.pipeline_snapshots (snapshot_date, metrics)\nSELECT (now() AT TIME ZONE 'America/Denver')::date,\n  jsonb_build_object(\n    'new_inquiries_7d', (SELECT count(*) FROM preecursor.leads WHERE created_at >= now() - interval '7 days'),\n    'high_priority_open', (SELECT count(*) FROM preecursor.leads WHERE priority = 'high' AND stage IN ('new', 'qualified')),\n    'drafts_to_review', (SELECT count(*) FROM preecursor.review_queue),\n    'booked', (SELECT count(*) FROM preecursor.leads WHERE stage = 'booked'),\n    'proposals', (SELECT count(*) FROM preecursor.leads WHERE stage = 'proposal'),\n    'won', (SELECT count(*) FROM preecursor.leads WHERE stage = 'won'),\n    'contracted_monthly_fee_cents', (SELECT coalesce(sum(monthly_fee_cents), 0) FROM preecursor.leads WHERE stage = 'won')\n  )\nON CONFLICT (snapshot_date) DO UPDATE SET metrics = EXCLUDED.metrics, updated_at = now()\nRETURNING snapshot_date, metrics;",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Daily at eight thirty": {
+      "main": [
+        [
+          {
+            "node": "Record pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Denver",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
+  }
+}

@@ -138,6 +138,7 @@ export default function Hero() {
               See how we work
             </Link>
           </Magnetic>
+          <Link href="/contact" style={{ display: "inline-block", margin: "20px 0 0 24px", color: color.ink, fontSize: 15, fontWeight: 600 }}>Plan your AI workflow →</Link>
         </motion.div>
       </div>
     </section>

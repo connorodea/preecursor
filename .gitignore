@@ -41,3 +41,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+__pycache__/
+*.pyc
+*.sqlite3*
+*.worker.lock
+.venv/

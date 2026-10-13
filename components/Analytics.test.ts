@@ -1,41 +1,40 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import Analytics from "./Analytics";
 
-const ID = "G-TEST12345";
+vi.mock("next/script", () => ({ default: (props: Record<string, unknown>) => createElement("script", props) }));
+afterEach(() => { cleanup(); localStorage.clear(); vi.unstubAllEnvs(); });
 
-afterEach(() => {
-  vi.unstubAllEnvs();
-});
-
-const render = () => renderToStaticMarkup(createElement(Analytics));
-
-describe("Analytics (GA4, env-gated)", () => {
-  it("renders nothing when NEXT_PUBLIC_GA_ID is unset", () => {
-    vi.stubEnv("NEXT_PUBLIC_GA_ID", "");
-    expect(render()).toBe("");
+describe("Optional analytics consent", () => {
+  it("renders nothing without a valid measurement ID", () => {
+    for (const id of ["", "invalid' <script>"]) {
+      vi.stubEnv("NEXT_PUBLIC_GA_ID", id);
+      expect(renderToStaticMarkup(createElement(Analytics))).toBe("");
+    }
   });
-
-  it("injects the gtag loader for the configured measurement id", () => {
-    vi.stubEnv("NEXT_PUBLIC_GA_ID", ID);
-    expect(render()).toContain(
-      `https://www.googletagmanager.com/gtag/js?id=${ID}`,
-    );
+  it("does not render Google scripts in the static HTML even with an ID", () => {
+    vi.stubEnv("NEXT_PUBLIC_GA_ID", "G-TEST12345");
+    const output = renderToStaticMarkup(createElement(Analytics));
+    expect(output).not.toContain("googletagmanager");
+    expect(output).toContain("Decline");
   });
-
-  it("configures gtag with the id, dataLayer bootstrap, and IP anonymization", () => {
-    vi.stubEnv("NEXT_PUBLIC_GA_ID", ID);
-    const out = render();
-    expect(out).toContain("dataLayer");
-    expect(out).toContain(`'config','${ID}'`);
-    expect(out).toContain("anonymize_ip");
-    // id appears in both the loader src and the config call
-    expect((out.match(new RegExp(ID, "g")) ?? []).length).toBeGreaterThanOrEqual(2);
+  it("loads only after permission and allows withdrawal", () => {
+    vi.stubEnv("NEXT_PUBLIC_GA_ID", "G-TEST12345");
+    const { container } = render(createElement(Analytics));
+    expect(container.querySelector("script[src]")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Allow" }));
+    expect(container.querySelector("script[src]")?.getAttribute("src")).toContain("G-TEST12345");
+    fireEvent.click(screen.getByRole("button", { name: "Disable optional analytics" }));
+    expect(container.querySelector("script[src]")).toBeNull();
+    expect(localStorage.getItem("preecursor-optional-analytics-v1")).toBe("declined");
   });
-
-  it("does not leak the gtag loader when the id is blank", () => {
-    vi.stubEnv("NEXT_PUBLIC_GA_ID", "");
-    expect(render()).not.toContain("googletagmanager");
+  it("remembers a refusal", () => {
+    vi.stubEnv("NEXT_PUBLIC_GA_ID", "G-TEST12345");
+    localStorage.setItem("preecursor-optional-analytics-v1", "declined");
+    const { container } = render(createElement(Analytics));
+    expect(container.querySelector("script[src]")).toBeNull();
+    expect(screen.getByRole("button", { name: "Allow optional analytics" })).toBeTruthy();
   });
 });
