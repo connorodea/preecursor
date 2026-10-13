@@ -1,0 +1,87 @@
+{
+  "name": "Preecursor | Prepare inquiry follow-ups for review",
+  "active": false,
+  "nodes": [
+    {
+      "id": "every-fifteen-minutes",
+      "name": "Every fifteen minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "booking-configuration",
+      "name": "Booking configuration",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        250,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Optional: set your actual HTTPS booking page. This workflow never sends email.\nconst bookingUrl = \"\";\nif (bookingUrl && (!/^https:\\/\\//.test(bookingUrl) || /[\\r\\n]/.test(bookingUrl))) throw new Error(\"Use a valid HTTPS booking link\");\nreturn [{ json: { bookingUrl } }];"
+      }
+    },
+    {
+      "id": "prepare-drafts",
+      "name": "Prepare drafts",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        500,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO preecursor.followup_drafts (submission_id, recipient, subject, body)\nSELECT l.submission_id, l.email, 'Your Preecursor workflow inquiry',\n  'Hi ' || replace(l.payload->>'name', chr(10), ' ') || E',\n\nThanks for contacting Preecursor. For our first conversation, let’s map your current process, the systems involved, and the result you want to improve.\n\n' ||\n  CASE WHEN $1::text <> '' THEN 'You can choose a discovery time here: ' || $1::text\n       ELSE 'What are two times that would work for a discovery conversation?' END ||\n  E'\n\nPreecursor\nhello@preecursor.com'\nFROM preecursor.leads l\nWHERE l.stage IN ('new', 'qualified')\n  AND NOT EXISTS (SELECT 1 FROM preecursor.suppression s WHERE s.email = l.email)\n  AND NOT EXISTS (SELECT 1 FROM preecursor.followup_drafts d WHERE d.submission_id = l.submission_id)\nORDER BY l.created_at LIMIT 100\nON CONFLICT (submission_id) DO NOTHING\nRETURNING id;",
+        "options": {
+          "queryReplacement": "={{ [$json.bookingUrl] }}"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every fifteen minutes": {
+      "main": [
+        [
+          {
+            "node": "Booking configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Booking configuration": {
+      "main": [
+        [
+          {
+            "node": "Prepare drafts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Denver",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
+  }
+}

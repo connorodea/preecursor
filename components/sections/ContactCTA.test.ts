@@ -20,10 +20,10 @@ describe("ContactCTA", () => {
     expect(html()).toContain("Tell us the outcome you’re chasing.");
   });
 
-  it("renders both CTAs: mailto + see-our-work link", () => {
+  it("renders both CTAs: contact + see-our-work link", () => {
     const out = html();
-    expect(out).toContain("Start a conversation");
-    expect(out).toContain('href="mailto:hello@preecursor.com"');
+    expect(out).toContain("Plan your AI workflow");
+    expect(out).toContain('href="/contact"');
     expect(out).toContain("See our work");
     expect(out).toContain('href="/work"');
   });

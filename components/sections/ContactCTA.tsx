@@ -86,7 +86,7 @@ export default function ContactCTA() {
           >
             <Magnetic>
               <a
-                href="mailto:hello@preecursor.com"
+                href="/contact"
                 className="bg-[#112138] hover:bg-[#1b4fc7] transition-colors"
                 style={{
                   display: "inline-flex",
@@ -100,7 +100,7 @@ export default function ContactCTA() {
                   textDecoration: "none",
                 }}
               >
-                Start a conversation
+                Plan your AI workflow
               </a>
             </Magnetic>
 

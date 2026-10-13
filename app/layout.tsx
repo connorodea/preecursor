@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Newsreader, Archivo } from "next/font/google";
 import "./globals.css";
 import { organizationSchema, websiteSchema } from "@/lib/seo";
+import LeadAttribution from "@/components/LeadAttribution";
 import Analytics from "@/components/Analytics";
 import SiteChrome from "@/components/chrome/SiteChrome";
 import SiteFooter from "@/components/chrome/SiteFooter";
@@ -75,6 +76,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col overflow-x-hidden bg-paper text-ink font-sans">
         <Analytics />
+        <LeadAttribution />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

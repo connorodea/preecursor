@@ -1,0 +1,219 @@
+{
+  "name": "Preecursor | Save and qualify an inquiry",
+  "active": false,
+  "nodes": [
+    {
+      "id": "website-inquiry",
+      "name": "Website inquiry",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "preecursor-inquiry-v1",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://preecursor.com,https://www.preecursor.com"
+        }
+      },
+      "webhookId": "af72f9e7-6e1e-4cd5-927a-d416b48cdf33"
+    },
+    {
+      "id": "validate-inquiry",
+      "name": "Validate inquiry",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "jsCode": "function validateLead(input) {\n  const reject = (status = 400) => ({ ok: false, status, error: \"Invalid inquiry.\" });\n  if (!input || typeof input !== \"object\" || Array.isArray(input)) return reject();\n  const origin = input.headers?.origin;\n  if (![\"https://preecursor.com\", \"https://www.preecursor.com\"].includes(origin)) return reject(403);\n  const body = input.body;\n  if (!body || typeof body !== \"object\" || Array.isArray(body) || JSON.stringify(body).length > 12000) return reject();\n  const text = (key, min, max) => {\n    const value = body[key];\n    if (typeof value !== \"string\" || value.length > max || /[\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f]/.test(value)) return null;\n    return value.trim().length >= min ? value.trim() : null;\n  };\n  if (body.schemaVersion !== 1 || typeof body.submissionId !== \"string\" ||\n      !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.submissionId)) return reject();\n  if (body.fax !== undefined && body.fax !== \"\") return reject();\n  const name = text(\"name\", 1, 120);\n  const email = text(\"email\", 3, 254)?.toLowerCase();\n  const company = text(\"company\", 1, 160);\n  const outcome = text(\"outcome\", 20, 3000);\n  if (!name || !email || !company || !outcome || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) return reject();\n  if (/[\\r\\n]/.test(name + company)) return reject();\n  const budgets = [\"exploring\", \"under-5k\", \"5k-15k\", \"15k-50k\", \"50k-plus\"];\n  const timelines = [\"exploring\", \"30-days\", \"90-days\", \"later\"];\n  if (!budgets.includes(body.budget) || !timelines.includes(body.timeline)) return reject();\n  const attribution = {};\n  if (body.attribution !== undefined) {\n    if (!body.attribution || typeof body.attribution !== \"object\" || Array.isArray(body.attribution)) return reject();\n    for (const key of [\"utm_source\", \"utm_medium\", \"utm_campaign\"]) {\n      const value = body.attribution[key];\n      if (value !== undefined) {\n        if (typeof value !== \"string\" || value.length > 160 || /[\\r\\n\\u0000]/.test(value)) return reject();\n        attribution[key] = value;\n      }\n    }\n  }\n  const priority = [\"15k-50k\", \"50k-plus\"].includes(body.budget) && body.timeline === \"30-days\" ? \"high\" : \"standard\";\n  return {\n    ok: true, status: 200, submissionId: body.submissionId.toLowerCase(), priority,\n    payload: { name, email, company, outcome, budget: body.budget, timeline: body.timeline, attribution, source: \"website\", schemaVersion: 1 },\n  };\n}\nreturn [{ json: validateLead($input.first().json) }];"
+      }
+    },
+    {
+      "id": "valid-inquiry",
+      "name": "Valid inquiry",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.ok }}",
+              "value2": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "save-inquiry",
+      "name": "Save inquiry",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        720,
+        -100
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO preecursor.leads (submission_id, payload, priority)\nVALUES ($1::uuid, $2::jsonb, $3)\nON CONFLICT (submission_id) DO UPDATE SET submission_id = EXCLUDED.submission_id\nWHERE preecursor.leads.payload = EXCLUDED.payload\nRETURNING submission_id::text AS \"submissionId\";",
+        "options": {
+          "queryReplacement": "={{ [$json.submissionId, JSON.stringify($json.payload), $json.priority] }}"
+        }
+      },
+      "alwaysOutputData": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "confirm-saved",
+      "name": "Confirm saved",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        960,
+        -150
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.submissionId ? { accepted: true, submissionId: $json.submissionId } : { accepted: false, error: 'Conflicting submission. Please reload and retry.' } }}",
+        "options": {
+          "responseCode": "={{ $json.submissionId ? 200 : 409 }}",
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "storage-unavailable",
+      "name": "Storage unavailable",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { accepted: false, error: 'Unable to save inquiry. Please retry.' } }}",
+        "options": {
+          "responseCode": 503,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "reject-inquiry",
+      "name": "Reject inquiry",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        720,
+        160
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { accepted: false, error: $json.error } }}",
+        "options": {
+          "responseCode": "={{ $json.status }}",
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Website inquiry": {
+      "main": [
+        [
+          {
+            "node": "Validate inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate inquiry": {
+      "main": [
+        [
+          {
+            "node": "Valid inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valid inquiry": {
+      "main": [
+        [
+          {
+            "node": "Save inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reject inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save inquiry": {
+      "main": [
+        [
+          {
+            "node": "Confirm saved",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Storage unavailable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Denver",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
+  }
+}

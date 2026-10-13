@@ -43,6 +43,8 @@ jobs:
           # to enable analytics; when empty the Analytics component renders
           # nothing, so the build is unaffected.
           NEXT_PUBLIC_GA_ID: ${{ vars.NEXT_PUBLIC_GA_ID }}
+          NEXT_PUBLIC_LEAD_INTAKE_URL: ${{ vars.NEXT_PUBLIC_LEAD_INTAKE_URL }}
+          NEXT_PUBLIC_BOOKING_URL: ${{ vars.NEXT_PUBLIC_BOOKING_URL }}
         # next.config.ts sets output:'export' → artifacts land in out/
 
       - name: Upload build artifact
