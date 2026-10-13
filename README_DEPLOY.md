@@ -137,3 +137,13 @@ sudo nginx -t
 sudo systemctl status nginx
 ls -lh /var/www/preecursor/index.html
 ```
+
+## Acquisition backend (separate service)
+
+The lead pipeline uses an independent Python/Gunicorn service behind Nginx;
+Next.js remains statically exported. Backend installation, credential gates,
+backup/rollback, provider setup and the first synthetic lead-to-booking test are
+in [services/acquisition/README.md](services/acquisition/README.md). The existing
+rsync deployment ships only the static site. Do not enable the public intake
+variable until the service is deployed and tested. PR builds now run regression
+and integration tests without deploying production.

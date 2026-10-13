@@ -1,0 +1,23 @@
+[Unit]
+Description=Preecursor approved follow-ups and CRM outbox
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=preecursor-acq
+Group=preecursor-acq
+WorkingDirectory=/opt/preecursor-acquisition/current
+EnvironmentFile=/etc/preecursor/acquisition.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/preecursor-acquisition/venv/bin/python -m services.acquisition.cli tick
+TimeoutStartSec=600
+StateDirectory=preecursor-acquisition
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/var/lib/preecursor-acquisition

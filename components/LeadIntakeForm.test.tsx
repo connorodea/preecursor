@@ -8,6 +8,7 @@ function fill() {
   fireEvent.change(screen.getByLabelText("Work email"), { target: { value: "buyer@example.com" } });
   fireEvent.change(screen.getByLabelText("Company"), { target: { value: "Example Company" } });
   fireEvent.change(screen.getByLabelText("What outcome are you chasing?"), { target: { value: "Reduce manual quote entry and improve follow-up." } });
+  fireEvent.click(screen.getByRole("checkbox"));
 }
 function submit() { fireEvent.submit(screen.getByLabelText("Name").closest("form")!); }
 
@@ -53,5 +54,29 @@ describe("LeadIntakeForm", () => {
     expect(send).toHaveBeenCalledTimes(1);
     resolve({ ok: false, json: async () => ({}) });
     await screen.findByRole("alert");
+  });
+  it("sends the inquiry consent version and prefers the correlated booking link", async () => {
+    const send = vi.fn(async (_url, options) => ({ ok: true, json: async () => ({ accepted: true, submissionId: JSON.parse(options.body).submissionId, bookingUrl: "https://preecursor.com/acquisition/booking/opaque" }) }));
+    vi.stubGlobal("fetch", send);
+    render(<LeadIntakeForm endpoint="https://preecursor.com/acquisition/leads" />);
+    fill(); submit();
+    await screen.findByText("Your inquiry is saved.");
+    expect(JSON.parse(send.mock.calls[0][1].body).consent).toBe("inquiry-v1");
+    expect(screen.getByRole("link", { name: /Choose a discovery/ }).getAttribute("href")).toBe("https://preecursor.com/acquisition/booking/opaque");
+  });
+  it("does not trust an unrelated booking URL in a response", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (_url, options) => ({ ok: true, json: async () => ({ accepted: true, submissionId: JSON.parse(options.body).submissionId, bookingUrl: "https://untrusted.example/phishing" }) })));
+    render(<LeadIntakeForm endpoint="https://preecursor.com/acquisition/leads" />);
+    fill(); submit();
+    await screen.findByText("Your inquiry is saved.");
+    expect(screen.queryByRole("link", { name: /Choose a discovery/ })).toBeNull();
+  });
+  it("requires the configured spam challenge before sending", async () => {
+    const send = vi.fn();
+    vi.stubGlobal("fetch", send);
+    render(<LeadIntakeForm endpoint="https://preecursor.com/acquisition/leads" siteKey="test-key" />);
+    fill(); submit();
+    await screen.findByText("Please complete the verification challenge.");
+    expect(send).not.toHaveBeenCalled();
   });
 });

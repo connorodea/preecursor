@@ -5,6 +5,7 @@ import { CONTACT_EMAIL } from "@/lib/ia";
 import { publicHttpsUrl, readAttribution } from "@/lib/lead-intake";
 import { color, glass, inkA, shadow } from "@/lib/theme";
 import { Eyebrow } from "@/components/ui";
+import LeadVerification from "./LeadVerification";
 
 const labelStyle: CSSProperties = {
   display: "block", fontSize: 13, fontWeight: 700, color: inkA(0.72), marginBottom: 9,
@@ -22,11 +23,15 @@ const buttonStyle: CSSProperties = {
 export default function LeadIntakeForm({
   endpoint = process.env.NEXT_PUBLIC_LEAD_INTAKE_URL,
   bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL,
-}: { endpoint?: string; bookingUrl?: string }) {
+  siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+}: { endpoint?: string; bookingUrl?: string; siteKey?: string }) {
   const intakeUrl = publicHttpsUrl(endpoint);
   const booking = publicHttpsUrl(bookingUrl);
   const [state, setState] = useState<"idle" | "sending" | "error" | "saved">("idle");
   const [message, setMessage] = useState("");
+  const [confirmedBooking, setConfirmedBooking] = useState<string>();
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [challengeReset, setChallengeReset] = useState(0);
   const lock = useRef(false);
   const pending = useRef<{ fingerprint: string; id: string } | null>(null);
 
@@ -34,8 +39,13 @@ export default function LeadIntakeForm({
     if (!intakeUrl) return; // The visible email-draft fallback remains honest.
     event.preventDefault();
     if (lock.current) return;
+    if (siteKey && !turnstileToken) {
+      setMessage("Please complete the verification challenge.");
+      return;
+    }
     const form = event.currentTarget;
     const values = Object.fromEntries(new FormData(form).entries());
+    delete values["cf-turnstile-response"];
     const data = { ...values, attribution: readAttribution() };
     const fingerprint = JSON.stringify(data);
     if (pending.current?.fingerprint !== fingerprint) {
@@ -51,16 +61,22 @@ export default function LeadIntakeForm({
       const response = await fetch(intakeUrl, {
         method: "POST", headers: { "Content-Type": "application/json" },
         credentials: "omit", signal: controller.signal,
-        body: JSON.stringify({ ...data, submissionId, schemaVersion: 1 }),
+        body: JSON.stringify({ ...data, submissionId, schemaVersion: 1, turnstileToken }),
       });
       const result = await response.json();
       if (!response.ok || result.accepted !== true || result.submissionId !== submissionId) {
         throw new Error("The inquiry was not confirmed.");
       }
+      const receivedBooking = publicHttpsUrl(result.bookingUrl);
+      // A response cannot redirect a visitor to an arbitrary third-party host.
+      if (receivedBooking && new URL(receivedBooking).origin === new URL(intakeUrl).origin) {
+        setConfirmedBooking(receivedBooking);
+      }
       setState("saved");
     } catch {
       setState("error");
       setMessage("We couldn’t confirm receipt. Your details are still here—please try again or email us directly.");
+      setChallengeReset((value) => value + 1);
     } finally {
       window.clearTimeout(timer);
       lock.current = false;
@@ -74,7 +90,7 @@ export default function LeadIntakeForm({
         <div role="status" aria-live="polite">
           <h2 style={{ fontSize: 28, color: color.ink }}>Your inquiry is saved.</h2>
           <p style={{ marginTop: 16, lineHeight: 1.6 }}>We’ll review your workflow and follow up using the email you provided.</p>
-          {booking && <a href={booking} style={{ ...buttonStyle, display: "inline-block", textDecoration: "none", marginTop: 24 }}>Choose a discovery time →</a>}
+          {(confirmedBooking || booking) && <a href={confirmedBooking || booking} referrerPolicy="no-referrer" style={{ ...buttonStyle, display: "inline-block", textDecoration: "none", marginTop: 24 }}>Choose a discovery time →</a>}
         </div>
       ) : (
         <form action={intakeUrl ? undefined : `mailto:${CONTACT_EMAIL}`} method="post" encType={intakeUrl ? undefined : "text/plain"} onSubmit={submit}>
@@ -95,6 +111,10 @@ export default function LeadIntakeForm({
             <div style={{ marginBottom: 24 }}><label htmlFor="outcome" style={labelStyle}>What outcome are you chasing?</label><textarea id="outcome" name="outcome" rows={5} required minLength={20} maxLength={3000} placeholder="Describe the workflow, the tools involved, and what you’d like to improve." style={{ ...fieldStyle, resize: "vertical", minHeight: 132 }} /></div>
             <div aria-hidden="true" style={{ position: "absolute", left: -10000, width: 1, height: 1, overflow: "hidden" }}><label htmlFor="fax">Leave this empty</label><input id="fax" name="fax" tabIndex={-1} autoComplete="off" /></div>
             <p style={{ fontSize: 13, lineHeight: 1.6, color: inkA(0.62), marginBottom: 22 }}>We use these details to respond to your inquiry. Please don’t include confidential client information or sensitive records.</p>
+            <label style={{ display: "block", fontSize: 14, lineHeight: 1.6, marginBottom: 20 }}>
+              <input type="checkbox" name="consent" value="inquiry-v1" required /> I agree to be contacted about this inquiry and understand I can stop follow-ups at any time. <a href="/privacy/">Privacy details</a>
+            </label>
+            {intakeUrl && siteKey && <LeadVerification siteKey={siteKey} resetKey={challengeReset} onToken={setTurnstileToken} />}
             <button type="submit" style={buttonStyle}>{state === "sending" ? "Saving…" : intakeUrl ? "Request a discovery call →" : "Open email draft →"}</button>
           </fieldset>
           {!intakeUrl && <p style={{ marginTop: 14, fontSize: 13, lineHeight: 1.6 }}>This opens your email app with your details. Send the draft to complete your inquiry.</p>}
