@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import BrandMark from "@/components/BrandMark";
 import { color, inkA, gradient, container } from "@/lib/theme";
@@ -22,6 +23,11 @@ const PILL: React.CSSProperties = {
   fontSize: 15,
   fontWeight: 600,
   textDecoration: "none",
+};
+
+export const metadata: Metadata = {
+  title: "Page not found",
+  robots: { index: false },
 };
 
 export default function NotFound() {
