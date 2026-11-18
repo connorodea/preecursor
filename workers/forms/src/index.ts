@@ -1,3 +1,4 @@
+import * as tpl from "../../../emails/templates";
 /**
  * preecursor-forms — the form backend for the static preecursor.com export.
  *
@@ -22,6 +23,7 @@ export interface Env {
   TO_EMAIL: string;
   FROM_EMAIL: string;
   ALLOWED_ORIGINS: string;
+  SEND_CONFIRMATIONS?: string;
   LIMITER?: RateLimiter;
 }
 
@@ -83,34 +85,11 @@ export function validate(kind: "contact" | "subscribe", f: Fields): string | nul
 const oneLine = (s: string) => s.replace(/[\r\n]+/g, " ").slice(0, 200);
 
 export function buildEmail(kind: "contact" | "subscribe", f: Fields, meta: { ip: string; country: string }) {
-  if (kind === "subscribe") {
-    return {
-      subject: `Newsletter signup: ${oneLine(f.email)}`,
-      text: [
-        "New newsletter signup on preecursor.com",
-        "",
-        `Email:   ${f.email}`,
-        "",
-        `Country: ${meta.country}  IP: ${meta.ip}`,
-      ].join("\n"),
-    };
-  }
-  return {
-    subject: `Website inquiry: ${oneLine(f.name)}${f.company ? ` (${oneLine(f.company)})` : ""}`,
-    text: [
-      "New inquiry from the preecursor.com contact form",
-      "",
-      `Name:    ${f.name}`,
-      `Email:   ${f.email}`,
-      `Company: ${f.company || "-"}`,
-      "",
-      "Outcome they're chasing:",
-      f.outcome,
-      "",
-      `Country: ${meta.country}  IP: ${meta.ip}`,
-      "Reply to this email to answer them directly.",
-    ].join("\n"),
-  };
+  const e =
+    kind === "subscribe"
+      ? tpl.newsletterNotification(f.email)
+      : tpl.inquiryNotification({ name: f.name, email: f.email, company: f.company, message: f.outcome }, meta);
+  return { subject: oneLine(e.subject), text: e.text, html: e.html };
 }
 
 export async function handle(request: Request, env: Env): Promise<Response> {
@@ -149,7 +128,7 @@ export async function handle(request: Request, env: Env): Promise<Response> {
   if (err) return json({ ok: false, error: err }, 422, cors);
 
   const country = request.headers.get("CF-IPCountry") || "unknown";
-  const { subject, text } = buildEmail(kind, fields, { ip, country });
+  const { subject, text, html } = buildEmail(kind, fields, { ip, country });
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -163,12 +142,23 @@ export async function handle(request: Request, env: Env): Promise<Response> {
       reply_to: fields.email,
       subject,
       text,
+      html,
     }),
   });
 
   if (!res.ok) {
     console.error("resend error", res.status, await res.text().catch(() => ""));
     return json({ ok: false, error: "We couldn't send that just now. Please email us directly." }, 502, cors);
+  }
+
+  // Customer-facing auto-reply. Off unless SEND_CONFIRMATIONS="true"; a failure here never fails the submission.
+  if (env.SEND_CONFIRMATIONS === "true") {
+    const c = kind === "contact" ? tpl.inquiryConfirmation({ name: fields.name, message: fields.outcome }) : tpl.newsletterWelcome();
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ from: env.FROM_EMAIL, to: [fields.email], reply_to: env.TO_EMAIL, subject: c.subject, text: c.text, html: c.html }),
+    }).catch((e) => console.error("confirmation error", String(e)));
   }
   return json({ ok: true }, 200, cors);
 }

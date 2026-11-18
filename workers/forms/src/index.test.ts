@@ -82,4 +82,31 @@ describe("preecursor-forms worker", () => {
     expect(res.status).toBe(204);
     expect(res.headers.get("Access-Control-Allow-Methods")).toContain("POST");
   });
+
+  it("sends a branded HTML body and escapes user input", async () => {
+    const f = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response("{}", { status: 200 }));
+    await handle(post("/contact", { ...good, outcome: "<script>alert(1)</script>" }), env());
+    const sent = JSON.parse((f.mock.calls[0][1] as RequestInit).body as string);
+    expect(sent.html).toContain("Preecursor");
+    expect(sent.html).not.toMatch(/<script/i);
+    expect(sent.html).toContain("&lt;script&gt;");
+  });
+
+  it("sends no customer confirmation by default", async () => {
+    const f = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response("{}", { status: 200 }));
+    await handle(post("/contact", good), env());
+    expect(f).toHaveBeenCalledTimes(1);
+  });
+
+  it("sends a customer confirmation only when SEND_CONFIRMATIONS=true, and its failure never fails the submission", async () => {
+    const f = vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response("{}", { status: 200 }))
+      .mockRejectedValueOnce(new Error("boom"));
+    const res = await handle(post("/contact", good), env({ SEND_CONFIRMATIONS: "true" }));
+    expect(res.status).toBe(200);
+    expect(f).toHaveBeenCalledTimes(2);
+    const c = JSON.parse((f.mock.calls[1][1] as RequestInit).body as string);
+    expect(c.to).toEqual(["ada@example.com"]);
+    expect(c.reply_to).toBe("connor@preecursor.com");
+  });
 });
