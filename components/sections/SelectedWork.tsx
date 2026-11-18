@@ -174,7 +174,7 @@ export default function SelectedWork() {
                 marginTop: 16,
                 fontSize: 14.5,
                 lineHeight: 1.5,
-                color: inkA(0.55),
+                color: inkA(0.7),
                 maxWidth: "52ch",
               }}
             >
@@ -416,7 +416,7 @@ export default function SelectedWork() {
           </Link>
 
           {/* dots */}
-          <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
             {CARDS.map((_, i) => {
               const isActive = i === active;
               return (
@@ -425,17 +425,31 @@ export default function SelectedWork() {
                   type="button"
                   aria-label={`Show case study ${i + 1}`}
                   onClick={() => scrollWorkTo(i)}
+                  // 24px hit area (WCAG 2.5.8) around the small visual dot.
                   style={{
-                    width: isActive ? 26 : 9,
-                    height: 9,
-                    borderRadius: 999,
+                    minWidth: 24,
+                    height: 24,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                     border: "none",
                     padding: 0,
+                    background: "transparent",
                     cursor: "pointer",
-                    background: isActive ? color.brand : inkA(0.22),
-                    transition: "width .3s, background .3s",
                   }}
-                />
+                >
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      display: "block",
+                      width: isActive ? 26 : 9,
+                      height: 9,
+                      borderRadius: 999,
+                      background: isActive ? color.brand : inkA(0.22),
+                      transition: "width .3s, background .3s",
+                    }}
+                  />
+                </button>
               );
             })}
           </div>

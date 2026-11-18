@@ -64,7 +64,10 @@ function getDots(): HTMLButtonElement[] {
 /** Active dot is the wide one (26px) per inline style; width is the tell. */
 function activeDotIndex(): number {
   const dots = getDots();
-  return dots.findIndex((d) => d.style.width === "26px");
+  // The visual pill is the span inside each 24px-hit-area button.
+  return dots.findIndex(
+    (d) => (d.firstElementChild as HTMLElement | null)?.style.width === "26px",
+  );
 }
 
 /** Assign offsetLeft to each card so onScrollWork has real geometry to chew on.
