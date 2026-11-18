@@ -1,3 +1,4 @@
+import NewsletterForm from "@/components/NewsletterForm";
 import type { Metadata } from "next";
 import Link from "next/link";
 import PlaceholderImage from "@/components/PlaceholderImage";
@@ -137,28 +138,9 @@ export default function InsightsPage() {
         >
           No roundups, no reheated press releases — just what we are learning from
           shipping production AI, written for leaders who have to decide what to
-          build next. Reach us to subscribe or to suggest a topic.
+          build next. Subscribe below, or write to us to suggest a topic.
         </p>
-        <Link
-          href="/contact"
-          className="bg-[#5b8def] hover:bg-[#7fa6f2] transition-colors"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 10,
-            marginTop: 32,
-            borderRadius: 999,
-            padding: "15px 28px",
-            fontSize: 13,
-            fontWeight: 700,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: "#0b1322",
-            textDecoration: "none",
-          }}
-        >
-          Subscribe <span aria-hidden="true">→</span>
-        </Link>
+        <NewsletterForm className="mt-8 max-w-[540px]" />
       </Section>
 
       {/* Webinars. */}

@@ -1,5 +1,6 @@
 "use client";
 
+import NewsletterForm from "@/components/NewsletterForm";
 import PlaceholderImage from "@/components/PlaceholderImage";
 import { Reveal } from "@/lib/motion";
 import { color, mistA } from "@/lib/theme";
@@ -95,49 +96,7 @@ export default function FeaturedInsights() {
             Get the latest delivered to you
           </div>
 
-          <div
-            className="w-full pl-6 sm:w-auto sm:min-w-[400px] sm:max-w-[540px] sm:flex-1 sm:pl-7"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              background: "#fff",
-              borderRadius: 999,
-              paddingTop: 7,
-              paddingRight: 7,
-              paddingBottom: 7,
-            }}
-          >
-            <input
-              type="email"
-              placeholder="Enter email"
-              aria-label="Email address"
-              style={{
-                flex: 1,
-                border: "none",
-                background: "transparent",
-                fontSize: 16,
-                color: color.ink,
-                minWidth: 0,
-              }}
-            />
-            <button
-              type="button"
-              className="bg-[#1b4fc7] hover:bg-[#112138] transition-colors"
-              style={{
-                border: "none",
-                cursor: "pointer",
-                color: color.mist,
-                borderRadius: 999,
-                padding: "15px 30px",
-                fontWeight: 700,
-                fontSize: 14.5,
-                letterSpacing: "0.04em",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Subscribe &rarr;
-            </button>
-          </div>
+          <NewsletterForm className="w-full sm:w-auto sm:min-w-[400px] sm:max-w-[540px] sm:flex-1" />
         </div>
       </div>
     </section>
