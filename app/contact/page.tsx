@@ -1,36 +1,14 @@
 import type { Metadata } from "next";
 import ShaderField from "@/components/ShaderField";
+import ContactForm, { labelStyle } from "@/components/ContactForm";
 import { Section, Eyebrow, PillLink } from "@/components/ui";
 import { CONTACT_EMAIL, LOCATIONS } from "@/lib/ia";
-import { color, gradient, glass, inkA, shadow, container } from "@/lib/theme";
+import { color, gradient, inkA, container } from "@/lib/theme";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
     "Tell us the outcome you're chasing. We'll tell you, honestly, whether AI is the way to get there — and how fast. hello@preecursor.com · Denver · Detroit · Remote-first.",
-};
-
-/** Shared field styling for the presentational contact form. */
-const labelStyle: React.CSSProperties = {
-  display: "block",
-  fontSize: 12.5,
-  fontWeight: 700,
-  letterSpacing: "0.14em",
-  textTransform: "uppercase",
-  color: inkA(0.62),
-  marginBottom: 10,
-};
-
-const fieldStyle: React.CSSProperties = {
-  width: "100%",
-  borderRadius: 10,
-  border: "1px solid rgba(17,33,56,0.16)",
-  background: "rgba(255,255,255,0.7)",
-  padding: "14px 16px",
-  fontSize: 16,
-  lineHeight: 1.4,
-  color: color.ink,
-  fontFamily: "var(--font-archivo)",
 };
 
 export default function ContactPage() {
@@ -104,127 +82,8 @@ export default function ContactPage() {
           className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]"
           style={{ gap: 60, alignItems: "start" }}
         >
-          {/* Left — presentational contact form on a glass card. */}
-          <form
-            action={`mailto:${CONTACT_EMAIL}`}
-            method="post"
-            encType="text/plain"
-            style={{
-              ...glass(0.62),
-              borderRadius: 18,
-              padding: "clamp(28px,3vw,42px)",
-              boxShadow: shadow.glass,
-            }}
-          >
-            <Eyebrow
-              label="Start a conversation"
-              tone="brand"
-              style={{ marginBottom: 26 }}
-            />
-
-            <div
-              className="grid grid-cols-1 sm:grid-cols-2"
-              style={{ gap: 22, marginBottom: 22 }}
-            >
-              <div>
-                <label htmlFor="name" style={labelStyle}>
-                  Name
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  placeholder="Your name"
-                  style={fieldStyle}
-                />
-              </div>
-              <div>
-                <label htmlFor="email" style={labelStyle}>
-                  Work email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="you@company.com"
-                  style={fieldStyle}
-                />
-              </div>
-            </div>
-
-            <div style={{ marginBottom: 22 }}>
-              <label htmlFor="company" style={labelStyle}>
-                Company
-              </label>
-              <input
-                id="company"
-                name="company"
-                type="text"
-                autoComplete="organization"
-                placeholder="Where you work"
-                style={fieldStyle}
-              />
-            </div>
-
-            <div style={{ marginBottom: 30 }}>
-              <label htmlFor="outcome" style={labelStyle}>
-                What outcome are you chasing?
-              </label>
-              <textarea
-                id="outcome"
-                name="outcome"
-                rows={5}
-                placeholder="The number you need to move, the deadline you're up against — as much or as little as you like."
-                style={{ ...fieldStyle, resize: "vertical", minHeight: 132 }}
-              />
-            </div>
-
-            {/* Real submit so the typed fields are carried into the draft
-                (action=mailto + enctype=text/plain). The direct-email line
-                below is the reliable fallback for webmail users. */}
-            <button
-              type="submit"
-              className="bg-[#1b4fc7] transition-colors hover:bg-[#112138]"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                border: "none",
-                cursor: "pointer",
-                borderRadius: 999,
-                padding: "15px 28px",
-                fontSize: 13,
-                fontWeight: 700,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: color.mist,
-                boxShadow: shadow.ctaBrand,
-                fontFamily: "var(--font-archivo)",
-              }}
-            >
-              Send it over <span aria-hidden="true">→</span>
-            </button>
-
-            <p
-              style={{
-                marginTop: 20,
-                fontSize: 13.5,
-                lineHeight: 1.5,
-                color: inkA(0.5),
-              }}
-            >
-              Prefer email? Write to us directly at{" "}
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                style={{ color: color.brand, textDecoration: "none" }}
-              >
-                {CONTACT_EMAIL}
-              </a>
-              .
-            </p>
-          </form>
+          {/* Left — contact form on a glass card (posts to the forms Worker). */}
+          <ContactForm />
 
           {/* Right — contact details. */}
           <div style={{ paddingTop: 8 }}>

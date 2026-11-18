@@ -1,0 +1,17 @@
+name = "preecursor-forms"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[vars]
+TO_EMAIL = "connor@preecursor.com"
+FROM_EMAIL = "Preecursor Website <forms@privilegedinfra.com>"
+ALLOWED_ORIGINS = "https://preecursor.com,https://www.preecursor.com,http://localhost:3000"
+
+# 5 submissions per IP per minute, per route.
+[[ratelimits]]
+name = "LIMITER"
+namespace_id = "1701"
+simple = { limit = 5, period = 60 }
+
+# Secret (not in this file): RESEND_API_KEY — `wrangler secret put RESEND_API_KEY`
